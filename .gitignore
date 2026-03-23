@@ -1,0 +1,19 @@
+# Commodity price cache — regenerated daily by cron, don't commit
+cron/prices_cache.json
+cron/prices_log.jsonl
+
+# Dependencies
+node_modules/
+
+# Environment / secrets
+.env
+.env.local
+.env.production
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/

@@ -1,0 +1,14 @@
+{
+  "name": "howwarimpactsyou-cron",
+  "version": "1.0.0",
+  "description": "Daily commodity price fetcher for howwarimpactsyou.com",
+  "type": "module",
+  "scripts": {
+    "fetch": "node fetch_prices.js",
+    "fetch:dry": "DRY_RUN=1 node fetch_prices.js",
+    "test:key": "node test_api_key.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
