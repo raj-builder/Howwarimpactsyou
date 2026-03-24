@@ -16,7 +16,14 @@
  * ─────────────────────────────────────────────────────────────────────────
  */
 
-import { kv } from '@vercel/kv';
+import { createClient } from '@vercel/kv';
+
+function getKV() {
+  const url   = process.env.KV_REST_API_URL   || process.env.hwiysignups_KV_REST_API_URL;
+  const token = process.env.KV_REST_API_TOKEN  || process.env.hwiysignups_KV_REST_API_TOKEN;
+  if (!url || !token) throw new Error('KV credentials not configured');
+  return createClient({ url, token });
+}
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -46,6 +53,8 @@ export default async function handler(req, res) {
       timestamp: new Date(now).toISOString(),
       ts: now,
     };
+
+    const kv = getKV();
 
     // Store individual record
     await kv.set(id, JSON.stringify(record));

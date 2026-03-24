@@ -10,7 +10,14 @@
  * ─────────────────────────────────────────────────────────────────────────
  */
 
-import { kv } from '@vercel/kv';
+import { createClient } from '@vercel/kv';
+
+function getKV() {
+  const url   = process.env.KV_REST_API_URL   || process.env.hwiysignups_KV_REST_API_URL;
+  const token = process.env.KV_REST_API_TOKEN  || process.env.hwiysignups_KV_REST_API_TOKEN;
+  if (!url || !token) throw new Error('KV credentials not configured');
+  return createClient({ url, token });
+}
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -27,6 +34,8 @@ export default async function handler(req, res) {
   }
 
   try {
+    const kv = getKV();
+
     // Get total count
     const count = (await kv.get('signups:count')) || 0;
 
