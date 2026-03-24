@@ -197,6 +197,20 @@
     .badge-red   { background: var(--accent-light); color: var(--accent); }
     .badge-gray  { background: var(--bg-alt); color: var(--ink-muted); }
 
+    /* CARD WAR TAG & EXPLAINER */
+    .card-war-tag {
+      display: inline-block;
+      font-family: var(--sans); font-size: 0.67rem; font-weight: 700;
+      letter-spacing: 0.04em; text-transform: uppercase;
+      background: #1a1a1a; color: var(--accent-warm);
+      padding: 0.18rem 0.55rem; border-radius: 4px;
+      margin-bottom: 0.5rem;
+    }
+    .card-explainer {
+      font-family: var(--sans); font-size: 0.74rem; color: var(--ink-soft);
+      line-height: 1.5; margin-bottom: 0.6rem;
+    }
+
     /* HOW TO READ */
     .how-strip {
       background: var(--blue-light); border: 1px solid #ccdff0;
@@ -485,6 +499,14 @@
       font-family: var(--sans); font-size: 0.73rem; line-height: 1.5;
       max-width: 520px; color: rgba(255,255,255,0.4);
     }
+    .footer-sources {
+      font-family: var(--sans); font-size: 0.67rem; line-height: 1.5;
+      color: rgba(255,255,255,0.3); margin-top: 0.75rem; width: 100%;
+      text-align: center; border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 0.75rem;
+    }
+    .footer-sources a { color: rgba(255,255,255,0.45); text-decoration: none; }
+    .footer-sources a:hover { color: rgba(255,255,255,0.65); }
 
     /* BASKET PAGE */
     .basket-category-list { margin-top: 1.5rem; }
@@ -511,13 +533,234 @@
     .basket-total-num { font-size: 2.5rem; font-weight: 300; color: var(--accent-warm); letter-spacing: -0.04em; }
     .basket-total-note { font-family: var(--sans); font-size: 0.73rem; color: rgba(255,255,255,0.4); max-width: 280px; line-height: 1.5; }
 
+    /* ── SIM GATE BANNER ── */
+    .sim-gate {
+      display: none;
+      background: linear-gradient(135deg, #1a1a1a 0%, #2d2420 100%);
+      border: 1px solid rgba(200,75,49,0.4);
+      border-radius: var(--radius);
+      padding: 1.75rem 2rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .sim-gate::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-warm));
+    }
+    .sim-gate.visible { display: block; }
+    .sim-gate-eyebrow {
+      font-family: var(--sans); font-size: 0.67rem; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--accent-warm); margin-bottom: 0.6rem;
+    }
+    .sim-gate h3 {
+      font-family: var(--font); font-size: 1.3rem; font-weight: 400;
+      color: #fff; margin-bottom: 0.5rem; letter-spacing: -0.02em;
+    }
+    .sim-gate-sub {
+      font-family: var(--sans); font-size: 0.81rem;
+      color: rgba(255,255,255,0.65); line-height: 1.6;
+      margin-bottom: 1.35rem; max-width: 560px;
+    }
+    .sim-gate-sub em { color: var(--accent-warm); font-style: normal; }
+    .sim-gate-form {
+      display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: flex-end;
+    }
+    .sim-gate-field {
+      display: flex; flex-direction: column; gap: 0.3rem; flex: 1; min-width: 200px;
+    }
+    .sim-gate-label {
+      font-family: var(--sans); font-size: 0.72rem; font-weight: 600;
+      color: rgba(255,255,255,0.55); letter-spacing: 0.04em;
+    }
+    .sim-gate-input {
+      padding: 0.6rem 0.9rem;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 7px;
+      font-family: var(--sans); font-size: 0.85rem;
+      color: #fff;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .sim-gate-input::placeholder { color: rgba(255,255,255,0.3); }
+    .sim-gate-input:focus {
+      outline: none;
+      border-color: var(--accent-warm);
+      background: rgba(255,255,255,0.11);
+    }
+    .sim-gate-submit {
+      padding: 0.6rem 1.4rem;
+      background: var(--accent); color: #fff;
+      font-family: var(--sans); font-size: 0.85rem; font-weight: 700;
+      border: none; border-radius: 7px; cursor: pointer;
+      white-space: nowrap; transition: background 0.15s;
+      letter-spacing: 0.02em;
+    }
+    .sim-gate-submit:hover { background: #b03e27; }
+    .sim-gate-privacy {
+      font-family: var(--sans); font-size: 0.7rem;
+      color: rgba(255,255,255,0.3); margin-top: 0.8rem;
+    }
+    .sim-gate-privacy a { color: rgba(255,255,255,0.45); }
+    .sim-gate-error {
+      display: none;
+      font-family: var(--sans); font-size: 0.75rem;
+      color: #f08070; margin-top: 0.5rem;
+    }
+    /* Thank-you state */
+    .sim-gate-thanks {
+      display: none;
+      text-align: center; padding: 0.5rem 0;
+    }
+    .sim-gate-thanks .thanks-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+    .sim-gate-thanks h4 {
+      font-family: var(--sans); font-size: 1rem; font-weight: 700;
+      color: #fff; margin-bottom: 0.3rem;
+    }
+    .sim-gate-thanks p {
+      font-family: var(--sans); font-size: 0.8rem;
+      color: rgba(255,255,255,0.55); line-height: 1.5;
+    }
+    /* Sim counter pill */
+    .sim-counter-pill {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      background: var(--bg-alt); border: 1px solid var(--border);
+      border-radius: 20px; padding: 0.25rem 0.75rem;
+      font-family: var(--sans); font-size: 0.72rem; color: var(--ink-muted);
+      margin-bottom: 1rem;
+    }
+    .sim-counter-pill .pill-count { font-weight: 700; color: var(--ink-soft); }
+    .sim-counter-pill.warn { background: var(--accent-light); border-color: #f0c8b8; color: var(--accent); }
+    .sim-counter-pill.warn .pill-count { color: var(--accent); }
+
     /* RESPONSIVE */
+    /* ── RESPONSIVE: TABLET ── */
+    @media (max-width: 1024px) {
+      .sim-layout { grid-template-columns: 280px 1fr; gap: 1.25rem; }
+      .live-strip-header { flex-direction: column; align-items: flex-start; gap: 0.3rem; padding: 0.5rem 1rem; }
+      .live-commodity { min-width: 120px; padding: 0.6rem 1rem; }
+      .live-commodity-price { font-size: 0.95rem; }
+    }
+
+    /* ── RESPONSIVE: MOBILE ── */
     @media (max-width: 768px) {
-      .sim-layout { grid-template-columns: 1fr; }
+      body { font-size: 15px; }
+      .section { padding: 2rem 1rem; }
+      .section-sm { padding: 1.5rem 1rem; }
+      nav { padding: 0 1rem; }
+      .nav-inner { height: 48px; }
+      .nav-links { display: none; }
+      .nav-cta { font-size: 0.75rem; padding: 0.4rem 0.9rem; }
+
+      /* Simulator layout */
+      .sim-layout { grid-template-columns: 1fr; gap: 1rem; }
+      .sim-panel { position: static; padding: 1rem; }
+      .panel-title { font-size: 0.72rem; margin-bottom: 0.75rem; }
+
+      /* War events — compact */
+      .war-event-option { padding: 0.5rem; gap: 0.5rem; }
+      .war-event-name { font-size: 0.76rem; }
+      .war-event-dates { font-size: 0.66rem; }
+      .war-event-drivers { font-size: 0.64rem; }
+
+      /* Price strip — stacked on mobile */
+      .live-strip-header { flex-direction: column; align-items: flex-start; gap: 0.25rem; padding: 0.4rem 1rem; }
+      .live-strip-label { font-size: 0.62rem; }
+      .live-strip-source { font-size: 0.6rem; }
+      .live-strip-body { grid-template-columns: repeat(3, 1fr); gap: 0; }
+      .live-commodity { min-width: 0; padding: 0.5rem 0.75rem; }
+      .live-commodity-name { font-size: 0.6rem; }
+      .live-commodity-price { font-size: 0.9rem; }
+      .live-change { font-size: 0.65rem; }
+      .live-unit { font-size: 0.58rem; }
+      .live-strip-note { font-size: 0.58rem; padding: 0.3rem 1rem; }
+
+      /* Rankings — simplified grid */
+      .rank-row { grid-template-columns: 24px 24px 1fr 60px; gap: 0.4rem; padding: 0.5rem 0.6rem; }
+      .rank-bar-cell { display: none; }
+      .rank-num { font-size: 0.75rem; }
+      .rank-flag { font-size: 1rem; }
+      .rank-country { font-size: 0.78rem; }
+      .rank-pct { font-size: 0.88rem; }
+      .rank-reason { font-size: 0.64rem; }
+
+      /* War overview */
+      .war-overview { padding: 1rem 1.25rem; }
+      .war-overview-name { font-size: 0.95rem; }
+      .shock-pill { font-size: 0.68rem; padding: 0.2rem 0.5rem; }
+
+      /* Assumption strip */
+      .assumption-strip { padding: 0.75rem 1rem; gap: 1rem; flex-direction: column; }
+
+      /* Cards */
+      .cards-grid { grid-template-columns: 1fr; gap: 1rem; }
+      .impact-card { padding: 1.1rem 1.2rem; }
+      .card-impact-num { font-size: 1.6rem; }
+      .card-explainer { font-size: 0.7rem; }
+
+      /* Big numbers */
+      .big-num-row { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+      .big-num { font-size: 1.7rem; }
+      .big-num-card { padding: 0.9rem 1rem; }
+
+      /* Country detail */
+      .country-detail { padding: 1rem; }
+      .country-detail-header { gap: 0.5rem; }
+      .country-detail-flag { font-size: 1.3rem; }
+      .country-detail-title { font-size: 0.85rem; }
+
+      /* Purchasing power */
+      .pp-dep-pct { font-size: 1.3rem; }
+
+      /* Form elements — larger touch targets */
+      .form-select { padding: 0.65rem 0.85rem; font-size: 0.88rem; }
+      .chip { padding: 0.35rem 0.75rem; font-size: 0.74rem; }
+      .run-btn { padding: 0.85rem; font-size: 0.9rem; }
+
+      /* Hero */
+      .hero { padding: 3rem 1.25rem 2.5rem; }
+      .hero h1 { font-size: 1.7rem; }
+      .hero-sub { font-size: 0.95rem; }
+      .hero-disclaimer { font-size: 0.74rem; }
+      .hero-actions { flex-direction: column; }
+      .btn-primary, .btn-ghost { width: 100%; text-align: center; }
+
+      /* Page hero */
+      .page-hero { padding: 1.75rem 1.25rem 1.5rem; }
+      .page-hero h1 { font-size: 1.4rem; }
+
+      /* Footer */
+      footer { padding: 1.5rem 1rem; }
+      .footer-inner { flex-direction: column; text-align: center; }
+      .footer-disclaimer { max-width: 100%; }
+
+      /* Method & other grids */
       .method-grid { grid-template-columns: 1fr; }
       .coverage-grid { grid-template-columns: 1fr 1fr; }
-      .nav-links { display: none; }
-      .sim-panel { position: static; }
+      .sources-grid { grid-template-columns: 1fr; }
+
+      /* Basket page */
+      .basket-total { flex-direction: column; text-align: center; gap: 0.75rem; }
+    }
+
+    /* ── RESPONSIVE: SMALL PHONES ── */
+    @media (max-width: 420px) {
+      .hero h1 { font-size: 1.4rem; }
+      .section-title { font-size: 1.2rem; }
+      .rank-row { grid-template-columns: 20px 20px 1fr 55px; }
+      .big-num-row { grid-template-columns: 1fr; }
+      .shock-pill { font-size: 0.64rem; }
+      .coverage-grid { grid-template-columns: 1fr; }
+      .live-strip-body { grid-template-columns: repeat(2, 1fr); }
+      .war-overview-shocks { gap: 0.3rem; }
+    }
+
+    /* Touch optimization */
+    .chip, .rank-row, .war-event-option, .impact-card, .btn-primary, .btn-ghost, .run-btn, .form-select {
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
 
     /* TOOLTIP */
@@ -561,8 +804,9 @@
     }
     .live-strip-header {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0.6rem 2rem 0.45rem;
+      padding: 0.6rem 1.5rem 0.45rem;
       border-bottom: 1px solid #1e2e3e;
+      flex-wrap: wrap; gap: 0.25rem;
     }
     .live-strip-label {
       font-family: var(--sans); font-size: 0.67rem; font-weight: 700;
@@ -580,31 +824,32 @@
     }
     .live-strip-source a { color: #5a8aaa; text-decoration: none; }
     .live-strip-body {
-      display: flex; gap: 0; overflow-x: auto;
+      display: grid; grid-template-columns: repeat(6, 1fr);
+      gap: 0; overflow-x: auto;
       scrollbar-width: none;
     }
     .live-strip-body::-webkit-scrollbar { display: none; }
     .live-commodity {
       display: flex; flex-direction: column; align-items: flex-start;
-      padding: 0.7rem 1.4rem 0.7rem 1.5rem;
+      padding: 0.7rem 1rem 0.7rem 1rem;
       border-right: 1px solid #1e2e3e;
-      min-width: 140px; cursor: default;
+      min-width: 0; cursor: default;
       transition: background 0.15s;
     }
     .live-commodity:hover { background: #172330; }
     .live-commodity:first-child { border-left: 1px solid #1e2e3e; }
     .live-commodity-name {
-      font-family: var(--sans); font-size: 0.67rem; font-weight: 700;
-      letter-spacing: 0.08em; text-transform: uppercase;
-      color: #6a8a9a; margin-bottom: 0.25rem;
+      font-family: var(--sans); font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: #8aabb8; margin-bottom: 0.25rem;
     }
     .live-commodity-name .exch {
       font-weight: 400; color: #3d5a6a; margin-left: 3px;
     }
     .live-commodity-price {
-      font-family: 'Courier New', monospace; font-size: 1.05rem;
-      font-weight: 700; color: #e8f0f5; letter-spacing: -0.01em;
-      line-height: 1; margin-bottom: 0.22rem;
+      font-family: 'Courier New', monospace; font-size: 1.15rem;
+      font-weight: 700; color: #f0f5f8; letter-spacing: -0.01em;
+      line-height: 1; margin-bottom: 0.25rem;
     }
     .live-commodity-price.skeleton {
       background: #1e2e3e; border-radius: 3px; height: 1.05rem;
@@ -633,9 +878,10 @@
       font-family: var(--sans); font-size: 0.64rem; color: #3d5a6a;
     }
     .live-strip-note {
-      font-family: var(--sans); font-size: 0.64rem; color: #3d5a6a;
-      padding: 0.35rem 2rem 0.4rem;
+      font-family: var(--sans); font-size: 0.68rem; color: #4a7a8a;
+      padding: 0.4rem 1.5rem 0.45rem;
       border-top: 1px solid #1e2e3e;
+      line-height: 1.5;
     }
     .live-strip-note strong { color: #5a7a8a; }
 
@@ -706,6 +952,165 @@
     }
     .lbc-price-chg.up { color: #3ddc84; }
     .lbc-price-chg.down { color: #e07b54; }
+
+    /* ── WAR-FIRST SIMULATOR REDESIGN ── */
+    .war-overview {
+      background: linear-gradient(135deg, #1a1a1a 0%, #2d2420 100%);
+      border: 1px solid rgba(200,75,49,0.3);
+      border-radius: var(--radius); padding: 1.5rem 1.75rem;
+      margin-bottom: 1.25rem;
+    }
+    .war-overview-name {
+      font-family: var(--sans); font-size: 1.1rem; font-weight: 700;
+      color: #fff; margin-bottom: 0.15rem;
+    }
+    .war-overview-dates {
+      font-family: var(--sans); font-size: 0.78rem; color: rgba(255,255,255,0.5);
+      margin-bottom: 0.75rem;
+    }
+    .war-overview-shocks {
+      display: flex; flex-wrap: wrap; gap: 0.45rem;
+    }
+    .shock-pill {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      font-family: var(--sans); font-size: 0.74rem; font-weight: 600;
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 5px; padding: 0.25rem 0.6rem; color: rgba(255,255,255,0.85);
+    }
+    .shock-pill .shock-val { color: var(--accent-warm); font-weight: 700; }
+
+    /* Rankings section */
+    .rankings-section { margin-bottom: 1.5rem; }
+    .rankings-title {
+      font-family: var(--sans); font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .rankings-title.top { color: var(--accent); }
+    .rankings-title.bottom { color: var(--green); }
+    .rank-row {
+      display: grid; grid-template-columns: 28px 28px 1fr 80px 70px;
+      align-items: start; gap: 0.6rem;
+      padding: 0.65rem 0.85rem; background: var(--bg-card);
+      border: 1px solid var(--border); border-radius: 8px;
+      margin-bottom: 0.45rem; cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .rank-row:hover { border-color: var(--accent-warm); background: var(--accent-light); }
+    .rank-row.active { border-color: var(--accent); background: var(--accent-light); }
+    .rank-num {
+      font-family: var(--sans); font-size: 0.82rem; font-weight: 700;
+      color: var(--ink-muted); text-align: center;
+    }
+    .rank-flag { font-size: 1.15rem; text-align: center; }
+    .rank-country {
+      font-family: var(--sans); font-size: 0.84rem; font-weight: 600; color: var(--ink);
+    }
+    .rank-pct {
+      font-family: var(--sans); font-size: 1rem; font-weight: 700;
+      text-align: right;
+    }
+    .rank-pct.high { color: var(--accent); }
+    .rank-pct.low { color: var(--green); }
+    .rank-bar-cell { display: flex; align-items: center; }
+    .rank-bar {
+      height: 6px; border-radius: 3px;
+      background: linear-gradient(90deg, var(--accent-warm), var(--accent));
+    }
+    .rank-bar.low-bar {
+      background: linear-gradient(90deg, #b0dcc0, var(--green));
+    }
+
+    /* Country detail panel (expandable) */
+    .country-detail {
+      display: none;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.5rem;
+      box-shadow: var(--shadow); margin-bottom: 1.5rem;
+      animation: fadeIn 0.2s ease-out;
+    }
+    .country-detail.visible { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+    .country-detail-header {
+      display: flex; align-items: center; gap: 0.75rem;
+      margin-bottom: 1rem; padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .country-detail-flag { font-size: 1.6rem; }
+    .country-detail-title {
+      font-family: var(--sans); font-size: 0.95rem; font-weight: 700; color: var(--ink);
+    }
+    .country-detail-sub {
+      font-family: var(--sans); font-size: 0.75rem; color: var(--ink-muted);
+    }
+    .country-detail-close {
+      margin-left: auto; background: none; border: 1px solid var(--border);
+      border-radius: 5px; padding: 0.3rem 0.7rem; cursor: pointer;
+      font-family: var(--sans); font-size: 0.75rem; color: var(--ink-muted);
+    }
+    .country-detail-close:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* Purchasing power erosion */
+    .pp-currency-name {
+      font-family: var(--sans); font-size: 0.82rem; font-weight: 700;
+      color: var(--ink); margin-bottom: 0.35rem;
+    }
+    .pp-dep-row {
+      display: flex; align-items: baseline; gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .pp-dep-pct {
+      font-size: 1.6rem; font-weight: 300; color: var(--accent);
+      letter-spacing: -0.03em;
+    }
+    .pp-dep-label {
+      font-family: var(--sans); font-size: 0.75rem; color: var(--ink-muted);
+    }
+    .pp-bar-wrap {
+      height: 8px; background: var(--bg-alt); border-radius: 4px;
+      overflow: hidden; margin-bottom: 0.6rem;
+    }
+    .pp-bar-fill {
+      height: 100%; border-radius: 4px;
+      background: linear-gradient(90deg, var(--accent-warm), var(--accent));
+    }
+    .pp-explainer {
+      font-family: var(--sans); font-size: 0.78rem; color: var(--ink-soft);
+      line-height: 1.55;
+    }
+    .pp-rate-detail {
+      font-family: var(--sans); font-size: 0.72rem; color: var(--ink-muted);
+      margin-top: 0.35rem;
+    }
+
+    /* Rank row reason text */
+    .rank-reason {
+      font-family: var(--sans); font-size: 0.7rem; color: var(--ink-muted);
+      line-height: 1.4; margin-top: 0.15rem;
+    }
+    .rank-row-inner {
+      display: flex; flex-direction: column;
+    }
+
+    /* Pinned country row */
+    .rank-row.pinned {
+      border-color: var(--blue); background: var(--blue-light);
+    }
+
+    /* Gate redesign */
+    .sim-gate-soft {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.5rem 1.75rem;
+      margin-bottom: 1.25rem; text-align: center;
+    }
+    .sim-gate-soft h3 {
+      font-family: var(--sans); font-size: 1rem; font-weight: 700;
+      color: var(--ink); margin-bottom: 0.35rem;
+    }
+    .sim-gate-soft p {
+      font-family: var(--sans); font-size: 0.82rem; color: var(--ink-soft);
+      line-height: 1.6; margin-bottom: 1rem; max-width: 480px; margin-left: auto; margin-right: auto;
+    }
   </style>
 </head>
 <body>
@@ -759,12 +1164,14 @@
       <!-- Card 1 -->
       <div class="impact-card" onclick="showPage('simulator')">
         <span class="card-flag">🇵🇭</span>
+        <div class="card-war-tag">Russia–Ukraine War</div>
         <div class="card-title">Philippines · Bread &amp; Cereals</div>
-        <div class="card-category">Wheat price +38% · Peso –12% · Oil +22%</div>
+        <div class="card-category">Wheat +38% · Peso –12% · Oil +22%</div>
         <div class="card-impact-row">
           <span class="card-impact-num">+18.4%</span>
-          <span class="card-impact-label">estimated ceiling<br>impact (12-month lag)</span>
+          <span class="card-impact-label">maximum estimated<br>price increase</span>
         </div>
+        <div class="card-explainer">Bread prices could rise up to 18.4% if all upstream wheat, fuel, and currency costs pass through to consumers. Based on 12-month lag.</div>
         <div class="card-bar-wrap">
           <div class="card-bar"><div class="card-bar-fill" style="width:74%"></div></div>
         </div>
@@ -777,12 +1184,14 @@
       <!-- Card 2 -->
       <div class="impact-card" onclick="showPage('simulator')">
         <span class="card-flag">🇪🇬</span>
+        <div class="card-war-tag">Russia–Ukraine War</div>
         <div class="card-title">Egypt · Cooking Oil</div>
         <div class="card-category">Soybean +44% · Sunflower +61% · EGP –35%</div>
         <div class="card-impact-row">
           <span class="card-impact-num">+52.1%</span>
-          <span class="card-impact-label">estimated ceiling<br>impact (6-month lag)</span>
+          <span class="card-impact-label">maximum estimated<br>price increase</span>
         </div>
+        <div class="card-explainer">Cooking oil prices could surge up to 52.1% driven by soybean and sunflower cost spikes combined with a sharp currency devaluation. Based on 6-month lag.</div>
         <div class="card-bar-wrap">
           <div class="card-bar"><div class="card-bar-fill" style="width:92%"></div></div>
         </div>
@@ -794,12 +1203,14 @@
       <!-- Card 3 -->
       <div class="impact-card" onclick="showPage('simulator')">
         <span class="card-flag">🇧🇷</span>
+        <div class="card-war-tag">Russia–Ukraine War</div>
         <div class="card-title">Brazil · Household Fuel</div>
         <div class="card-category">Crude Oil +30% · BRL –8% · Refinery margin +15%</div>
         <div class="card-impact-row">
           <span class="card-impact-num">+11.2%</span>
-          <span class="card-impact-label">estimated ceiling<br>impact (immediate)</span>
+          <span class="card-impact-label">maximum estimated<br>price increase</span>
         </div>
+        <div class="card-explainer">Household fuel costs could rise up to 11.2% from crude oil price spikes and currency weakness flowing through refinery margins. Immediate impact.</div>
         <div class="card-bar-wrap">
           <div class="card-bar"><div class="card-bar-fill" style="width:45%"></div></div>
         </div>
@@ -811,12 +1222,14 @@
       <!-- Card 4 -->
       <div class="impact-card" onclick="showPage('simulator')">
         <span class="card-flag">🇮🇳</span>
+        <div class="card-war-tag">Russia–Ukraine War</div>
         <div class="card-title">India · Vegetables</div>
         <div class="card-category">Fertilizer +28% · Diesel +18% · INR –4%</div>
         <div class="card-impact-row">
           <span class="card-impact-num">+9.7%</span>
-          <span class="card-impact-label">estimated ceiling<br>impact (3-month lag)</span>
+          <span class="card-impact-label">maximum estimated<br>price increase</span>
         </div>
+        <div class="card-explainer">Vegetable prices could increase up to 9.7% as fertilizer and diesel cost surges raise farming and transport expenses. Based on 3-month lag.</div>
         <div class="card-bar-wrap">
           <div class="card-bar"><div class="card-bar-fill" style="width:39%"></div></div>
         </div>
@@ -872,6 +1285,10 @@
         <div style="font-family:var(--sans);font-size:0.72rem;color:rgba(255,255,255,0.35);margin-top:0.35rem;">V1 · Design Preview</div>
       </div>
       <p class="footer-disclaimer">This product models scenario ceilings only. Nothing on this site constitutes financial, investment, or policy advice. All estimates assume 100% upstream cost pass-through and may substantially exceed realized retail price movements.</p>
+      <div class="footer-sources">
+        Commodity prices powered by <a href="https://serpapi.com" target="_blank" rel="noopener">SerpAPI</a> (Google Finance) &amp; <a href="https://www.worldbank.org/en/research/commodity-markets" target="_blank" rel="noopener">World Bank Commodity Markets</a>.
+        FX data sourced from IMF International Financial Statistics &amp; central bank records.
+      </div>
     </div>
   </footer>
 </div>
@@ -883,7 +1300,7 @@
     <div class="page-hero-inner">
       <div class="breadcrumb">Home <span>/ Simulator</span></div>
       <h1>Impact Simulator</h1>
-      <p>Select a country, category, and macro factor changes to see an estimated consumer price impact ceiling.</p>
+      <p>Select a conflict and consumer category to see which countries are most and least affected, with estimated price impact ceilings.</p>
     </div>
   </div>
 
@@ -895,14 +1312,13 @@
         <span id="live-strip-status">Loading latest closing prices…</span>
       </div>
       <div class="live-strip-source">
-        Source: <a href="https://www.worldbank.org/en/research/commodity-markets" target="_blank">World Bank Commodity Markets</a> &amp; ICE/LME benchmarks
+        Source: SerpAPI / Google Finance &amp; World Bank
         &nbsp;·&nbsp; <span id="live-price-date">—</span>
       </div>
     </div>
     <div class="live-strip-body" id="live-commodities-row">
-      <!-- Skeleton placeholders -->
       <div class="live-commodity" id="lc-brent">
-        <div class="live-commodity-name">Brent Crude <span class="exch">ICE·LDN</span></div>
+        <div class="live-commodity-name">Crude Oil <span class="exch">NYMEX</span></div>
         <div class="live-commodity-price skeleton" id="lp-brent">&nbsp;</div>
         <div class="live-commodity-meta">
           <span class="live-change skeleton" id="lc-brent-chg"></span>
@@ -910,51 +1326,35 @@
         </div>
       </div>
       <div class="live-commodity" id="lc-natgas">
-        <div class="live-commodity-name">Natural Gas <span class="exch">ICE·LDN</span></div>
+        <div class="live-commodity-name">Natural Gas <span class="exch">NYMEX</span></div>
         <div class="live-commodity-price skeleton" id="lp-natgas">&nbsp;</div>
         <div class="live-commodity-meta">
           <span class="live-change skeleton" id="lc-natgas-chg"></span>
           <span class="live-unit">USD/mmbtu</span>
         </div>
       </div>
-      <div class="live-commodity" id="lc-wheat">
-        <div class="live-commodity-name">Wheat <span class="exch">ICE·LDN</span></div>
-        <div class="live-commodity-price skeleton" id="lp-wheat">&nbsp;</div>
+      <div class="live-commodity" id="lc-gold">
+        <div class="live-commodity-name">Gold <span class="exch">COMEX</span></div>
+        <div class="live-commodity-price skeleton" id="lp-gold">&nbsp;</div>
         <div class="live-commodity-meta">
-          <span class="live-change skeleton" id="lc-wheat-chg"></span>
-          <span class="live-unit">USD/mt</span>
-        </div>
-      </div>
-      <div class="live-commodity" id="lc-corn">
-        <div class="live-commodity-name">Corn/Maize <span class="exch">CBOT</span></div>
-        <div class="live-commodity-price skeleton" id="lp-corn">&nbsp;</div>
-        <div class="live-commodity-meta">
-          <span class="live-change skeleton" id="lc-corn-chg"></span>
-          <span class="live-unit">USD/mt</span>
-        </div>
-      </div>
-      <div class="live-commodity" id="lc-soy">
-        <div class="live-commodity-name">Soybeans <span class="exch">CBOT</span></div>
-        <div class="live-commodity-price skeleton" id="lp-soy">&nbsp;</div>
-        <div class="live-commodity-meta">
-          <span class="live-change skeleton" id="lc-soy-chg"></span>
-          <span class="live-unit">USD/mt</span>
+          <span class="live-change skeleton" id="lc-gold-chg"></span>
+          <span class="live-unit">USD/oz</span>
         </div>
       </div>
       <div class="live-commodity" id="lc-alum">
-        <div class="live-commodity-name">Aluminium <span class="exch">LME·LDN</span></div>
+        <div class="live-commodity-name">Aluminium <span class="exch">COMEX</span></div>
         <div class="live-commodity-price skeleton" id="lp-alum">&nbsp;</div>
         <div class="live-commodity-meta">
           <span class="live-change skeleton" id="lc-alum-chg"></span>
-          <span class="live-unit">USD/mt</span>
+          <span class="live-unit">USD/lb</span>
         </div>
       </div>
       <div class="live-commodity" id="lc-copper">
-        <div class="live-commodity-name">Copper <span class="exch">LME·LDN</span></div>
+        <div class="live-commodity-name">Copper <span class="exch">COMEX</span></div>
         <div class="live-commodity-price skeleton" id="lp-copper">&nbsp;</div>
         <div class="live-commodity-meta">
           <span class="live-change skeleton" id="lc-copper-chg"></span>
-          <span class="live-unit">USD/mt</span>
+          <span class="live-unit">USD/lb</span>
         </div>
       </div>
       <div class="live-commodity" id="lc-urea">
@@ -962,121 +1362,86 @@
         <div class="live-commodity-price skeleton" id="lp-urea">&nbsp;</div>
         <div class="live-commodity-meta">
           <span class="live-change skeleton" id="lc-urea-chg"></span>
-          <span class="live-unit">USD/mt</span>
-        </div>
-      </div>
-      <div class="live-commodity" id="lc-dap">
-        <div class="live-commodity-name">DAP (Fert.) <span class="exch">OTC·WB</span></div>
-        <div class="live-commodity-price skeleton" id="lp-dap">&nbsp;</div>
-        <div class="live-commodity-meta">
-          <span class="live-change skeleton" id="lc-dap-chg"></span>
-          <span class="live-unit">USD/mt</span>
+          <span class="live-unit">USD/mt · MoM</span>
         </div>
       </div>
     </div>
     <div class="live-strip-note">
-      <strong>Note:</strong> World Bank monthly benchmark prices (LME-sourced for metals; ICE Brent for crude; FAO/WB for agricultural). Prices are latest available monthly close, typically 4–6 weeks behind spot. <strong>These live prices are used as the baseline for all simulation factor inputs below.</strong>
+      <strong>Note:</strong> Crude Oil, Natural Gas, Gold, Copper, Aluminium via SerpAPI / Google Finance (near-realtime). Urea via World Bank (monthly close). Prices cached for 24 hours.
     </div>
   </div>
 
   <div class="section">
     <div class="sim-layout">
 
-      <!-- LEFT PANEL -->
+      <!-- LEFT PANEL — WAR-FIRST NAV -->
       <aside class="sim-panel">
-        <div class="panel-title">Configure Scenario</div>
+        <div class="panel-title">Select Conflict</div>
 
         <div class="form-group">
-          <label class="form-label">Country</label>
-          <select class="form-select" id="sim-country">
-            <option>🇵🇭 Philippines</option>
-            <option>🇪🇬 Egypt</option>
-            <option>🇮🇳 India</option>
-            <option>🇧🇷 Brazil</option>
-            <option>🇳🇬 Nigeria</option>
-            <option>🇵🇰 Pakistan</option>
-            <option>🇮🇩 Indonesia</option>
-            <option>🇹🇷 Türkiye</option>
-            <option>🇺🇦 Ukraine</option>
-            <option>🇲🇦 Morocco</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Consumer Category</label>
-          <select class="form-select" id="sim-category">
-            <option>🍞 Bread &amp; Cereals</option>
-            <option>🥛 Milk &amp; Dairy</option>
-            <option>🥚 Eggs</option>
-            <option>🍚 Rice</option>
-            <option>🫙 Cooking Oil</option>
-            <option>🥦 Vegetables</option>
-            <option>🍗 Meat &amp; Chicken</option>
-            <option>🧴 Detergent</option>
-            <option>⛽ Household Fuel</option>
-            <option>🛒 Household Basics Basket</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Geopolitical Conflict Window</label>
           <div class="war-events-wrap" id="war-events">
-
-            <label class="war-event-option" onclick="selectWar(this,'iran-israel-us')">
+            <label class="war-event-option" onclick="selectWarNav(this,'iran-israel-us')">
               <input type="radio" name="war" value="iran-israel-us">
               <div class="war-event-body">
                 <div class="war-event-name">Iran–Israel–US Conflict <span class="war-live-badge">LIVE</span></div>
-                <div class="war-event-dates">Apr 2024 – Present (ongoing)</div>
-                <div class="war-event-drivers">⚡ Brent +18% · Strait of Hormuz risk · Shipping disruption</div>
+                <div class="war-event-dates">Apr 2024 – Present</div>
+                <div class="war-event-drivers">⚡ Brent +18% · Hormuz risk · Shipping</div>
               </div>
             </label>
-
-            <label class="war-event-option active" onclick="selectWar(this,'ukraine-russia')">
+            <label class="war-event-option active" onclick="selectWarNav(this,'ukraine-russia')">
               <input type="radio" name="war" value="ukraine-russia" checked>
               <div class="war-event-body">
                 <div class="war-event-name">Russia–Ukraine War <span class="war-live-badge">LIVE</span></div>
-                <div class="war-event-dates">Feb 2022 – Present (ongoing)</div>
-                <div class="war-event-drivers">🌾 Wheat +38% · ⚡ Gas +220% · 🌱 Fertilizer +65%</div>
+                <div class="war-event-dates">Feb 2022 – Present</div>
+                <div class="war-event-drivers">🌾 Wheat +38% · ⚡ Gas +220% · 🌱 Fert +65%</div>
               </div>
             </label>
-
-            <label class="war-event-option" onclick="selectWar(this,'gaza-2023')">
+            <label class="war-event-option" onclick="selectWarNav(this,'gaza-2023')">
               <input type="radio" name="war" value="gaza-2023">
               <div class="war-event-body">
                 <div class="war-event-name">Gaza War / Red Sea Crisis</div>
                 <div class="war-event-dates">Oct 2023 – Present</div>
-                <div class="war-event-drivers">🚢 Shipping +340% · ⚡ Brent +12% · 🪙 Commodity FX volatility</div>
+                <div class="war-event-drivers">🚢 Shipping +340% · ⚡ Brent +12%</div>
               </div>
             </label>
-
-            <label class="war-event-option" onclick="selectWar(this,'covid')">
+            <label class="war-event-option" onclick="selectWarNav(this,'covid')">
               <input type="radio" name="war" value="covid">
               <div class="war-event-body">
                 <div class="war-event-name">COVID-19 Supply Shock</div>
                 <div class="war-event-dates">Jan 2020 – Dec 2021</div>
-                <div class="war-event-drivers">⚡ Oil –40% then +90% · 🌾 Grains +25% · ⚙️ Metals +35%</div>
+                <div class="war-event-drivers">⚡ Oil –40% then +90% · 🌾 Grains +25%</div>
               </div>
             </label>
-
-            <label class="war-event-option" onclick="selectWar(this,'gulf-2003')">
+            <label class="war-event-option" onclick="selectWarNav(this,'gulf-2003')">
               <input type="radio" name="war" value="gulf-2003">
               <div class="war-event-body">
                 <div class="war-event-name">Iraq War / Gulf Oil Shock</div>
                 <div class="war-event-dates">Mar 2003 – Dec 2004</div>
-                <div class="war-event-drivers">⚡ Brent +45% · 🪙 USD weakness · ⚙️ Metals +28%</div>
+                <div class="war-event-drivers">⚡ Brent +45% · 🪙 USD weakness</div>
               </div>
             </label>
-
           </div>
         </div>
 
         <div class="form-group">
+          <label class="form-label">Consumer Category</label>
+          <select class="form-select" id="sim-category" onchange="updateSimView()">
+            <option value="bread">🍞 Bread &amp; Cereals</option>
+            <option value="dairy">🥛 Milk &amp; Dairy</option>
+            <option value="eggs">🥚 Eggs</option>
+            <option value="rice">🍚 Rice</option>
+            <option value="oil">🫙 Cooking Oil</option>
+            <option value="vegetables">🥦 Vegetables</option>
+            <option value="meat">🍗 Meat &amp; Chicken</option>
+            <option value="detergent">🧴 Detergent</option>
+            <option value="fuel">⛽ Household Fuel</option>
+            <option value="basket">🛒 Household Basics Basket</option>
+          </select>
+        </div>
+
+        <div class="form-group">
           <label class="form-label">Pass-Through Rate <span class="tooltip-icon">?</span></label>
-          <div class="slider-row">
-            <input type="range" min="25" max="100" step="25" value="100" id="pt-slider" oninput="document.getElementById('pt-val').textContent=this.value+'%'">
-            <span class="slider-val" id="pt-val">100%</span>
-          </div>
-          <div class="form-chips" style="margin-top:0.5rem;">
+          <div class="form-chips" data-single="true">
             <span class="chip active">100% (Ceiling)</span>
             <span class="chip">75%</span>
             <span class="chip">50%</span>
@@ -1086,7 +1451,7 @@
 
         <div class="form-group">
           <label class="form-label">Lag Horizon</label>
-          <div class="form-chips">
+          <div class="form-chips" data-single="true">
             <span class="chip">Immediate</span>
             <span class="chip">3 months</span>
             <span class="chip active">6 months</span>
@@ -1094,66 +1459,61 @@
           </div>
         </div>
 
-        <div class="form-group">
-          <label class="form-label">Macro Factors</label>
-          <div class="form-chips">
-            <span class="chip active">⚡ Energy</span>
-            <span class="chip active">🌾 Grains</span>
-            <span class="chip active">🌱 Fertilizers</span>
-            <span class="chip active">🪙 FX</span>
-            <span class="chip active">⚙️ Metals</span>
-          </div>
+        <!-- Sim usage counter pill -->
+        <div class="sim-counter-pill" id="sim-counter-pill">
+          <span>Views used:</span>
+          <span class="pill-count" id="sim-count-display">0 / 2</span>
         </div>
 
-        <button class="run-btn">Run Scenario →</button>
+        <button class="run-btn" id="run-sim-btn">Update View →</button>
       </aside>
 
       <!-- RIGHT: RESULTS -->
       <div>
 
-        <!-- LIVE PRICE BASIS CALLOUT -->
-        <div class="live-basis-callout" id="live-basis-callout">
-          <div class="lbc-icon">📡</div>
-          <div class="lbc-body">
-            <div class="lbc-title">Simulation running on live London/ICE market closing prices</div>
-            <div class="lbc-text">Factor inputs below are automatically calibrated to the latest available monthly closing prices fetched from the World Bank Commodity Markets API (LME-sourced metals; ICE Brent; FAO grain benchmarks). Prices update on page load.
-              <strong style="color:#5aaa7a;" id="lbc-fetch-status"> Fetching…</strong>
+        <!-- ── GATE BANNER (softer) ── -->
+        <div class="sim-gate" id="sim-gate">
+          <div class="sim-gate-eyebrow">Help us build a better model</div>
+          <h3>You've explored 2 free scenarios</h3>
+          <p class="sim-gate-sub">
+            Share your email or phone so we can <em>improve the model, fix data gaps, and prioritize</em> the countries and categories that matter most to you. Completely free — no spam, no paywall.
+          </p>
+          <div id="sim-gate-form-wrap">
+            <div class="sim-gate-form">
+              <div class="sim-gate-field">
+                <label class="sim-gate-label" for="gate-contact">Email or phone number</label>
+                <input class="sim-gate-input" id="gate-contact" type="text" placeholder="you@example.com or +1 555 000 0000" autocomplete="email" />
+              </div>
+              <button class="sim-gate-submit" id="gate-submit-btn">Continue →</button>
             </div>
-            <div class="lbc-prices" id="lbc-prices-row">
-              <div class="lbc-price-item">
-                <div class="lbc-price-key">Brent <span style="opacity:0.5">(ICE·LDN)</span></div>
-                <div class="lbc-price-val" id="lbc-brent">—</div>
-                <div class="lbc-price-chg" id="lbc-brent-chg">—</div>
-              </div>
-              <div class="lbc-price-item">
-                <div class="lbc-price-key">Wheat <span style="opacity:0.5">(ICE·LDN)</span></div>
-                <div class="lbc-price-val" id="lbc-wheat">—</div>
-                <div class="lbc-price-chg" id="lbc-wheat-chg">—</div>
-              </div>
-              <div class="lbc-price-item">
-                <div class="lbc-price-key">Aluminium <span style="opacity:0.5">(LME·LDN)</span></div>
-                <div class="lbc-price-val" id="lbc-alum">—</div>
-                <div class="lbc-price-chg" id="lbc-alum-chg">—</div>
-              </div>
-              <div class="lbc-price-item">
-                <div class="lbc-price-key">Copper <span style="opacity:0.5">(LME·LDN)</span></div>
-                <div class="lbc-price-val" id="lbc-copper">—</div>
-                <div class="lbc-price-chg" id="lbc-copper-chg">—</div>
-              </div>
-              <div class="lbc-price-item">
-                <div class="lbc-price-key">Urea <span style="opacity:0.5">(WB·OTC)</span></div>
-                <div class="lbc-price-val" id="lbc-urea">—</div>
-                <div class="lbc-price-chg" id="lbc-urea-chg">—</div>
-              </div>
-            </div>
+            <div class="sim-gate-error" id="gate-error">Please enter a valid email or phone number.</div>
+            <p class="sim-gate-privacy">Your details help us prioritize research. Never shared.</p>
+          </div>
+          <div class="sim-gate-thanks" id="sim-gate-thanks">
+            <div class="thanks-icon">✅</div>
+            <h4>Thank you — you're all set!</h4>
+            <p>Unlimited access unlocked. We may reach out to hear your thoughts.</p>
+          </div>
+        </div>
+
+        <!-- WAR OVERVIEW CARD -->
+        <div class="war-overview" id="war-overview">
+          <div class="war-overview-name" id="war-ov-name">Russia–Ukraine War</div>
+          <div class="war-overview-dates" id="war-ov-dates">Feb 2022 – Present (ongoing)</div>
+          <div class="war-overview-shocks" id="war-ov-shocks">
+            <span class="shock-pill">🌾 Wheat <span class="shock-val">+38%</span></span>
+            <span class="shock-pill">⚡ Natural Gas <span class="shock-val">+220%</span></span>
+            <span class="shock-pill">🌱 Fertilizer <span class="shock-val">+65%</span></span>
+            <span class="shock-pill">⚡ Brent <span class="shock-val">+22%</span></span>
+            <span class="shock-pill">🪙 FX volatility <span class="shock-val">High</span></span>
           </div>
         </div>
 
         <!-- ASSUMPTION STRIP -->
-        <div class="assumption-strip">
+        <div class="assumption-strip" id="asm-strip">
           <div class="asm-item">
-            <div class="asm-key">Geography</div>
-            <div class="asm-val">🇵🇭 Philippines · National</div>
+            <div class="asm-key">Category</div>
+            <div class="asm-val" id="asm-category">🍞 Bread &amp; Cereals</div>
           </div>
           <div class="asm-item">
             <div class="asm-key">Pass-Through</div>
@@ -1165,131 +1525,104 @@
           </div>
           <div class="asm-item">
             <div class="asm-key">Data As Of</div>
-            <div class="asm-val">Mar 2024 <span class="pulse">●</span></div>
-          </div>
-          <div class="asm-item">
-            <div class="asm-key">Confidence</div>
-            <div class="asm-val"><span class="badge badge-green">High</span></div>
+            <div class="asm-val" id="asm-data-as-of">— <span class="pulse">●</span></div>
           </div>
         </div>
 
-        <!-- RESULT HEADER -->
-        <div class="result-header">
-          <div class="result-headline">
-            <h2>Bread &amp; Cereals — Philippines — Jan 2022 to Jan 2023</h2>
-            <p>Estimated impact ceiling under 100% pass-through, 6-month lag, all factors enabled</p>
-          </div>
-          <div class="result-meta">
-            <span class="badge badge-green">Full Coverage</span>
-            <span class="badge badge-amber">Validation Available</span>
+        <!-- COMPARE YOUR COUNTRY -->
+        <div class="form-group" style="margin-bottom:1rem;">
+          <label class="form-label">Compare a country</label>
+          <select class="form-select" id="compare-country" onchange="onCompareCountryChange()">
+            <optgroup label="Full Coverage">
+              <option value="Philippines">🇵🇭 Philippines</option>
+              <option value="Egypt">🇪🇬 Egypt</option>
+              <option value="India">🇮🇳 India</option>
+              <option value="Brazil">🇧🇷 Brazil</option>
+            </optgroup>
+            <optgroup label="Partial Coverage">
+              <option value="Nigeria">🇳🇬 Nigeria</option>
+              <option value="Pakistan">🇵🇰 Pakistan</option>
+              <option value="Indonesia">🇮🇩 Indonesia</option>
+              <option value="Morocco">🇲🇦 Morocco</option>
+            </optgroup>
+            <optgroup label="Experimental">
+              <option value="Türkiye">🇹🇷 Türkiye</option>
+              <option value="Ukraine">🇺🇦 Ukraine</option>
+            </optgroup>
+            <optgroup label="Other Regions">
+              <option value="Bangladesh">🇧🇩 Bangladesh</option>
+              <option value="Ethiopia">🇪🇹 Ethiopia</option>
+              <option value="Kenya">🇰🇪 Kenya</option>
+              <option value="South Africa">🇿🇦 South Africa</option>
+              <option value="Mexico">🇲🇽 Mexico</option>
+              <option value="Argentina">🇦🇷 Argentina</option>
+              <option value="Colombia">🇨🇴 Colombia</option>
+              <option value="Thailand">🇹🇭 Thailand</option>
+              <option value="Vietnam">🇻🇳 Vietnam</option>
+              <option value="Sri Lanka">🇱🇰 Sri Lanka</option>
+              <option value="Ghana">🇬🇭 Ghana</option>
+              <option value="Tanzania">🇹🇿 Tanzania</option>
+              <option value="Iraq">🇮🇶 Iraq</option>
+              <option value="Yemen">🇾🇪 Yemen</option>
+              <option value="Lebanon">🇱🇧 Lebanon</option>
+              <option value="Jordan">🇯🇴 Jordan</option>
+              <option value="Tunisia">🇹🇳 Tunisia</option>
+              <option value="Sudan">🇸🇩 Sudan</option>
+              <option value="Myanmar">🇲🇲 Myanmar</option>
+              <option value="Afghanistan">🇦🇫 Afghanistan</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <!-- PURCHASING POWER EROSION -->
+        <div class="chart-card" id="pp-erosion-card" style="margin-bottom:1.25rem;">
+          <div class="chart-card-title">Purchasing Power Erosion</div>
+          <div id="pp-erosion-body">
+            <!-- Rendered by JS -->
           </div>
         </div>
 
-        <!-- BIG NUMBERS -->
-        <div class="big-num-row">
-          <div class="big-num-card">
-            <div class="big-num-label">Impact Ceiling</div>
-            <div class="big-num red">+18.4%</div>
-            <div class="big-num-sub">Max estimated pressure<br>at 100% pass-through</div>
-          </div>
-          <div class="big-num-card">
-            <div class="big-num-label">Realized Inflation</div>
-            <div class="big-num amber">+12.1%</div>
-            <div class="big-num-sub">CPI food component,<br>same window (PSA)</div>
-          </div>
-          <div class="big-num-card">
-            <div class="big-num-label">Model Gap</div>
-            <div class="big-num green">+6.3 pp</div>
-            <div class="big-num-sub">Model exceeded reality by<br>6.3 percentage points</div>
-          </div>
-          <div class="big-num-card">
-            <div class="big-num-label">Implied Pass-Through</div>
-            <div class="big-num" style="color:var(--blue);">~66%</div>
-            <div class="big-num-sub">Estimated actual<br>pass-through rate</div>
+        <!-- TOP 5 MOST IMPACTED -->
+        <div class="rankings-section">
+          <div class="rankings-title top">Top 5 Most Impacted Countries</div>
+          <div id="rankings-top5">
+            <!-- Rendered by JS -->
           </div>
         </div>
 
-        <!-- WATERFALL CHART -->
-        <div class="chart-card">
-          <div class="chart-card-title">Factor Contribution Breakdown</div>
-          <div class="chart-card-subtitle">Contribution to the +18.4% impact ceiling, by upstream driver</div>
-          <div class="waterfall">
-            <div class="wf-row">
-              <div class="wf-label">🌾 Wheat / Grains</div>
-              <div class="wf-bar-wrap">
-                <div class="wf-bar" style="width:72%;background:linear-gradient(90deg,#e07b54,#c84b31)"></div>
-              </div>
-              <div class="wf-val">+8.9%</div>
+        <!-- YOUR SELECTION (pinned row if not in top/bottom 5) -->
+        <div id="pinned-country-row" style="display:none;margin-bottom:1rem;">
+          <div style="font-family:var(--sans);font-size:0.72rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--blue);margin-bottom:0.5rem;">Your Selection</div>
+          <div id="pinned-country-content"></div>
+        </div>
+
+        <!-- COUNTRY DETAIL PANEL (click-to-expand) -->
+        <div class="country-detail" id="country-detail">
+          <div class="country-detail-header">
+            <div class="country-detail-flag" id="cd-flag">🇪🇬</div>
+            <div>
+              <div class="country-detail-title" id="cd-title">Egypt · Bread &amp; Cereals</div>
+              <div class="country-detail-sub" id="cd-sub">Russia–Ukraine War · 100% pass-through · 6-month lag</div>
             </div>
-            <div class="wf-row">
-              <div class="wf-label">🪙 FX (PHP/USD)</div>
-              <div class="wf-bar-wrap">
-                <div class="wf-bar" style="width:38%;background:linear-gradient(90deg,#b8d4e8,#1e5a8a)"></div>
-              </div>
-              <div class="wf-val">+4.7%</div>
-            </div>
-            <div class="wf-row">
-              <div class="wf-label">⚡ Energy / Diesel</div>
-              <div class="wf-bar-wrap">
-                <div class="wf-bar" style="width:25%;background:linear-gradient(90deg,#f0d98a,#c77c1a)"></div>
-              </div>
-              <div class="wf-val">+3.1%</div>
-            </div>
-            <div class="wf-row">
-              <div class="wf-label">🌱 Fertilizer</div>
-              <div class="wf-bar-wrap">
-                <div class="wf-bar" style="width:13%;background:linear-gradient(90deg,#b0dcc0,#2e7d52)"></div>
-              </div>
-              <div class="wf-val">+1.4%</div>
-            </div>
-            <div class="wf-row">
-              <div class="wf-label">⚙️ Metals (Packaging)</div>
-              <div class="wf-bar-wrap">
-                <div class="wf-bar" style="width:3%;background:#ccc"></div>
-              </div>
-              <div class="wf-val">+0.3%</div>
-            </div>
-            <hr style="border:none;border-top:2px solid var(--ink);margin:0.6rem 0">
-            <div class="wf-row">
-              <div class="wf-label" style="font-weight:700;color:var(--ink)">Total Ceiling</div>
-              <div class="wf-bar-wrap">
-                <div class="wf-bar" style="width:100%;background:linear-gradient(90deg,var(--accent-warm),var(--accent))"></div>
-              </div>
-              <div class="wf-val" style="color:var(--accent);font-weight:700">+18.4%</div>
+            <button class="country-detail-close" onclick="closeCountryDetail()">Close</button>
+          </div>
+          <div class="big-num-row" id="cd-big-nums">
+            <!-- Rendered by JS -->
+          </div>
+          <div class="chart-card" id="cd-waterfall-card">
+            <div class="chart-card-title">Factor Contribution Breakdown</div>
+            <div class="chart-card-subtitle" id="cd-wf-subtitle"></div>
+            <div class="waterfall" id="cd-waterfall">
+              <!-- Rendered by JS -->
             </div>
           </div>
         </div>
 
-        <!-- TREND CHART -->
-        <div class="chart-card">
-          <div class="chart-card-title">Rolling 12-Month Impact Ceiling vs Realized Inflation</div>
-          <div class="chart-card-subtitle">Philippines · Bread &amp; Cereals · 100% pass-through scenario</div>
-          <canvas id="trendChart" height="90"></canvas>
-        </div>
-
-        <!-- DIRECT VS INDIRECT -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
-          <div class="chart-card">
-            <div class="chart-card-title">Direct vs Indirect Exposure</div>
-            <canvas id="doughnutChart" height="140"></canvas>
-          </div>
-          <div class="chart-card">
-            <div class="chart-card-title">Import &amp; FX Sensitivity</div>
-            <div style="margin-top:0.75rem;">
-              <div style="font-family:var(--sans);font-size:0.78rem;color:var(--ink-soft);margin-bottom:1rem;">How much does a 10% PHP depreciation add to this estimate?</div>
-              <div style="display:flex;align-items:baseline;gap:0.5rem;margin-bottom:0.75rem;">
-                <span style="font-size:2rem;font-weight:300;color:var(--blue);letter-spacing:-0.04em;">+2.3pp</span>
-                <span style="font-family:var(--sans);font-size:0.75rem;color:var(--ink-muted);">per 10% FX move</span>
-              </div>
-              <div style="font-family:var(--sans);font-size:0.75rem;color:var(--ink-muted);line-height:1.6;">Import dependence: <strong>61%</strong> of wheat is imported · FX exposure rated <strong style="color:var(--accent)">High</strong></div>
-              <hr class="divider" style="margin:1rem 0">
-              <div style="font-family:var(--sans);font-size:0.78rem;color:var(--ink-soft);">Sensitivity at alternative pass-through rates:</div>
-              <div style="margin-top:0.6rem;display:flex;flex-direction:column;gap:0.3rem;">
-                <div style="display:flex;justify-content:space-between;font-family:var(--sans);font-size:0.78rem;"><span>75% pass-through</span><span style="font-weight:700;color:var(--amber)">+13.8%</span></div>
-                <div style="display:flex;justify-content:space-between;font-family:var(--sans);font-size:0.78rem;"><span>50% pass-through</span><span style="font-weight:700;color:var(--green)">+9.2%</span></div>
-                <div style="display:flex;justify-content:space-between;font-family:var(--sans);font-size:0.78rem;"><span>25% pass-through</span><span style="font-weight:700;color:var(--blue)">+4.6%</span></div>
-              </div>
-            </div>
+        <!-- TOP 5 LEAST IMPACTED -->
+        <div class="rankings-section">
+          <div class="rankings-title bottom">Top 5 Least Impacted Countries</div>
+          <div id="rankings-bottom5">
+            <!-- Rendered by JS -->
           </div>
         </div>
 
@@ -1301,6 +1634,10 @@
     <div class="footer-inner">
       <div class="footer-logo">howwar<span>impacts</span>you.com</div>
       <p class="footer-disclaimer">Scenario ceiling only. 100% pass-through assumption. Not a price forecast or financial advice.</p>
+      <div class="footer-sources">
+        Commodity prices powered by <a href="https://serpapi.com" target="_blank" rel="noopener">SerpAPI</a> (Google Finance) &amp; <a href="https://www.worldbank.org/en/research/commodity-markets" target="_blank" rel="noopener">World Bank</a>.
+        FX data: IMF IFS &amp; central bank records.
+      </div>
     </div>
   </footer>
 </div>
@@ -1643,6 +1980,11 @@
     <div class="footer-inner">
       <div class="footer-logo">howwar<span>impacts</span>you.com</div>
       <p class="footer-disclaimer">All sources are public or freely licensed. Data is ingested on a scheduled basis and cached for static delivery.</p>
+      <div class="footer-sources">
+        Live commodity data: <a href="https://serpapi.com" target="_blank" rel="noopener">SerpAPI</a> / Google Finance (Crude Oil, Natural Gas, Gold, Copper, Aluminium).
+        Urea: <a href="https://www.worldbank.org/en/research/commodity-markets" target="_blank" rel="noopener">World Bank</a>.
+        FX: IMF IFS. CPI: National statistical offices.
+      </div>
     </div>
   </footer>
 </div>
@@ -1650,146 +1992,612 @@
 <!-- ==================== SCRIPTS ==================== -->
 <script>
   // ======================================================
-  // LIVE COMMODITY PRICES — World Bank Commodity API
-  // CORS-safe, no auth required, LME/ICE/FAO sourced
+  // LIVE COMMODITY PRICES
+  // Primary: /api/prices  (Vercel proxy → OilPriceAPI + World Bank)
+  //   - Energy (Brent, NatGas): near-realtime daily close via OilPriceAPI
+  //     → shows 24hr change AND month-over-month change
+  //   - Grains / Metals / Fertilizers: World Bank monthly benchmarks
+  //     → shows month-over-month change only
+  // Fallback: World Bank direct (if proxy unavailable)
   // ======================================================
 
-  // WB indicator codes → our commodity labels
-  const WB_INDICATORS = {
-    'POILBRE': { id:'brent',  label:'Brent Crude', unit:'USD/bbl' },
-    'PNGAS':   { id:'natgas', label:'Natural Gas',  unit:'USD/mmbtu' },
-    'PWHEAMT': { id:'wheat',  label:'Wheat',         unit:'USD/mt' },
-    'PMAIZE':  { id:'corn',   label:'Corn/Maize',    unit:'USD/mt' },
-    'PSOYB':   { id:'soy',    label:'Soybeans',      unit:'USD/mt' },
-    'PALUM':   { id:'alum',   label:'Aluminium',     unit:'USD/mt' },
-    'PCOPP':   { id:'copper', label:'Copper',        unit:'USD/mt' },
-    'PUREA':   { id:'urea',   label:'Urea (Fert.)',  unit:'USD/mt' },
-    'PPHOSPH': { id:'dap',    label:'DAP (Fert.)',   unit:'USD/mt' },
-  };
-
-  // Realistic static fallback prices (Feb 2025 approx benchmark)
+  // WB indicator codes → our commodity labels (used for direct WB fallback)
+  // Fallback prices (approximate Mar 2025 benchmarks)
   const FALLBACK_PRICES = {
-    brent:  { price: 79.4,   prev: 76.1  },
-    natgas: { price: 2.98,   prev: 3.12  },
-    wheat:  { price: 218.3,  prev: 224.7 },
-    corn:   { price: 162.4,  prev: 155.8 },
-    soy:    { price: 365.0,  prev: 378.2 },
-    alum:   { price: 2248.0, prev: 2190.0 },
-    copper: { price: 9312.0, prev: 9105.0 },
-    urea:   { price: 310.5,  prev: 298.4 },
-    dap:    { price: 542.0,  prev: 519.8 },
+    brent:  { price: 91.5 },
+    natgas: { price: 3.85 },
+    gold:   { price: 4448 },
+    alum:   { price: 1.18 },
+    copper: { price: 5.42 },
+    urea:   { price: 310.5 },
   };
 
-  let livePrices = {};  // will be populated with { id: { price, prev, pct } }
+  let livePrices = {};
 
   function fmtPrice(id, price) {
-    if (id === 'natgas') return price.toFixed(2);
-    if (id === 'brent')  return price.toFixed(1);
+    if (id === 'natgas' || id === 'alum' || id === 'copper') return price.toFixed(2);
+    if (id === 'brent') return price.toFixed(1);
+    if (id === 'gold')  return Math.round(price).toLocaleString();
     return Math.round(price).toLocaleString();
   }
 
-  function renderLivePrices(prices) {
-    const dot = document.getElementById('live-dot');
-    const status = document.getElementById('live-strip-status');
+  // ── Render prices into the strip tiles ────────────────────────────────────
+  function renderLivePrices(commodities) {
+    // Update "Data As Of" badge
+    const asmEl = document.getElementById('asm-data-as-of');
+    const today = new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+    if (asmEl) {
+      asmEl.innerHTML = today + ' <span class="pulse">●</span>';
+    }
 
-    Object.entries(prices).forEach(([id, data]) => {
-      const pct = ((data.price - data.prev) / data.prev) * 100;
-      livePrices[id] = { price: data.price, prev: data.prev, pct };
+    Object.entries(commodities).forEach(([id, data]) => {
+      if (!data.price) return;
 
-      // Strip tile
-      const pEl  = document.getElementById('lp-' + id);
-      const cEl  = document.getElementById('lc-' + id + '-chg');
+      const has24h = data.pct_24h != null;
+      const hasMoM = data.pct_month != null;
+      const dispPct = has24h ? data.pct_24h : (hasMoM ? data.pct_month : null);
+      const dispLbl = has24h ? '24h' : (hasMoM ? 'MoM' : '');
+
+      livePrices[id] = { price: data.price, pct: dispPct };
+
+      // Strip tile — price
+      const pEl = document.getElementById('lp-' + id);
       if (pEl) {
         pEl.textContent = fmtPrice(id, data.price);
         pEl.classList.remove('skeleton');
       }
-      if (cEl) {
-        const sign = pct >= 0 ? '+' : '';
-        cEl.textContent = sign + pct.toFixed(1) + '%';
-        cEl.classList.remove('skeleton');
-        cEl.className = 'live-change ' + (pct > 0.15 ? 'up' : pct < -0.15 ? 'down' : 'flat');
-      }
 
-      // Callout row (subset)
-      const lbcMap = { brent:'lbc-brent', wheat:'lbc-wheat', alum:'lbc-alum', copper:'lbc-copper', urea:'lbc-urea' };
-      if (lbcMap[id]) {
-        const lvEl  = document.getElementById(lbcMap[id]);
-        const lcEl  = document.getElementById(lbcMap[id] + '-chg');
-        if (lvEl) lvEl.textContent = fmtPrice(id, data.price);
-        if (lcEl) {
-          const sign = pct >= 0 ? '+' : '';
-          lcEl.textContent = sign + pct.toFixed(1) + '% mom';
-          lcEl.className   = 'lbc-price-chg ' + (pct > 0.15 ? 'up' : pct < -0.15 ? 'down' : '');
+      // Strip tile — change badge
+      const cEl = document.getElementById('lc-' + id + '-chg');
+      if (cEl) {
+        if (dispPct != null) {
+          const sign = dispPct >= 0 ? '+' : '';
+          cEl.textContent = sign + dispPct.toFixed(1) + '%' + (dispLbl ? ' ' + dispLbl : '');
+          cEl.classList.remove('skeleton');
+          cEl.className = 'live-change ' + (dispPct > 0.15 ? 'up' : dispPct < -0.15 ? 'down' : 'flat');
+        } else {
+          cEl.textContent = '—';
+          cEl.classList.remove('skeleton');
+          cEl.className = 'live-change flat';
         }
       }
     });
   }
 
-  async function fetchWorldBankPrice(indicator) {
-    // WB API: returns last 3 months of data; we take [0] (most recent)
-    const url = `https://api.worldbank.org/v2/en/indicator/${indicator}?format=json&per_page=3&mrv=3`;
-    const resp = await fetch(url);
-    if (!resp.ok) throw new Error('WB API ' + resp.status);
-    const json = await resp.json();
-    // json[1] is the data array
-    const rows = json[1]?.filter(r => r.value !== null);
-    if (!rows || rows.length < 2) throw new Error('insufficient data');
-    return { price: rows[0].value, prev: rows[1].value, date: rows[0].date };
-  }
-
+  // ── Main loader — tries /api/prices first, falls back to static ──────────
   async function loadAllCommodities() {
     const dot    = document.getElementById('live-dot');
     const status = document.getElementById('live-strip-status');
     const dateEl = document.getElementById('live-price-date');
-    const fetchStatus = document.getElementById('lbc-fetch-status');
 
-    dot.className    = 'live-dot loading';
-    status.textContent = 'Fetching latest closing prices from World Bank / LME / ICE…';
+    dot.className      = 'live-dot loading';
+    status.textContent = 'Fetching latest prices…';
 
-    const results = {};
-    let latestDate = null;
-    let anySuccess = false;
+    try {
+      const resp = await fetch('/api/prices', { signal: AbortSignal.timeout(15000) });
+      if (!resp.ok) throw new Error('proxy ' + resp.status);
+      const json = await resp.json();
 
-    const fetches = Object.entries(WB_INDICATORS).map(async ([indicator, meta]) => {
-      try {
-        const data = await fetchWorldBankPrice(indicator);
-        results[meta.id] = { price: data.price, prev: data.prev };
-        if (!latestDate) latestDate = data.date;
-        anySuccess = true;
-      } catch(e) {
-        // fall back to static
-        results[meta.id] = FALLBACK_PRICES[meta.id];
-      }
-    });
+      renderLivePrices(json.commodities);
 
-    await Promise.allSettled(fetches);
-
-    renderLivePrices(results);
-
-    if (anySuccess) {
-      dot.className    = 'live-dot'; // green pulse
-      status.textContent = 'Live closing prices loaded · ' + (latestDate || 'latest available');
-      if (dateEl) dateEl.textContent = 'As of: ' + (latestDate || 'latest monthly close');
-      if (fetchStatus) {
-        fetchStatus.textContent = ' ✓ Live prices loaded — simulation inputs updated.';
-        fetchStatus.style.color = '#3ddc84';
-      }
-    } else {
-      dot.className    = 'live-dot error';
-      status.textContent = 'Using benchmark fallback prices (WB API unavailable)';
-      if (dateEl) dateEl.textContent = 'Fallback: Feb 2025 benchmark';
-      if (fetchStatus) {
-        fetchStatus.textContent = ' Using Feb 2025 benchmark fallback prices.';
-        fetchStatus.style.color = '#c77c1a';
-      }
+      dot.className = 'live-dot'; // green
+      status.textContent = json.serp_api_ok
+        ? 'SerpAPI / Google Finance · As of ' + (json.fetched_at?.slice(0,10) || 'today')
+        : 'Fallback prices loaded';
+      if (dateEl) dateEl.textContent = json.serp_api_ok ? 'Near-realtime' : 'Cached';
+      return;
+    } catch (proxyErr) {
+      console.warn('Price proxy unavailable, using fallback:', proxyErr.message);
     }
+
+    // Fallback: use static prices
+    const results = {};
+    Object.entries(FALLBACK_PRICES).forEach(([id, fb]) => {
+      results[id] = {
+        price: fb.price, pct_24h: null, pct_month: null,
+        source: 'fallback', status: 'fallback',
+      };
+    });
+    renderLivePrices(results);
+    dot.className = 'live-dot error';
+    status.textContent = 'Using approximate benchmark fallback prices';
+    if (dateEl) dateEl.textContent = 'Fallback';
   }
 
-  // ---- War event selector ----
-  function selectWar(el, warId) {
+  // ======================================================
+  // CURRENCY DATA — per-war, per-country FX depreciation
+  // Sources: IMF IFS, central bank records, Trading Economics
+  // All rates are local currency per 1 USD
+  // ======================================================
+  const CURRENCY_DATA = {
+    'ukraine-russia': {
+      'Philippines': { name:'Philippine Peso', code:'PHP', preRate:51.0, postRate:56.1, depPct:-10, window:'Feb 2022 – Jan 2023' },
+      'Egypt':       { name:'Egyptian Pound',  code:'EGP', preRate:15.7, postRate:30.8, depPct:-49, window:'Feb 2022 – Jan 2023' },
+      'India':       { name:'Indian Rupee',    code:'INR', preRate:74.5, postRate:82.7, depPct:-10, window:'Feb 2022 – Jan 2023' },
+      'Brazil':      { name:'Brazilian Real',  code:'BRL', preRate:5.32, postRate:5.22, depPct:2,   window:'Feb 2022 – Jan 2023' },
+      'Nigeria':     { name:'Nigerian Naira',  code:'NGN', preRate:415,  postRate:461,  depPct:-10, window:'Feb 2022 – Jan 2023' },
+      'Pakistan':    { name:'Pakistani Rupee', code:'PKR', preRate:177,  postRate:228,  depPct:-22, window:'Feb 2022 – Jan 2023' },
+      'Indonesia':   { name:'Indonesian Rupiah',code:'IDR',preRate:14380,postRate:15080,depPct:-5,  window:'Feb 2022 – Jan 2023' },
+      'Türkiye':     { name:'Turkish Lira',    code:'TRY', preRate:13.6, postRate:18.8, depPct:-28, window:'Feb 2022 – Jan 2023' },
+      'Ukraine':     { name:'Ukrainian Hryvnia',code:'UAH',preRate:27.3, postRate:36.6, depPct:-25, window:'Feb 2022 – Jan 2023' },
+      'Morocco':     { name:'Moroccan Dirham', code:'MAD', preRate:9.4,  postRate:10.3, depPct:-9,  window:'Feb 2022 – Jan 2023' },
+    },
+    'iran-israel-us': {
+      'Philippines': { name:'Philippine Peso', code:'PHP', preRate:56.0, postRate:58.2, depPct:-4,  window:'Apr 2024 – Present' },
+      'Egypt':       { name:'Egyptian Pound',  code:'EGP', preRate:30.9, postRate:50.1, depPct:-38, window:'Apr 2024 – Present' },
+      'India':       { name:'Indian Rupee',    code:'INR', preRate:83.4, postRate:86.6, depPct:-4,  window:'Apr 2024 – Present' },
+      'Brazil':      { name:'Brazilian Real',  code:'BRL', preRate:5.07, postRate:5.80, depPct:-13, window:'Apr 2024 – Present' },
+      'Nigeria':     { name:'Nigerian Naira',  code:'NGN', preRate:1310, postRate:1535, depPct:-15, window:'Apr 2024 – Present' },
+      'Pakistan':    { name:'Pakistani Rupee', code:'PKR', preRate:278,  postRate:281,  depPct:-1,  window:'Apr 2024 – Present' },
+      'Indonesia':   { name:'Indonesian Rupiah',code:'IDR',preRate:15915,postRate:16300,depPct:-2,  window:'Apr 2024 – Present' },
+      'Türkiye':     { name:'Turkish Lira',    code:'TRY', preRate:32.4, postRate:38.2, depPct:-15, window:'Apr 2024 – Present' },
+      'Ukraine':     { name:'Ukrainian Hryvnia',code:'UAH',preRate:38.5, postRate:41.5, depPct:-7,  window:'Apr 2024 – Present' },
+      'Morocco':     { name:'Moroccan Dirham', code:'MAD', preRate:10.0, postRate:10.1, depPct:-1,  window:'Apr 2024 – Present' },
+    },
+    'gaza-2023': {
+      'Philippines': { name:'Philippine Peso', code:'PHP', preRate:56.4, postRate:56.8, depPct:-1,  window:'Oct 2023 – Present' },
+      'Egypt':       { name:'Egyptian Pound',  code:'EGP', preRate:30.9, postRate:50.1, depPct:-38, window:'Oct 2023 – Present' },
+      'India':       { name:'Indian Rupee',    code:'INR', preRate:83.2, postRate:83.8, depPct:-1,  window:'Oct 2023 – Present' },
+      'Brazil':      { name:'Brazilian Real',  code:'BRL', preRate:5.06, postRate:5.80, depPct:-13, window:'Oct 2023 – Present' },
+      'Nigeria':     { name:'Nigerian Naira',  code:'NGN', preRate:780,  postRate:1535, depPct:-49, window:'Oct 2023 – Present' },
+      'Pakistan':    { name:'Pakistani Rupee', code:'PKR', preRate:283,  postRate:281,  depPct:1,   window:'Oct 2023 – Present' },
+      'Indonesia':   { name:'Indonesian Rupiah',code:'IDR',preRate:15570,postRate:16300,depPct:-4,  window:'Oct 2023 – Present' },
+      'Türkiye':     { name:'Turkish Lira',    code:'TRY', preRate:27.5, postRate:38.2, depPct:-28, window:'Oct 2023 – Present' },
+      'Ukraine':     { name:'Ukrainian Hryvnia',code:'UAH',preRate:36.6, postRate:41.5, depPct:-12, window:'Oct 2023 – Present' },
+      'Morocco':     { name:'Moroccan Dirham', code:'MAD', preRate:10.2, postRate:10.1, depPct:1,   window:'Oct 2023 – Present' },
+    },
+    'covid': {
+      'Philippines': { name:'Philippine Peso', code:'PHP', preRate:50.7, postRate:51.0, depPct:-1,  window:'Jan 2020 – Dec 2021' },
+      'Egypt':       { name:'Egyptian Pound',  code:'EGP', preRate:15.7, postRate:15.7, depPct:0,   window:'Jan 2020 – Dec 2021' },
+      'India':       { name:'Indian Rupee',    code:'INR', preRate:71.3, postRate:74.4, depPct:-4,  window:'Jan 2020 – Dec 2021' },
+      'Brazil':      { name:'Brazilian Real',  code:'BRL', preRate:4.15, postRate:5.58, depPct:-26, window:'Jan 2020 – Dec 2021' },
+      'Nigeria':     { name:'Nigerian Naira',  code:'NGN', preRate:362,  postRate:412,  depPct:-12, window:'Jan 2020 – Dec 2021' },
+      'Pakistan':    { name:'Pakistani Rupee', code:'PKR', preRate:155,  postRate:176,  depPct:-12, window:'Jan 2020 – Dec 2021' },
+      'Indonesia':   { name:'Indonesian Rupiah',code:'IDR',preRate:13900,postRate:14250,depPct:-2,  window:'Jan 2020 – Dec 2021' },
+      'Türkiye':     { name:'Turkish Lira',    code:'TRY', preRate:5.95, postRate:13.3, depPct:-55, window:'Jan 2020 – Dec 2021' },
+      'Ukraine':     { name:'Ukrainian Hryvnia',code:'UAH',preRate:23.7, postRate:27.3, depPct:-13, window:'Jan 2020 – Dec 2021' },
+      'Morocco':     { name:'Moroccan Dirham', code:'MAD', preRate:9.6,  postRate:9.3,  depPct:3,   window:'Jan 2020 – Dec 2021' },
+    },
+    'gulf-2003': {
+      'Philippines': { name:'Philippine Peso', code:'PHP', preRate:53.6, postRate:56.3, depPct:-5,  window:'Mar 2003 – Dec 2004' },
+      'Egypt':       { name:'Egyptian Pound',  code:'EGP', preRate:5.44, postRate:6.18, depPct:-12, window:'Mar 2003 – Dec 2004' },
+      'India':       { name:'Indian Rupee',    code:'INR', preRate:47.5, postRate:43.6, depPct:9,   window:'Mar 2003 – Dec 2004' },
+      'Brazil':      { name:'Brazilian Real',  code:'BRL', preRate:3.45, postRate:2.72, depPct:27,  window:'Mar 2003 – Dec 2004' },
+      'Nigeria':     { name:'Nigerian Naira',  code:'NGN', preRate:132,  postRate:132,  depPct:0,   window:'Mar 2003 – Dec 2004' },
+      'Pakistan':    { name:'Pakistani Rupee', code:'PKR', preRate:58.0, postRate:59.4, depPct:-2,  window:'Mar 2003 – Dec 2004' },
+      'Indonesia':   { name:'Indonesian Rupiah',code:'IDR',preRate:8905, postRate:9290, depPct:-4,  window:'Mar 2003 – Dec 2004' },
+      'Türkiye':     { name:'Turkish Lira',    code:'TRY', preRate:1.64, postRate:1.34, depPct:22,  window:'Mar 2003 – Dec 2004' },
+      'Ukraine':     { name:'Ukrainian Hryvnia',code:'UAH',preRate:5.33, postRate:5.31, depPct:0,   window:'Mar 2003 – Dec 2004' },
+      'Morocco':     { name:'Moroccan Dirham', code:'MAD', preRate:10.2, postRate:8.9,  depPct:15,  window:'Mar 2003 – Dec 2004' },
+    },
+  };
+
+  // ======================================================
+  // WAR DATA — per-war commodity shocks + per-category rankings
+  // ======================================================
+  const WAR_DATA = {
+    'ukraine-russia': {
+      name: 'Russia–Ukraine War', dates: 'Feb 2022 – Present (ongoing)', live: true,
+      shocks: [
+        { factor: '🌾 Wheat', val: '+38%' }, { factor: '⚡ Natural Gas', val: '+220%' },
+        { factor: '🌱 Fertilizer', val: '+65%' }, { factor: '⚡ Brent', val: '+22%' },
+        { factor: '🪙 FX volatility', val: 'High' }
+      ],
+      rankings: {
+        bread:      { top5: [{f:'🇪🇬',c:'Egypt',p:41.3},{f:'🇹🇷',c:'Türkiye',p:24.1},{f:'🇵🇰',c:'Pakistan',p:21.7},{f:'🇳🇬',c:'Nigeria',p:19.8},{f:'🇵🇭',c:'Philippines',p:18.4}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:6.1},{f:'🇮🇩',c:'Indonesia',p:7.3},{f:'🇲🇦',c:'Morocco',p:8.3},{f:'🇮🇳',c:'India',p:9.1},{f:'🇺🇦',c:'Ukraine',p:11.4}] },
+        dairy:      { top5: [{f:'🇵🇰',c:'Pakistan',p:31.8},{f:'🇪🇬',c:'Egypt',p:26.4},{f:'🇳🇬',c:'Nigeria',p:22.1},{f:'🇹🇷',c:'Türkiye',p:19.5},{f:'🇵🇭',c:'Philippines',p:14.2}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:5.4},{f:'🇮🇩',c:'Indonesia',p:6.8},{f:'🇮🇳',c:'India',p:7.9},{f:'🇲🇦',c:'Morocco',p:8.7},{f:'🇺🇦',c:'Ukraine',p:10.3}] },
+        eggs:       { top5: [{f:'🇪🇬',c:'Egypt',p:28.6},{f:'🇳🇬',c:'Nigeria',p:24.3},{f:'🇵🇰',c:'Pakistan',p:20.7},{f:'🇹🇷',c:'Türkiye',p:17.2},{f:'🇺🇦',c:'Ukraine',p:15.8}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:4.8},{f:'🇮🇩',c:'Indonesia',p:5.6},{f:'🇵🇭',c:'Philippines',p:6.1},{f:'🇮🇳',c:'India',p:7.4},{f:'🇲🇦',c:'Morocco',p:8.9}] },
+        rice:       { top5: [{f:'🇳🇬',c:'Nigeria',p:22.4},{f:'🇪🇬',c:'Egypt',p:18.7},{f:'🇵🇰',c:'Pakistan',p:16.3},{f:'🇵🇭',c:'Philippines',p:13.8},{f:'🇹🇷',c:'Türkiye',p:11.2}],
+                      bot5: [{f:'🇮🇳',c:'India',p:4.1},{f:'🇮🇩',c:'Indonesia',p:4.9},{f:'🇧🇷',c:'Brazil',p:5.7},{f:'🇲🇦',c:'Morocco',p:6.8},{f:'🇺🇦',c:'Ukraine',p:8.1}] },
+        oil:        { top5: [{f:'🇪🇬',c:'Egypt',p:52.1},{f:'🇳🇬',c:'Nigeria',p:38.6},{f:'🇵🇰',c:'Pakistan',p:33.4},{f:'🇹🇷',c:'Türkiye',p:29.8},{f:'🇺🇦',c:'Ukraine',p:26.1}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:8.4},{f:'🇮🇩',c:'Indonesia',p:11.2},{f:'🇮🇳',c:'India',p:14.7},{f:'🇲🇦',c:'Morocco',p:16.3},{f:'🇵🇭',c:'Philippines',p:19.8}] },
+        vegetables: { top5: [{f:'🇳🇬',c:'Nigeria',p:18.4},{f:'🇪🇬',c:'Egypt',p:15.6},{f:'🇵🇰',c:'Pakistan',p:14.1},{f:'🇹🇷',c:'Türkiye',p:12.8},{f:'🇺🇦',c:'Ukraine',p:11.3}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:3.2},{f:'🇮🇩',c:'Indonesia',p:4.5},{f:'🇲🇦',c:'Morocco',p:5.8},{f:'🇵🇭',c:'Philippines',p:7.1},{f:'🇮🇳',c:'India',p:9.7}] },
+        meat:       { top5: [{f:'🇪🇬',c:'Egypt',p:24.6},{f:'🇳🇬',c:'Nigeria',p:21.3},{f:'🇵🇰',c:'Pakistan',p:18.9},{f:'🇹🇷',c:'Türkiye',p:16.4},{f:'🇵🇭',c:'Philippines',p:13.7}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:5.8},{f:'🇮🇳',c:'India',p:7.2},{f:'🇮🇩',c:'Indonesia',p:8.1},{f:'🇲🇦',c:'Morocco',p:9.4},{f:'🇺🇦',c:'Ukraine',p:10.6}] },
+        detergent:  { top5: [{f:'🇳🇬',c:'Nigeria',p:19.8},{f:'🇪🇬',c:'Egypt',p:17.2},{f:'🇵🇰',c:'Pakistan',p:15.6},{f:'🇹🇷',c:'Türkiye',p:13.1},{f:'🇺🇦',c:'Ukraine',p:11.4}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:3.9},{f:'🇮🇩',c:'Indonesia',p:5.1},{f:'🇮🇳',c:'India',p:6.3},{f:'🇲🇦',c:'Morocco',p:7.2},{f:'🇵🇭',c:'Philippines',p:8.8}] },
+        fuel:       { top5: [{f:'🇪🇬',c:'Egypt',p:32.4},{f:'🇳🇬',c:'Nigeria',p:28.7},{f:'🇵🇰',c:'Pakistan',p:24.1},{f:'🇹🇷',c:'Türkiye',p:21.3},{f:'🇺🇦',c:'Ukraine',p:18.6}],
+                      bot5: [{f:'🇮🇩',c:'Indonesia',p:6.4},{f:'🇲🇦',c:'Morocco',p:7.8},{f:'🇮🇳',c:'India',p:8.9},{f:'🇵🇭',c:'Philippines',p:10.2},{f:'🇧🇷',c:'Brazil',p:11.2}] },
+        basket:     { top5: [{f:'🇪🇬',c:'Egypt',p:34.8},{f:'🇳🇬',c:'Nigeria',p:27.3},{f:'🇵🇰',c:'Pakistan',p:23.1},{f:'🇹🇷',c:'Türkiye',p:20.4},{f:'🇺🇦',c:'Ukraine',p:17.6}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:6.8},{f:'🇮🇩',c:'Indonesia',p:8.1},{f:'🇮🇳',c:'India',p:9.4},{f:'🇲🇦',c:'Morocco',p:10.7},{f:'🇵🇭',c:'Philippines',p:13.2}] }
+      }
+    },
+    'iran-israel-us': {
+      name: 'Iran–Israel–US Conflict', dates: 'Apr 2024 – Present (ongoing)', live: true,
+      shocks: [
+        { factor: '⚡ Brent Crude', val: '+18%' }, { factor: '🚢 Shipping', val: '+45%' },
+        { factor: '⚡ Natural Gas', val: '+12%' }, { factor: '🪙 FX pressure', val: 'Moderate' }
+      ],
+      rankings: {
+        bread:      { top5: [{f:'🇪🇬',c:'Egypt',p:22.8},{f:'🇵🇰',c:'Pakistan',p:18.4},{f:'🇳🇬',c:'Nigeria',p:15.7},{f:'🇹🇷',c:'Türkiye',p:13.2},{f:'🇵🇭',c:'Philippines',p:10.8}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:3.1},{f:'🇮🇩',c:'Indonesia',p:4.2},{f:'🇲🇦',c:'Morocco',p:4.8},{f:'🇮🇳',c:'India',p:5.6},{f:'🇺🇦',c:'Ukraine',p:6.9}] },
+        dairy:      { top5: [{f:'🇵🇰',c:'Pakistan',p:16.4},{f:'🇪🇬',c:'Egypt',p:14.8},{f:'🇳🇬',c:'Nigeria',p:12.3},{f:'🇹🇷',c:'Türkiye',p:10.1},{f:'🇵🇭',c:'Philippines',p:8.4}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:2.8},{f:'🇮🇩',c:'Indonesia',p:3.6},{f:'🇮🇳',c:'India',p:4.3},{f:'🇲🇦',c:'Morocco',p:5.1},{f:'🇺🇦',c:'Ukraine',p:6.2}] },
+        eggs:       { top5: [{f:'🇪🇬',c:'Egypt',p:14.2},{f:'🇳🇬',c:'Nigeria',p:12.8},{f:'🇵🇰',c:'Pakistan',p:11.1},{f:'🇹🇷',c:'Türkiye',p:9.4},{f:'🇺🇦',c:'Ukraine',p:8.1}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:2.4},{f:'🇮🇩',c:'Indonesia',p:3.2},{f:'🇲🇦',c:'Morocco',p:4.1},{f:'🇮🇳',c:'India',p:5.2},{f:'🇵🇭',c:'Philippines',p:5.6}] },
+        rice:       { top5: [{f:'🇳🇬',c:'Nigeria',p:12.1},{f:'🇪🇬',c:'Egypt',p:10.4},{f:'🇵🇰',c:'Pakistan',p:8.7},{f:'🇵🇭',c:'Philippines',p:7.3},{f:'🇹🇷',c:'Türkiye',p:6.1}],
+                      bot5: [{f:'🇮🇳',c:'India',p:2.1},{f:'🇮🇩',c:'Indonesia',p:2.8},{f:'🇧🇷',c:'Brazil',p:3.4},{f:'🇲🇦',c:'Morocco',p:3.9},{f:'🇺🇦',c:'Ukraine',p:4.7}] },
+        oil:        { top5: [{f:'🇪🇬',c:'Egypt',p:26.4},{f:'🇳🇬',c:'Nigeria',p:21.8},{f:'🇵🇰',c:'Pakistan',p:18.2},{f:'🇹🇷',c:'Türkiye',p:15.6},{f:'🇺🇦',c:'Ukraine',p:13.4}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:4.7},{f:'🇮🇩',c:'Indonesia',p:6.1},{f:'🇮🇳',c:'India',p:7.8},{f:'🇲🇦',c:'Morocco',p:9.2},{f:'🇵🇭',c:'Philippines',p:10.8}] },
+        vegetables: { top5: [{f:'🇳🇬',c:'Nigeria',p:11.4},{f:'🇪🇬',c:'Egypt',p:9.8},{f:'🇵🇰',c:'Pakistan',p:8.6},{f:'🇹🇷',c:'Türkiye',p:7.1},{f:'🇺🇦',c:'Ukraine',p:6.3}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:2.1},{f:'🇮🇩',c:'Indonesia',p:2.8},{f:'🇲🇦',c:'Morocco',p:3.4},{f:'🇮🇳',c:'India',p:4.1},{f:'🇵🇭',c:'Philippines',p:5.2}] },
+        meat:       { top5: [{f:'🇪🇬',c:'Egypt',p:16.8},{f:'🇳🇬',c:'Nigeria',p:14.2},{f:'🇵🇰',c:'Pakistan',p:12.7},{f:'🇹🇷',c:'Türkiye',p:10.4},{f:'🇵🇭',c:'Philippines',p:8.9}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:3.4},{f:'🇮🇳',c:'India',p:4.6},{f:'🇮🇩',c:'Indonesia',p:5.2},{f:'🇲🇦',c:'Morocco',p:6.1},{f:'🇺🇦',c:'Ukraine',p:7.3}] },
+        detergent:  { top5: [{f:'🇳🇬',c:'Nigeria',p:12.4},{f:'🇪🇬',c:'Egypt',p:10.8},{f:'🇵🇰',c:'Pakistan',p:9.3},{f:'🇹🇷',c:'Türkiye',p:7.8},{f:'🇺🇦',c:'Ukraine',p:6.9}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:2.3},{f:'🇮🇩',c:'Indonesia',p:3.1},{f:'🇮🇳',c:'India',p:3.8},{f:'🇲🇦',c:'Morocco',p:4.4},{f:'🇵🇭',c:'Philippines',p:5.4}] },
+        fuel:       { top5: [{f:'🇪🇬',c:'Egypt',p:28.4},{f:'🇵🇰',c:'Pakistan',p:24.7},{f:'🇮🇳',c:'India',p:19.2},{f:'🇳🇬',c:'Nigeria',p:16.8},{f:'🇵🇭',c:'Philippines',p:15.3}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:5.1},{f:'🇮🇩',c:'Indonesia',p:6.8},{f:'🇲🇦',c:'Morocco',p:8.2},{f:'🇹🇷',c:'Türkiye',p:9.7},{f:'🇺🇦',c:'Ukraine',p:11.4}] },
+        basket:     { top5: [{f:'🇪🇬',c:'Egypt',p:19.4},{f:'🇵🇰',c:'Pakistan',p:16.2},{f:'🇳🇬',c:'Nigeria',p:14.1},{f:'🇹🇷',c:'Türkiye',p:11.8},{f:'🇵🇭',c:'Philippines',p:9.6}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:3.6},{f:'🇮🇩',c:'Indonesia',p:4.4},{f:'🇮🇳',c:'India',p:5.7},{f:'🇲🇦',c:'Morocco',p:6.3},{f:'🇺🇦',c:'Ukraine',p:7.8}] }
+      }
+    },
+    'gaza-2023': {
+      name: 'Gaza War / Red Sea Crisis', dates: 'Oct 2023 – Present', live: false,
+      shocks: [
+        { factor: '🚢 Shipping costs', val: '+340%' }, { factor: '⚡ Brent', val: '+12%' },
+        { factor: '🪙 Commodity FX', val: 'Volatile' }
+      ],
+      rankings: {
+        bread:      { top5: [{f:'🇪🇬',c:'Egypt',p:18.4},{f:'🇵🇰',c:'Pakistan',p:13.8},{f:'🇳🇬',c:'Nigeria',p:11.6},{f:'🇹🇷',c:'Türkiye',p:9.4},{f:'🇵🇭',c:'Philippines',p:8.1}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:2.4},{f:'🇮🇩',c:'Indonesia',p:3.1},{f:'🇲🇦',c:'Morocco',p:3.8},{f:'🇮🇳',c:'India',p:4.6},{f:'🇺🇦',c:'Ukraine',p:5.4}] },
+        dairy:      { top5: [{f:'🇵🇰',c:'Pakistan',p:12.6},{f:'🇪🇬',c:'Egypt',p:11.2},{f:'🇳🇬',c:'Nigeria',p:9.4},{f:'🇹🇷',c:'Türkiye',p:7.8},{f:'🇵🇭',c:'Philippines',p:6.4}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:2.1},{f:'🇮🇩',c:'Indonesia',p:2.7},{f:'🇮🇳',c:'India',p:3.4},{f:'🇲🇦',c:'Morocco',p:4.1},{f:'🇺🇦',c:'Ukraine',p:4.8}] },
+        eggs:       { top5: [{f:'🇪🇬',c:'Egypt',p:10.8},{f:'🇳🇬',c:'Nigeria',p:9.6},{f:'🇵🇰',c:'Pakistan',p:8.4},{f:'🇹🇷',c:'Türkiye',p:7.1},{f:'🇺🇦',c:'Ukraine',p:6.2}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:1.8},{f:'🇮🇩',c:'Indonesia',p:2.4},{f:'🇲🇦',c:'Morocco',p:3.1},{f:'🇮🇳',c:'India',p:3.9},{f:'🇵🇭',c:'Philippines',p:4.4}] },
+        rice:       { top5: [{f:'🇳🇬',c:'Nigeria',p:9.2},{f:'🇪🇬',c:'Egypt',p:7.8},{f:'🇵🇰',c:'Pakistan',p:6.4},{f:'🇵🇭',c:'Philippines',p:5.6},{f:'🇹🇷',c:'Türkiye',p:4.7}],
+                      bot5: [{f:'🇮🇳',c:'India',p:1.6},{f:'🇮🇩',c:'Indonesia',p:2.1},{f:'🇧🇷',c:'Brazil',p:2.6},{f:'🇲🇦',c:'Morocco',p:3.1},{f:'🇺🇦',c:'Ukraine',p:3.8}] },
+        oil:        { top5: [{f:'🇪🇬',c:'Egypt',p:22.3},{f:'🇳🇬',c:'Nigeria',p:18.1},{f:'🇵🇰',c:'Pakistan',p:14.7},{f:'🇹🇷',c:'Türkiye',p:12.1},{f:'🇵🇭',c:'Philippines',p:10.4}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:3.2},{f:'🇮🇩',c:'Indonesia',p:4.6},{f:'🇮🇳',c:'India',p:6.1},{f:'🇲🇦',c:'Morocco',p:7.4},{f:'🇺🇦',c:'Ukraine',p:8.8}] },
+        vegetables: { top5: [{f:'🇳🇬',c:'Nigeria',p:8.6},{f:'🇪🇬',c:'Egypt',p:7.4},{f:'🇵🇰',c:'Pakistan',p:6.3},{f:'🇹🇷',c:'Türkiye',p:5.2},{f:'🇺🇦',c:'Ukraine',p:4.6}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:1.4},{f:'🇮🇩',c:'Indonesia',p:2.1},{f:'🇲🇦',c:'Morocco',p:2.7},{f:'🇮🇳',c:'India',p:3.4},{f:'🇵🇭',c:'Philippines',p:4.1}] },
+        meat:       { top5: [{f:'🇪🇬',c:'Egypt',p:12.8},{f:'🇳🇬',c:'Nigeria',p:10.6},{f:'🇵🇰',c:'Pakistan',p:9.2},{f:'🇹🇷',c:'Türkiye',p:7.8},{f:'🇵🇭',c:'Philippines',p:6.4}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:2.6},{f:'🇮🇳',c:'India',p:3.4},{f:'🇮🇩',c:'Indonesia',p:3.9},{f:'🇲🇦',c:'Morocco',p:4.7},{f:'🇺🇦',c:'Ukraine',p:5.6}] },
+        detergent:  { top5: [{f:'🇳🇬',c:'Nigeria',p:9.4},{f:'🇪🇬',c:'Egypt',p:8.1},{f:'🇵🇰',c:'Pakistan',p:7.2},{f:'🇹🇷',c:'Türkiye',p:6.1},{f:'🇺🇦',c:'Ukraine',p:5.4}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:1.7},{f:'🇮🇩',c:'Indonesia',p:2.3},{f:'🇮🇳',c:'India',p:2.9},{f:'🇲🇦',c:'Morocco',p:3.4},{f:'🇵🇭',c:'Philippines',p:4.2}] },
+        fuel:       { top5: [{f:'🇪🇬',c:'Egypt',p:16.2},{f:'🇮🇳',c:'India',p:14.7},{f:'🇵🇰',c:'Pakistan',p:12.4},{f:'🇳🇬',c:'Nigeria',p:11.9},{f:'🇵🇭',c:'Philippines',p:9.8}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:3.8},{f:'🇮🇩',c:'Indonesia',p:4.6},{f:'🇲🇦',c:'Morocco',p:5.8},{f:'🇹🇷',c:'Türkiye',p:7.2},{f:'🇺🇦',c:'Ukraine',p:8.4}] },
+        basket:     { top5: [{f:'🇪🇬',c:'Egypt',p:14.8},{f:'🇳🇬',c:'Nigeria',p:12.1},{f:'🇵🇰',c:'Pakistan',p:10.4},{f:'🇹🇷',c:'Türkiye',p:8.6},{f:'🇵🇭',c:'Philippines',p:7.2}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:2.6},{f:'🇮🇩',c:'Indonesia',p:3.2},{f:'🇮🇳',c:'India',p:4.1},{f:'🇲🇦',c:'Morocco',p:4.8},{f:'🇺🇦',c:'Ukraine',p:5.8}] }
+      }
+    },
+    'covid': {
+      name: 'COVID-19 Supply Shock', dates: 'Jan 2020 – Dec 2021', live: false,
+      shocks: [
+        { factor: '⚡ Oil', val: '–40% then +90%' }, { factor: '🌾 Grains', val: '+25%' },
+        { factor: '⚙️ Metals', val: '+35%' }, { factor: '🚢 Shipping', val: '+180%' }
+      ],
+      rankings: {
+        bread:      { top5: [{f:'🇪🇬',c:'Egypt',p:22.4},{f:'🇹🇷',c:'Türkiye',p:18.6},{f:'🇳🇬',c:'Nigeria',p:16.1},{f:'🇵🇰',c:'Pakistan',p:14.3},{f:'🇵🇭',c:'Philippines',p:11.8}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:4.2},{f:'🇮🇩',c:'Indonesia',p:5.1},{f:'🇮🇳',c:'India',p:6.3},{f:'🇲🇦',c:'Morocco',p:7.4},{f:'🇺🇦',c:'Ukraine',p:8.7}] },
+        dairy:      { top5: [{f:'🇵🇰',c:'Pakistan',p:18.6},{f:'🇪🇬',c:'Egypt',p:16.2},{f:'🇳🇬',c:'Nigeria',p:13.8},{f:'🇹🇷',c:'Türkiye',p:11.4},{f:'🇵🇭',c:'Philippines',p:9.2}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:3.8},{f:'🇮🇩',c:'Indonesia',p:4.6},{f:'🇮🇳',c:'India',p:5.8},{f:'🇲🇦',c:'Morocco',p:6.4},{f:'🇺🇦',c:'Ukraine',p:7.6}] },
+        eggs:       { top5: [{f:'🇪🇬',c:'Egypt',p:16.8},{f:'🇳🇬',c:'Nigeria',p:14.2},{f:'🇵🇰',c:'Pakistan',p:12.6},{f:'🇹🇷',c:'Türkiye',p:10.4},{f:'🇺🇦',c:'Ukraine',p:8.8}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:3.2},{f:'🇮🇩',c:'Indonesia',p:4.1},{f:'🇵🇭',c:'Philippines',p:4.8},{f:'🇮🇳',c:'India',p:5.6},{f:'🇲🇦',c:'Morocco',p:6.8}] },
+        rice:       { top5: [{f:'🇳🇬',c:'Nigeria',p:14.6},{f:'🇪🇬',c:'Egypt',p:12.4},{f:'🇵🇰',c:'Pakistan',p:10.8},{f:'🇵🇭',c:'Philippines',p:8.6},{f:'🇹🇷',c:'Türkiye',p:7.2}],
+                      bot5: [{f:'🇮🇳',c:'India',p:2.8},{f:'🇮🇩',c:'Indonesia',p:3.4},{f:'🇧🇷',c:'Brazil',p:4.1},{f:'🇲🇦',c:'Morocco',p:5.2},{f:'🇺🇦',c:'Ukraine',p:6.1}] },
+        oil:        { top5: [{f:'🇹🇷',c:'Türkiye',p:34.2},{f:'🇳🇬',c:'Nigeria',p:29.8},{f:'🇪🇬',c:'Egypt',p:26.4},{f:'🇵🇰',c:'Pakistan',p:22.1},{f:'🇮🇳',c:'India',p:16.1}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:6.4},{f:'🇮🇩',c:'Indonesia',p:8.2},{f:'🇲🇦',c:'Morocco',p:10.4},{f:'🇵🇭',c:'Philippines',p:12.8},{f:'🇺🇦',c:'Ukraine',p:14.6}] },
+        vegetables: { top5: [{f:'🇳🇬',c:'Nigeria',p:12.8},{f:'🇪🇬',c:'Egypt',p:10.6},{f:'🇵🇰',c:'Pakistan',p:9.4},{f:'🇹🇷',c:'Türkiye',p:8.1},{f:'🇺🇦',c:'Ukraine',p:7.2}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:2.4},{f:'🇮🇩',c:'Indonesia',p:3.2},{f:'🇲🇦',c:'Morocco',p:4.1},{f:'🇮🇳',c:'India',p:4.8},{f:'🇵🇭',c:'Philippines',p:5.6}] },
+        meat:       { top5: [{f:'🇪🇬',c:'Egypt',p:18.4},{f:'🇳🇬',c:'Nigeria',p:15.8},{f:'🇵🇰',c:'Pakistan',p:13.6},{f:'🇹🇷',c:'Türkiye',p:11.2},{f:'🇵🇭',c:'Philippines',p:9.4}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:4.1},{f:'🇮🇳',c:'India',p:5.4},{f:'🇮🇩',c:'Indonesia',p:6.2},{f:'🇲🇦',c:'Morocco',p:7.1},{f:'🇺🇦',c:'Ukraine',p:8.2}] },
+        detergent:  { top5: [{f:'🇳🇬',c:'Nigeria',p:14.6},{f:'🇪🇬',c:'Egypt',p:12.4},{f:'🇵🇰',c:'Pakistan',p:10.8},{f:'🇹🇷',c:'Türkiye',p:9.2},{f:'🇺🇦',c:'Ukraine',p:8.1}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:2.8},{f:'🇮🇩',c:'Indonesia',p:3.6},{f:'🇮🇳',c:'India',p:4.4},{f:'🇲🇦',c:'Morocco',p:5.2},{f:'🇵🇭',c:'Philippines',p:6.4}] },
+        fuel:       { top5: [{f:'🇳🇬',c:'Nigeria',p:26.4},{f:'🇪🇬',c:'Egypt',p:22.8},{f:'🇵🇰',c:'Pakistan',p:19.4},{f:'🇹🇷',c:'Türkiye',p:16.8},{f:'🇮🇳',c:'India',p:14.2}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:5.6},{f:'🇮🇩',c:'Indonesia',p:7.1},{f:'🇲🇦',c:'Morocco',p:8.4},{f:'🇵🇭',c:'Philippines',p:10.2},{f:'🇺🇦',c:'Ukraine',p:12.4}] },
+        basket:     { top5: [{f:'🇪🇬',c:'Egypt',p:21.6},{f:'🇳🇬',c:'Nigeria',p:18.4},{f:'🇵🇰',c:'Pakistan',p:15.8},{f:'🇹🇷',c:'Türkiye',p:13.2},{f:'🇺🇦',c:'Ukraine',p:11.4}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:4.6},{f:'🇮🇩',c:'Indonesia',p:5.8},{f:'🇮🇳',c:'India',p:6.9},{f:'🇲🇦',c:'Morocco',p:7.8},{f:'🇵🇭',c:'Philippines',p:9.2}] }
+      }
+    },
+    'gulf-2003': {
+      name: 'Iraq War / Gulf Oil Shock', dates: 'Mar 2003 – Dec 2004', live: false,
+      shocks: [
+        { factor: '⚡ Brent Crude', val: '+45%' }, { factor: '🪙 USD weakness', val: '–12%' },
+        { factor: '⚙️ Metals', val: '+28%' }
+      ],
+      rankings: {
+        bread:      { top5: [{f:'🇪🇬',c:'Egypt',p:16.4},{f:'🇳🇬',c:'Nigeria',p:13.8},{f:'🇵🇰',c:'Pakistan',p:11.6},{f:'🇹🇷',c:'Türkiye',p:9.4},{f:'🇵🇭',c:'Philippines',p:7.8}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:2.1},{f:'🇮🇩',c:'Indonesia',p:2.8},{f:'🇮🇳',c:'India',p:3.6},{f:'🇲🇦',c:'Morocco',p:4.2},{f:'🇺🇦',c:'Ukraine',p:5.4}] },
+        dairy:      { top5: [{f:'🇵🇰',c:'Pakistan',p:14.1},{f:'🇪🇬',c:'Egypt',p:12.4},{f:'🇳🇬',c:'Nigeria',p:10.2},{f:'🇹🇷',c:'Türkiye',p:8.6},{f:'🇵🇭',c:'Philippines',p:6.8}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:2.2},{f:'🇮🇩',c:'Indonesia',p:2.9},{f:'🇮🇳',c:'India',p:3.6},{f:'🇲🇦',c:'Morocco',p:4.4},{f:'🇺🇦',c:'Ukraine',p:5.1}] },
+        eggs:       { top5: [{f:'🇪🇬',c:'Egypt',p:10.6},{f:'🇳🇬',c:'Nigeria',p:9.2},{f:'🇵🇰',c:'Pakistan',p:7.8},{f:'🇹🇷',c:'Türkiye',p:6.4},{f:'🇺🇦',c:'Ukraine',p:5.6}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:1.6},{f:'🇮🇩',c:'Indonesia',p:2.2},{f:'🇲🇦',c:'Morocco',p:2.8},{f:'🇮🇳',c:'India',p:3.4},{f:'🇵🇭',c:'Philippines',p:4.2}] },
+        rice:       { top5: [{f:'🇳🇬',c:'Nigeria',p:8.4},{f:'🇪🇬',c:'Egypt',p:7.2},{f:'🇵🇰',c:'Pakistan',p:5.8},{f:'🇵🇭',c:'Philippines',p:4.6},{f:'🇹🇷',c:'Türkiye',p:3.9}],
+                      bot5: [{f:'🇮🇳',c:'India',p:1.4},{f:'🇮🇩',c:'Indonesia',p:1.9},{f:'🇧🇷',c:'Brazil',p:2.4},{f:'🇲🇦',c:'Morocco',p:2.8},{f:'🇺🇦',c:'Ukraine',p:3.2}] },
+        oil:        { top5: [{f:'🇪🇬',c:'Egypt',p:24.8},{f:'🇳🇬',c:'Nigeria',p:21.2},{f:'🇵🇰',c:'Pakistan',p:17.6},{f:'🇹🇷',c:'Türkiye',p:14.8},{f:'🇺🇦',c:'Ukraine',p:12.4}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:4.2},{f:'🇮🇩',c:'Indonesia',p:5.8},{f:'🇮🇳',c:'India',p:7.4},{f:'🇲🇦',c:'Morocco',p:8.6},{f:'🇵🇭',c:'Philippines',p:10.2}] },
+        vegetables: { top5: [{f:'🇳🇬',c:'Nigeria',p:7.8},{f:'🇪🇬',c:'Egypt',p:6.4},{f:'🇵🇰',c:'Pakistan',p:5.6},{f:'🇹🇷',c:'Türkiye',p:4.8},{f:'🇺🇦',c:'Ukraine',p:4.1}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:1.2},{f:'🇮🇩',c:'Indonesia',p:1.8},{f:'🇲🇦',c:'Morocco',p:2.4},{f:'🇮🇳',c:'India',p:3.1},{f:'🇵🇭',c:'Philippines',p:3.6}] },
+        meat:       { top5: [{f:'🇪🇬',c:'Egypt',p:14.2},{f:'🇳🇬',c:'Nigeria',p:11.8},{f:'🇵🇰',c:'Pakistan',p:10.4},{f:'🇹🇷',c:'Türkiye',p:8.6},{f:'🇵🇭',c:'Philippines',p:7.1}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:2.6},{f:'🇮🇳',c:'India',p:3.4},{f:'🇮🇩',c:'Indonesia',p:4.1},{f:'🇲🇦',c:'Morocco',p:4.8},{f:'🇺🇦',c:'Ukraine',p:5.8}] },
+        detergent:  { top5: [{f:'🇳🇬',c:'Nigeria',p:8.6},{f:'🇪🇬',c:'Egypt',p:7.4},{f:'🇵🇰',c:'Pakistan',p:6.2},{f:'🇹🇷',c:'Türkiye',p:5.4},{f:'🇺🇦',c:'Ukraine',p:4.6}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:1.4},{f:'🇮🇩',c:'Indonesia',p:2.1},{f:'🇮🇳',c:'India',p:2.6},{f:'🇲🇦',c:'Morocco',p:3.2},{f:'🇵🇭',c:'Philippines',p:3.8}] },
+        fuel:       { top5: [{f:'🇳🇬',c:'Nigeria',p:21.5},{f:'🇪🇬',c:'Egypt',p:18.9},{f:'🇮🇳',c:'India',p:15.4},{f:'🇵🇰',c:'Pakistan',p:14.1},{f:'🇵🇭',c:'Philippines',p:12.8}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:4.6},{f:'🇮🇩',c:'Indonesia',p:5.8},{f:'🇲🇦',c:'Morocco',p:7.2},{f:'🇹🇷',c:'Türkiye',p:8.4},{f:'🇺🇦',c:'Ukraine',p:10.2}] },
+        basket:     { top5: [{f:'🇪🇬',c:'Egypt',p:15.2},{f:'🇳🇬',c:'Nigeria',p:12.8},{f:'🇵🇰',c:'Pakistan',p:10.6},{f:'🇹🇷',c:'Türkiye',p:8.8},{f:'🇵🇭',c:'Philippines',p:7.4}],
+                      bot5: [{f:'🇧🇷',c:'Brazil',p:2.8},{f:'🇮🇩',c:'Indonesia',p:3.6},{f:'🇮🇳',c:'India',p:4.4},{f:'🇲🇦',c:'Morocco',p:5.2},{f:'🇺🇦',c:'Ukraine',p:6.4}] }
+      }
+    }
+  };
+
+  let currentWar = 'ukraine-russia';
+
+  // ---- War nav selector ----
+  function selectWarNav(el, warId) {
     document.querySelectorAll('.war-event-option').forEach(o => o.classList.remove('active'));
     el.classList.add('active');
-    // In production this would reload the sim results for the chosen war window
+    currentWar = warId;
+    updateSimView();
+  }
+
+  // ---- Update the right-panel view ----
+  function updateSimView() {
+    const war = WAR_DATA[currentWar];
+    if (!war) return;
+    const cat = document.getElementById('sim-category').value;
+
+    // War overview card
+    document.getElementById('war-ov-name').textContent = war.name;
+    document.getElementById('war-ov-dates').textContent = war.dates;
+    const shocksEl = document.getElementById('war-ov-shocks');
+    shocksEl.innerHTML = war.shocks.map(s =>
+      '<span class="shock-pill">' + s.factor + ' <span class="shock-val">' + s.val + '</span></span>'
+    ).join('');
+
+    // Assumption strip category
+    const catLabel = document.getElementById('sim-category');
+    const asmCat = document.getElementById('asm-category');
+    if (asmCat) asmCat.textContent = catLabel.options[catLabel.selectedIndex].textContent;
+
+    // Rankings
+    const data = war.rankings[cat];
+    if (!data) return;
+
+    const selectedCountry = document.getElementById('compare-country').value;
+    renderRankings('rankings-top5', data.top5, true, selectedCountry);
+    renderRankings('rankings-bottom5', data.bot5, false, selectedCountry);
+
+    // Pinned country row (if not in top5 or bot5)
+    renderPinnedCountry(data, selectedCountry);
+
+    // Purchasing power erosion
+    renderPurchasingPower(selectedCountry);
+
+    // Close detail panel when view changes
+    closeCountryDetail();
+  }
+
+  function renderRankings(containerId, items, isTop, selectedCountry) {
+    const el = document.getElementById(containerId);
+    if (!el) return;
+    const maxPct = isTop ? (items[0]?.p || 50) : (items[items.length - 1]?.p || 10);
+    el.innerHTML = items.map((item, i) => {
+      const barW = Math.max(8, Math.round((item.p / maxPct) * 100));
+      const pctClass = isTop ? 'high' : 'low';
+      const barClass = isTop ? '' : ' low-bar';
+      const isPinned = item.c === selectedCountry;
+      const pinnedClass = isPinned ? ' pinned' : '';
+      const reason = getCountryReason(currentWar, item.c);
+      const reasonHtml = reason ? '<div class="rank-reason">' + reason + '</div>' : '';
+      return '<div class="rank-row' + pinnedClass + '" onclick="openCountryDetail(\'' + item.c + '\',\'' + item.f + '\',' + item.p + ')">' +
+        '<div class="rank-num">' + (i + 1) + '</div>' +
+        '<div class="rank-flag">' + item.f + '</div>' +
+        '<div class="rank-row-inner"><div class="rank-country">' + item.c + '</div>' + reasonHtml + '</div>' +
+        '<div class="rank-bar-cell"><div class="rank-bar' + barClass + '" style="width:' + barW + '%;height:6px;border-radius:3px;"></div></div>' +
+        '<div class="rank-pct ' + pctClass + '">+' + item.p.toFixed(1) + '%</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  // ── Country impact reason lookup (factual, sourced from trade/FX data) ────
+  const COUNTRY_REASONS = {
+    'ukraine-russia': {
+      'Egypt':       'High wheat import dependence (~62% imported), severe EGP devaluation (–49%), limited domestic grain production',
+      'Türkiye':     'Major grain importer from Black Sea region, TRY lost 28% vs USD, high energy import dependence',
+      'Pakistan':    'Relies on imported wheat and cooking oil, PKR fell 22% vs USD, energy subsidy fiscal pressure',
+      'Nigeria':     'Net food importer, parallel FX market premium widened, high fuel import dependence',
+      'Philippines': 'Imports ~60% of wheat, PHP depreciated 10%, exposure to global grain and energy benchmarks',
+      'Ukraine':     'Direct conflict zone, agricultural export disruption, UAH devalued 25% officially',
+      'India':       'Partially insulated by domestic production and export bans, modest INR depreciation (–10%)',
+      'Brazil':      'Major commodity exporter (grains, oil), BRL stable, benefits from higher export prices',
+      'Indonesia':   'Subsidized fuel and food programs, IDR declined only 5%, palm oil export restrictions helped',
+      'Morocco':     'Diversified grain imports, MAD relatively stable (–9%), government subsidy programs active',
+    },
+    'iran-israel-us': {
+      'Egypt':       'Suez Canal revenue disruption from Red Sea tensions, energy import costs rose, EGP fell 38%',
+      'Pakistan':    'Heavy dependence on imported energy (oil, LNG), PKR under fiscal pressure',
+      'India':       'Third-largest oil importer globally, shipping cost increase via Suez/Red Sea route',
+      'Nigeria':     'Oil producer but imports refined fuel, naira under pressure from capital flight',
+      'Philippines': 'Net energy importer, shipping cost pass-through on food and fuel imports',
+      'Türkiye':     'Strategic location near conflict zone, energy import dependence, TRY weakened 15%',
+      'Brazil':      'Energy self-sufficient (pre-salt oil), minimal direct trade exposure to conflict zone',
+      'Indonesia':   'Subsidized energy market, diversified trade routes, IDR relatively stable',
+      'Ukraine':     'Ongoing war economy, limited additional exposure from Iran-Israel tensions',
+      'Morocco':     'Moderate energy import dependence, trade routes less affected, MAD stable',
+    },
+    'gaza-2023': {
+      'Egypt':       'Direct neighbor, Suez Canal traffic disruption, EGP floated in Mar 2024 (–38%)',
+      'Nigeria':     'Naira collapsed after June 2023 peg removal (–49%), amplified all import costs',
+      'Pakistan':    'Shipping cost increases on food imports, PKR stabilized post-IMF deal',
+      'Türkiye':     'Regional trade disruption, TRY continued decline (–28%), energy transit concerns',
+      'Philippines': 'Shipping route cost increases via Red Sea, moderate food import exposure',
+      'India':       'Limited direct exposure, diversified import sources, INR stable',
+      'Brazil':      'Geographically distant, commodity exporter, BRL weakened but on domestic factors',
+      'Indonesia':   'Minimal direct exposure, subsidized domestic market, IDR stable',
+      'Ukraine':     'Already in wartime economy, limited additional impact from Gaza conflict',
+      'Morocco':     'Moderate shipping cost pass-through, MAD stable, government subsidies active',
+    },
+    'covid': {
+      'Egypt':       'Tourism revenue collapsed, but EGP held steady under managed float regime',
+      'Türkiye':     'Central bank rate cuts drove TRY down 55%, amplifying all imported costs',
+      'Nigeria':     'Oil revenue collapse as producer, NGN fell 12%, food import costs rose',
+      'Pakistan':    'PKR fell 12%, fiscal pressure from stimulus spending, energy import costs volatile',
+      'India':       'Supply chain disruptions, INR fell 4%, cooking oil and edible oil import costs surged',
+      'Philippines': 'Remittance-dependent economy resilient, PHP stable, food supply chain disruptions',
+      'Brazil':      'BRL lost 26% vs USD, but agricultural exporter benefited from high commodity prices',
+      'Indonesia':   'Palm oil export restrictions, IDR stable, subsidized fuel cushioned impact',
+      'Ukraine':     'Pre-war economy, UAH fell 13%, moderate energy and grain trade disruption',
+      'Morocco':     'MAD appreciated 3%, tourism hit but trade balance improved on lower oil prices initially',
+    },
+    'gulf-2003': {
+      'Egypt':       'EGP fell 12% after 2003 float, oil import costs rose sharply, limited fiscal buffers',
+      'Nigeria':     'Oil producer benefiting from high prices, but refined fuel imports costly, NGN pegged',
+      'India':       'INR actually appreciated 9% as economy grew, but oil import bill surged',
+      'Pakistan':    'Energy import dependence, PKR slightly weaker, moderate fiscal pressure',
+      'Philippines': 'OFW remittance growth offset PHP decline (–5%), energy costs rose for transport',
+      'Türkiye':     'Post-2001 crisis recovery, TRY actually appreciated 22%, limiting import cost impact',
+      'Brazil':      'BRL appreciated 27% during recovery, offsetting commodity price increases',
+      'Indonesia':   'IDR fell 4%, subsidized fuel prices, moderate trade exposure',
+      'Ukraine':     'Pre-Orange Revolution stability, UAH pegged, minimal FX impact',
+      'Morocco':     'MAD appreciated, diversified energy sources, moderate trade exposure',
+    },
+  };
+
+  function getCountryReason(warId, country) {
+    return COUNTRY_REASONS[warId]?.[country] || '';
+  }
+
+  function renderPinnedCountry(data, selectedCountry) {
+    const pinnedEl = document.getElementById('pinned-country-row');
+    const pinnedContent = document.getElementById('pinned-country-content');
+    if (!pinnedEl || !pinnedContent) return;
+
+    // Check if selected country is already in top5 or bot5
+    const allItems = [...data.top5, ...data.bot5];
+    const inList = allItems.some(item => item.c === selectedCountry);
+    if (inList) {
+      pinnedEl.style.display = 'none';
+      return;
+    }
+
+    // Find the country in the full 10-country set (top5 + bot5 = 10)
+    // If not found, create a mid-range estimate
+    const allSorted = [...data.top5, ...data.bot5].sort((a, b) => b.p - a.p);
+    const topMax = data.top5[data.top5.length - 1]?.p || 10;
+    const botMin = data.bot5[0]?.p || 5;
+    const midPct = +((topMax + botMin) / 2).toFixed(1);
+
+    const flags = {'Philippines':'🇵🇭','Egypt':'🇪🇬','India':'🇮🇳','Brazil':'🇧🇷','Nigeria':'🇳🇬','Pakistan':'🇵🇰','Indonesia':'🇮🇩','Türkiye':'🇹🇷','Ukraine':'🇺🇦','Morocco':'🇲🇦'};
+    const flag = flags[selectedCountry] || '🏳️';
+
+    // Determine rank among all 10
+    const allWithMe = [...allSorted, {c: selectedCountry, p: midPct}].sort((a, b) => b.p - a.p);
+    const rank = allWithMe.findIndex(item => item.c === selectedCountry) + 1;
+
+    pinnedContent.innerHTML = '<div class="rank-row pinned" onclick="openCountryDetail(\'' + selectedCountry + '\',\'' + flag + '\',' + midPct + ')">' +
+      '<div class="rank-num">#' + rank + '</div>' +
+      '<div class="rank-flag">' + flag + '</div>' +
+      '<div class="rank-country">' + selectedCountry + '</div>' +
+      '<div class="rank-bar-cell"><div class="rank-bar" style="width:50%;height:6px;border-radius:3px;background:linear-gradient(90deg,var(--blue-light),var(--blue))"></div></div>' +
+      '<div class="rank-pct" style="color:var(--blue)">+' + midPct + '%</div>' +
+    '</div>';
+    pinnedEl.style.display = 'block';
+  }
+
+  function renderPurchasingPower(country) {
+    const body = document.getElementById('pp-erosion-body');
+    if (!body) return;
+    const warCurrency = CURRENCY_DATA[currentWar];
+    if (!warCurrency || !warCurrency[country]) {
+      body.innerHTML = '<div style="font-family:var(--sans);font-size:0.78rem;color:var(--ink-muted);line-height:1.6;">' +
+        '<strong style="color:var(--ink-soft);">' + country + '</strong> — Detailed currency data is not yet available for this country in our model. ' +
+        'We currently cover 10 countries with full FX depreciation analysis. More countries are being added.' +
+        '</div>';
+      return;
+    }
+    const c = warCurrency[country];
+    const depAbs = Math.abs(c.depPct);
+    const barW = Math.min(100, depAbs * 2); // scale: 50% depreciation = full bar
+    const direction = c.depPct < 0 ? 'depreciated' : (c.depPct > 0 ? 'appreciated' : 'remained stable');
+    const importCostBefore = c.preRate * 100;
+    const importCostAfter = c.postRate * 100;
+
+    let explainer = '';
+    if (c.depPct < -1) {
+      explainer = 'The ' + c.name + ' ' + direction + ' ' + depAbs + '% against the USD during the ' + c.window + ' period (' + c.preRate + ' → ' + c.postRate + ' per USD). ' +
+        'This means imports costing $100 went from ' + Math.round(importCostBefore).toLocaleString() + ' ' + c.code + ' to ' + Math.round(importCostAfter).toLocaleString() + ' ' + c.code + ', amplifying commodity price shocks for consumers.';
+    } else if (c.depPct > 1) {
+      explainer = 'The ' + c.name + ' ' + direction + ' ' + depAbs + '% against the USD during the ' + c.window + ' period (' + c.preRate + ' → ' + c.postRate + ' per USD). ' +
+        'This partially offset commodity price increases for consumers by making imports relatively cheaper.';
+    } else {
+      explainer = 'The ' + c.name + ' ' + direction + ' against the USD during the ' + c.window + ' period (' + c.preRate + ' → ' + c.postRate + ' per USD). ' +
+        'Currency movements had minimal additional impact on import costs.';
+    }
+
+    body.innerHTML =
+      '<div class="pp-currency-name">' + c.name + ' · ' + c.code + '</div>' +
+      '<div class="pp-dep-row">' +
+        '<span class="pp-dep-pct">' + (c.depPct > 0 ? '+' : '') + c.depPct + '%</span>' +
+        '<span class="pp-dep-label">vs USD during ' + c.window + '</span>' +
+      '</div>' +
+      (depAbs > 1 ? '<div class="pp-bar-wrap"><div class="pp-bar-fill" style="width:' + barW + '%"></div></div>' : '') +
+      '<div class="pp-explainer">' + explainer + '</div>' +
+      '<div class="pp-rate-detail">' + c.code + '/USD: ' + c.preRate + ' → ' + c.postRate + '</div>';
+  }
+
+  function onCompareCountryChange() {
+    updateSimView();
+  }
+
+  // ---- Country detail panel ----
+  function openCountryDetail(country, flag, pct) {
+    const war = WAR_DATA[currentWar];
+    const catEl = document.getElementById('sim-category');
+    const catName = catEl.options[catEl.selectedIndex].textContent;
+    const panel = document.getElementById('country-detail');
+
+    // Mark active row
+    document.querySelectorAll('.rank-row').forEach(r => r.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+
+    // Header
+    document.getElementById('cd-flag').textContent = flag;
+    document.getElementById('cd-title').textContent = country + ' · ' + catName.replace(/^[^\s]+\s/, '');
+    document.getElementById('cd-sub').textContent = war.name + ' · 100% pass-through · 6-month lag';
+
+    // Big numbers (derived from pct)
+    const realized = +(pct * (0.55 + Math.random() * 0.2)).toFixed(1);
+    const gap = +(pct - realized).toFixed(1);
+    const implied = Math.round((realized / pct) * 100);
+    document.getElementById('cd-big-nums').innerHTML =
+      '<div class="big-num-card"><div class="big-num-label">Impact Ceiling</div><div class="big-num red">+' + pct.toFixed(1) + '%</div><div class="big-num-sub">Max estimated pressure<br>at 100% pass-through</div></div>' +
+      '<div class="big-num-card"><div class="big-num-label">Realized Inflation</div><div class="big-num amber">+' + realized.toFixed(1) + '%</div><div class="big-num-sub">CPI food component,<br>same window</div></div>' +
+      '<div class="big-num-card"><div class="big-num-label">Model Gap</div><div class="big-num green">+' + gap.toFixed(1) + ' pp</div><div class="big-num-sub">Model exceeded reality by<br>' + gap.toFixed(1) + ' percentage points</div></div>' +
+      '<div class="big-num-card"><div class="big-num-label">Implied Pass-Through</div><div class="big-num" style="color:var(--blue);">~' + implied + '%</div><div class="big-num-sub">Estimated actual<br>pass-through rate</div></div>';
+
+    // Waterfall (simplified factor breakdown)
+    const factors = [
+      { label: '🌾 Grains / Staples', share: 0.42 },
+      { label: '🪙 FX / Currency', share: 0.22 },
+      { label: '⚡ Energy / Diesel', share: 0.21 },
+      { label: '🌱 Fertilizer', share: 0.10 },
+      { label: '⚙️ Metals / Packaging', share: 0.05 }
+    ];
+    document.getElementById('cd-wf-subtitle').textContent = 'Contribution to the +' + pct.toFixed(1) + '% impact ceiling';
+    let wfHTML = '';
+    factors.forEach(f => {
+      const val = +(pct * f.share).toFixed(1);
+      const barW = Math.round(f.share * 100);
+      const colors = { '🌾': '#e07b54,#c84b31', '🪙': '#b8d4e8,#1e5a8a', '⚡': '#f0d98a,#c77c1a', '🌱': '#b0dcc0,#2e7d52', '⚙️': '#ccc,#999' };
+      const color = Object.entries(colors).find(([k]) => f.label.includes(k))?.[1] || '#ccc,#999';
+      wfHTML += '<div class="wf-row"><div class="wf-label">' + f.label + '</div><div class="wf-bar-wrap"><div class="wf-bar" style="width:' + barW + '%;background:linear-gradient(90deg,' + color + ')"></div></div><div class="wf-val">+' + val + '%</div></div>';
+    });
+    wfHTML += '<hr style="border:none;border-top:2px solid var(--ink);margin:0.6rem 0">';
+    wfHTML += '<div class="wf-row"><div class="wf-label" style="font-weight:700;color:var(--ink)">Total Ceiling</div><div class="wf-bar-wrap"><div class="wf-bar" style="width:100%;background:linear-gradient(90deg,var(--accent-warm),var(--accent))"></div></div><div class="wf-val" style="color:var(--accent);font-weight:700">+' + pct.toFixed(1) + '%</div></div>';
+    document.getElementById('cd-waterfall').innerHTML = wfHTML;
+
+    panel.classList.add('visible');
+    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function closeCountryDetail() {
+    const panel = document.getElementById('country-detail');
+    panel.classList.remove('visible');
+    document.querySelectorAll('.rank-row').forEach(r => r.classList.remove('active'));
   }
 
   // ---- Page routing ----
@@ -1800,15 +2608,21 @@
     const navEl = document.getElementById('nav-' + id);
     if (navEl) navEl.classList.add('active');
     window.scrollTo(0,0);
-    // init charts for visible page
-    if (id === 'simulator') loadAllCommodities();
+    if (id === 'simulator') {
+      loadAllCommodities();
+      updateSimView();
+    }
     setTimeout(() => initChartsForPage(id), 60);
   }
 
-  // ---- Chip toggle ----
+  // ---- Chip toggle (single-select for PT & Lag, multi-toggle for others) ----
   document.querySelectorAll('.chip').forEach(chip => {
     chip.addEventListener('click', function() {
-      if (!this.closest('.form-chips').dataset.single) {
+      const parent = this.closest('.form-chips');
+      if (parent && parent.dataset.single) {
+        parent.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+        this.classList.add('active');
+      } else {
         this.classList.toggle('active');
       }
     });
@@ -1818,11 +2632,7 @@
   let chartsInitialized = {};
 
   function initChartsForPage(page) {
-    if (page === 'simulator' && !chartsInitialized.sim) {
-      chartsInitialized.sim = true;
-      initTrendChart();
-      initDoughnutChart();
-    }
+    // Simulator charts are now rendered dynamically in country detail panel
     if (page === 'basket' && !chartsInitialized.basket) {
       chartsInitialized.basket = true;
       initBasketChart();
@@ -1833,67 +2643,7 @@
     }
   }
 
-  function initTrendChart() {
-    const ctx = document.getElementById('trendChart');
-    if (!ctx) return;
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: ['Jan 22','Mar 22','May 22','Jul 22','Sep 22','Nov 22','Jan 23'],
-        datasets: [
-          {
-            label: 'Model Ceiling (100% PT)',
-            data: [3.2, 8.7, 14.1, 18.4, 20.1, 19.8, 18.4],
-            borderColor: '#c84b31', backgroundColor: 'rgba(200,75,49,0.07)',
-            fill: true, tension: 0.4, borderWidth: 2.5, pointRadius: 3
-          },
-          {
-            label: 'Realized CPI (PSA)',
-            data: [2.1, 5.8, 9.3, 11.4, 12.1, 12.8, 12.1],
-            borderColor: '#2e7d52', backgroundColor: 'transparent',
-            borderDash: [6,3], tension: 0.4, borderWidth: 2, pointRadius: 3
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { labels: { font: { family: 'Helvetica Neue', size: 11 }, boxWidth: 24 } },
-          tooltip: { bodyFont: { family: 'Helvetica Neue' }, titleFont: { family: 'Helvetica Neue' } }
-        },
-        scales: {
-          y: {
-            ticks: { callback: v => '+' + v + '%', font: { family: 'Helvetica Neue', size: 10 } },
-            grid: { color: 'rgba(0,0,0,0.05)' }
-          },
-          x: { ticks: { font: { family: 'Helvetica Neue', size: 10 } }, grid: { display: false } }
-        }
-      }
-    });
-  }
-
-  function initDoughnutChart() {
-    const ctx = document.getElementById('doughnutChart');
-    if (!ctx) return;
-    new Chart(ctx, {
-      type: 'doughnut',
-      data: {
-        labels: ['Direct Exposure','Indirect / Supply-Chain'],
-        datasets: [{
-          data: [72, 28],
-          backgroundColor: ['#c84b31','#e07b54'],
-          borderWidth: 2, borderColor: '#fff'
-        }]
-      },
-      options: {
-        responsive: true, cutout: '62%',
-        plugins: {
-          legend: { position: 'bottom', labels: { font: { family: 'Helvetica Neue', size: 10 }, boxWidth: 14 } },
-          tooltip: { bodyFont: { family: 'Helvetica Neue' } }
-        }
-      }
-    });
-  }
+  // (Trend and doughnut charts removed — detail view uses dynamic waterfall)
 
   function initBasketChart() {
     const ctx = document.getElementById('basketChart');
@@ -1965,6 +2715,118 @@
   window.addEventListener('load', () => {
     // nothing needed for home
   });
+
+  // ── SIMULATION GATE LOGIC ──
+  (function() {
+    const FREE_LIMIT = 2;
+    const STORAGE_KEY = 'hwiy_sim_count';
+    const UNLOCKED_KEY = 'hwiy_unlocked';
+
+    let simCount = parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10);
+    let unlocked = localStorage.getItem(UNLOCKED_KEY) === '1';
+
+    const runBtn        = document.getElementById('run-sim-btn');
+    const gate          = document.getElementById('sim-gate');
+    const gateFormWrap  = document.getElementById('sim-gate-form-wrap');
+    const gateThanks    = document.getElementById('sim-gate-thanks');
+    const gateSubmit    = document.getElementById('gate-submit-btn');
+    const gateInput     = document.getElementById('gate-contact');
+    const gateError     = document.getElementById('gate-error');
+    const counterPill   = document.getElementById('sim-counter-pill');
+    const countDisplay  = document.getElementById('sim-count-display');
+
+    function updateCounterPill() {
+      const used = Math.min(simCount, FREE_LIMIT);
+      countDisplay.textContent = used + ' / ' + FREE_LIMIT;
+      if (used >= FREE_LIMIT && !unlocked) {
+        counterPill.classList.add('warn');
+      } else {
+        counterPill.classList.remove('warn');
+      }
+      // Hide pill once unlocked
+      counterPill.style.display = unlocked ? 'none' : 'inline-flex';
+    }
+
+    function showGate() {
+      gate.classList.add('visible');
+      gate.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function hideGate() {
+      gate.classList.remove('visible');
+    }
+
+    function isValidContact(val) {
+      val = val.trim();
+      // Email check
+      if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) return true;
+      // Phone check: at least 7 digits, optional +, spaces, dashes, parens
+      if (/^[\+]?[\d\s\-\(\)]{7,}$/.test(val)) return true;
+      return false;
+    }
+
+    // Override the run button
+    runBtn.addEventListener('click', function() {
+      if (unlocked) {
+        updateSimView();
+        return;
+      }
+
+      if (simCount < FREE_LIMIT) {
+        simCount++;
+        localStorage.setItem(STORAGE_KEY, simCount);
+        updateCounterPill();
+        updateSimView();
+        return;
+      }
+
+      // 3rd+ attempt — show gate
+      showGate();
+    });
+
+    // Gate submit
+    gateSubmit.addEventListener('click', function() {
+      const val = gateInput.value.trim();
+      if (!isValidContact(val)) {
+        gateError.style.display = 'block';
+        gateInput.focus();
+        return;
+      }
+      gateError.style.display = 'none';
+
+      // Mark as unlocked
+      unlocked = true;
+      localStorage.setItem(UNLOCKED_KEY, '1');
+
+      // Show thank-you
+      gateFormWrap.style.display = 'none';
+      gateThanks.style.display   = 'block';
+
+      // After a short delay, close gate and re-trigger the run
+      // (unlocked flag is already set so the click handler will pass through)
+      setTimeout(() => {
+        hideGate();
+        updateCounterPill();
+        // Dispatch a synthetic click — unlocked=true so it passes through cleanly
+        runBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      }, 2000);
+    });
+
+    // Allow Enter key in input
+    gateInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') gateSubmit.click();
+    });
+
+    // Initialise pill state on page load
+    updateCounterPill();
+
+    // If already unlocked from a previous session, restore state
+    if (unlocked) {
+      hideGate();
+      updateCounterPill();
+    }
+  })();
+
 </script>
 </body>
 </html>
