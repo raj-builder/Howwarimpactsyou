@@ -2793,7 +2793,7 @@
     });
 
     // Gate submit
-    gateSubmit.addEventListener('click', function() {
+    gateSubmit.addEventListener('click', async function() {
       const val = gateInput.value.trim();
       if (!isValidContact(val)) {
         gateError.style.display = 'block';
@@ -2801,6 +2801,23 @@
         return;
       }
       gateError.style.display = 'none';
+      gateSubmit.textContent = 'Saving…';
+      gateSubmit.disabled = true;
+
+      // Send signup to backend (Vercel KV)
+      try {
+        await fetch('/api/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contact: val,
+            war: currentWar || 'unknown',
+            category: document.getElementById('sim-category')?.value || 'unknown',
+          }),
+        });
+      } catch (e) {
+        console.warn('Signup API error:', e.message);
+      }
 
       // Mark as unlocked
       unlocked = true;
@@ -2810,12 +2827,11 @@
       gateFormWrap.style.display = 'none';
       gateThanks.style.display   = 'block';
 
-      // After a short delay, close gate and re-trigger the run
-      // (unlocked flag is already set so the click handler will pass through)
       setTimeout(() => {
         hideGate();
         updateCounterPill();
-        // Dispatch a synthetic click — unlocked=true so it passes through cleanly
+        gateSubmit.textContent = 'Continue →';
+        gateSubmit.disabled = false;
         runBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
       }, 2000);
     });
