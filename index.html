@@ -1576,7 +1576,7 @@
 
         <!-- PURCHASING POWER EROSION -->
         <div class="chart-card" id="pp-erosion-card" style="margin-bottom:1.25rem;">
-          <div class="chart-card-title">Purchasing Power Erosion</div>
+          <div class="chart-card-title">Purchasing Power Erosion <span style="font-size:0.68rem;font-weight:400;color:var(--ink-muted);margin-left:0.4rem;">(historical, during conflict window)</span></div>
           <div id="pp-erosion-body">
             <!-- Rendered by JS -->
           </div>
@@ -2075,22 +2075,30 @@
 
     try {
       const resp = await fetch('/api/prices', { signal: AbortSignal.timeout(15000) });
-      if (!resp.ok) throw new Error('proxy ' + resp.status);
+      if (!resp.ok) throw new Error('API ' + resp.status);
       const json = await resp.json();
 
       renderLivePrices(json.commodities);
 
-      dot.className = 'live-dot'; // green
-      status.textContent = json.serp_api_ok
-        ? 'SerpAPI / Google Finance · As of ' + (json.fetched_at?.slice(0,10) || 'today')
-        : 'Fallback prices loaded';
-      if (dateEl) dateEl.textContent = json.serp_api_ok ? 'Near-realtime' : 'Cached';
+      // Check how many came from live vs fallback
+      const liveCount = Object.values(json.commodities).filter(c => c.status === 'ok').length;
+      const total = Object.keys(json.commodities).length;
+
+      if (json.serp_api_ok && liveCount > 0) {
+        dot.className = 'live-dot'; // green
+        status.textContent = 'Live prices · ' + liveCount + '/' + total + ' commodities · ' + (json.fetched_at?.slice(0,10) || 'today');
+        if (dateEl) dateEl.textContent = 'Near-realtime';
+      } else {
+        dot.className = 'live-dot'; // still green — prices are shown
+        status.textContent = 'Approximate closing prices · ' + (json.meta?.source || 'Cached');
+        if (dateEl) dateEl.textContent = 'Last known close';
+      }
       return;
     } catch (proxyErr) {
-      console.warn('Price proxy unavailable, using fallback:', proxyErr.message);
+      console.warn('Price API unavailable, using client fallback:', proxyErr.message);
     }
 
-    // Fallback: use static prices
+    // Client-side fallback if API endpoint is completely unreachable
     const results = {};
     Object.entries(FALLBACK_PRICES).forEach(([id, fb]) => {
       results[id] = {
@@ -2100,7 +2108,7 @@
     });
     renderLivePrices(results);
     dot.className = 'live-dot error';
-    status.textContent = 'Using approximate benchmark fallback prices';
+    status.textContent = 'Approximate benchmark prices (API unavailable)';
     if (dateEl) dateEl.textContent = 'Fallback';
   }
 
