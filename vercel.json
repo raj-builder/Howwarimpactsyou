@@ -9,10 +9,7 @@
     }
   },
   "rewrites": [
-    { "source": "/api/prices", "destination": "/api/prices" }
-  ],
-  "env": {
-    "OIL_PRICE_API_KEY": "ok_432c3fffa2fb48fbb6137311c22a983d",
-    "SERP_API_KEY": "01b3223d5a26ccd8701a24c4bfaf3c7bd41561e192893466b58ccd65edcf34de"
-  }
+    { "source": "/api/prices", "destination": "/api/prices" },
+    { "source": "/", "destination": "/howwarimpactsyou.html" }
+  ]
 }
