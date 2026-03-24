@@ -9,8 +9,7 @@
     }
   },
   "rewrites": [
-    { "source": "/api/prices", "destination": "/api/prices" },
-    { "source": "/", "destination": "/howwarimpactsyou.html" }
+    { "source": "/api/prices", "destination": "/api/prices" }
   ]
 }
 
