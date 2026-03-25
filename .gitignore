@@ -2,6 +2,10 @@
 cron/prices_cache.json
 cron/prices_log.jsonl
 
+# Next.js
+.next/
+out/
+
 # Dependencies
 node_modules/
 

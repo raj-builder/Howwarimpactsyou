@@ -1,0 +1,60 @@
+{
+  "nav": {
+    "home": "Home",
+    "simulator": "Simulator",
+    "basket": "Basket View",
+    "compare": "Compare",
+    "saved": "Saved",
+    "methodology": "Methodology",
+    "validation": "Validation",
+    "dataSources": "Data Sources",
+    "learn": "Learn",
+    "press": "Press",
+    "openSimulator": "Open Simulator"
+  },
+  "home": {
+    "eyebrow": "Macro-to-Consumer Price Impact Simulator",
+    "headline": "How could oil, war, and currency affect what you pay?",
+    "subtitle": "Select a country and a consumer category to see estimated price impacts under different conflict and crisis scenarios.",
+    "disclaimer": "This tool estimates a scenario ceiling under 100% pass-through. Actual impacts depend on subsidies, supply substitution, and government intervention."
+  },
+  "simulator": {
+    "controls": "Scenario Controls",
+    "updateView": "Update View",
+    "passthrough": "Pass-through rate",
+    "lag": "Lag horizon",
+    "scenario": "Scenario",
+    "category": "Category",
+    "country": "Country"
+  },
+  "basket": {
+    "title": "Household Basics Basket",
+    "subtitle": "Weighted impact across all consumer categories"
+  },
+  "impact": {
+    "topCountries": "Most Impacted Countries",
+    "bottomCountries": "Least Impacted Countries",
+    "priceImpact": "price impact",
+    "macroShocks": "Macro Shocks",
+    "whyThisRanking": "Why this ranking?"
+  },
+  "press": {
+    "title": "Press Kit",
+    "subtitle": "Resources for journalists, researchers, and media professionals",
+    "aboutProject": "About the project",
+    "keyStats": "Key statistics",
+    "methodology": "Methodology",
+    "howToCite": "How to cite",
+    "mediaInquiries": "Media inquiries",
+    "screenshots": "Screenshots & assets"
+  },
+  "common": {
+    "learnMore": "Learn more",
+    "explore": "Explore in simulator",
+    "beta": "v1.0 Beta",
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "notFound": "Not found",
+    "backHome": "Back to home"
+  }
+}
