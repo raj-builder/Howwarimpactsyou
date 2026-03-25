@@ -1,0 +1,22 @@
+# howwarimpactsyou.com
+
+## Description
+Macro-to-consumer price impact simulator showing how wars, oil shocks, and currency moves affect everyday goods in 12+ countries.
+
+## Data Available
+- 5 conflict scenarios: Russia-Ukraine, Iran-Israel-US, Gaza/Red Sea, COVID-19, Iraq/Gulf
+- 10 consumer categories: bread, dairy, eggs, rice, cooking oil, vegetables, meat, detergent, fuel, household basket
+- 10 core countries with full coverage
+- Impact model v1.0 (scenario ceiling at 100% pass-through)
+
+## API Endpoints
+- GET /api/data/wars - All war impact data (JSON)
+- GET /api/data/rankings - Flattened impact rankings (JSON)
+- GET /api/data/countries - Country list with coverage (JSON)
+- GET /api/prices - Live commodity prices (JSON)
+
+## Text Views
+- GET /impact/{war}/{category}/text - Plain text scenario summary
+
+## License
+Data: CC BY 4.0

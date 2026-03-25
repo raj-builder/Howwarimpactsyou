@@ -1,25 +1,4 @@
 {
-  "outputDirectory": ".",
-  "cleanUrls": true,
-  "trailingSlash": false,
-  "functions": {
-    "api/prices.js": {
-      "memory": 256,
-      "maxDuration": 15
-    },
-    "api/signup.js": {
-      "memory": 128,
-      "maxDuration": 10
-    },
-    "api/signups.js": {
-      "memory": 128,
-      "maxDuration": 10
-    }
-  },
-  "rewrites": [
-    { "source": "/api/prices", "destination": "/api/prices" },
-    { "source": "/api/signup", "destination": "/api/signup" },
-    { "source": "/api/signups", "destination": "/api/signups" }
-  ]
+  "framework": "nextjs",
+  "outputDirectory": ".next"
 }
-

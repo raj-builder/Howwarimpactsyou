@@ -1,0 +1,60 @@
+{
+  "nav": {
+    "home": "Home",
+    "simulator": "Simulator",
+    "basket": "Basket View",
+    "compare": "Ihambing",
+    "saved": "Naka-save",
+    "methodology": "Pamamaraan",
+    "validation": "Pagpapatunay",
+    "dataSources": "Pinagmulan ng Data",
+    "learn": "Matuto",
+    "press": "Press",
+    "openSimulator": "Buksan ang Simulator"
+  },
+  "home": {
+    "eyebrow": "Macro-to-Consumer na Simulator ng Epekto sa Presyo",
+    "headline": "Paano maaapektuhan ng langis, digmaan, at pera ang binabayaran mo?",
+    "subtitle": "Pumili ng bansa at kategorya ng consumer...",
+    "disclaimer": "Tinatantya ng tool na ito ang scenario ceiling sa ilalim ng 100% pass-through..."
+  },
+  "simulator": {
+    "controls": "Mga Kontrol ng Senaryo",
+    "updateView": "I-update ang View",
+    "passthrough": "Rate ng pass-through",
+    "lag": "Lag horizon",
+    "scenario": "Senaryo",
+    "category": "Kategorya",
+    "country": "Bansa"
+  },
+  "basket": {
+    "title": "Basket ng Pangunahing Pangangailangan",
+    "subtitle": "Weighted na epekto sa lahat ng kategorya ng consumer"
+  },
+  "impact": {
+    "topCountries": "Mga Bansang Pinakaapektado",
+    "bottomCountries": "Mga Bansang Hindi Gaanong Apektado",
+    "priceImpact": "epekto sa presyo",
+    "macroShocks": "Mga Macro Shock",
+    "whyThisRanking": "Bakit ganito ang ranggo?"
+  },
+  "press": {
+    "title": "Press Kit",
+    "subtitle": "Mga mapagkukunan para sa mga mamamahayag, mananaliksik, at propesyonal sa media",
+    "aboutProject": "Tungkol sa proyekto",
+    "keyStats": "Mga pangunahing estadistika",
+    "methodology": "Pamamaraan",
+    "howToCite": "Paano mag-cite",
+    "mediaInquiries": "Mga tanong mula sa media",
+    "screenshots": "Mga screenshot at asset"
+  },
+  "common": {
+    "learnMore": "Matuto pa",
+    "explore": "I-explore sa simulator",
+    "beta": "v1.0 Beta",
+    "loading": "Naglo-load...",
+    "error": "May nangyaring mali",
+    "notFound": "Hindi natagpuan",
+    "backHome": "Bumalik sa home"
+  }
+}
