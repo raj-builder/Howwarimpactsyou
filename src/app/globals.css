@@ -31,12 +31,6 @@
 }
 
 /* Base styles */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
 html {
   font-size: 16px;
   scroll-behavior: smooth;
@@ -48,7 +42,11 @@ body {
   font-family: var(--font-serif);
   line-height: 1.65;
   -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
+}
+
+/* Navigation should be full width with centered content */
+nav.sticky {
+  width: 100%;
 }
 
 /* Animations */
@@ -78,7 +76,8 @@ body {
 /* Utility for max-width container */
 .container-page {
   max-width: 1140px;
-  margin: 0 auto;
+  margin-left: auto;
+  margin-right: auto;
   padding-left: 2rem;
   padding-right: 2rem;
 }
@@ -86,4 +85,12 @@ body {
 /* Chart.js responsive */
 canvas {
   max-width: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .container-page {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
 }
