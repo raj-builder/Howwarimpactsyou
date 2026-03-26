@@ -114,11 +114,16 @@ src/
 │   ├── categories.ts             # 10 consumer categories
 │   ├── countries.ts              # 20 countries with coverage status
 │   └── fallback-prices.ts       # Commodity price fallbacks
-├── types/index.ts                # War, Country, Category, Commodity types
+├── types/
+│   ├── index.ts                  # War, Country, Category, Commodity types
+│   └── scenario.ts               # ScenarioState, ScenarioResult, BasketResult, LagPeriod
 ├── lib/                          # Hooks and utilities
-│   ├── use-simulator-state.ts    # URL ↔ state sync hook
-│   ├── saved-scenarios.ts        # localStorage save/load
-│   └── analytics.ts              # Event tracking wrapper
+│   ├── calculations.ts           # Centralized calculation engine (single source of truth)
+│   ├── use-simulator-state.ts    # URL ↔ state sync hook (typed LagPeriod, full serialization)
+│   ├── saved-scenarios.ts        # localStorage save/load (with migration)
+│   ├── analytics.ts              # Event tracking wrapper
+│   └── __tests__/
+│       └── calculations.test.ts  # 37 unit tests (Vitest)
 ├── content/articles.ts           # 5 learning hub articles
 └── i18n/                         # Localization foundation
     ├── config.ts
@@ -264,6 +269,28 @@ npm start
 ---
 
 ## Changelog
+
+### 2025-03-26 — v2.1 (Scenario Builder Refactoring)
+
+Centralized all calculation logic, fixed numerical inconsistencies, and made every result auditable and reproducible. Addresses 14 scenario builder tickets (SB-001 through SB-014):
+
+- **Centralized calculation engine:** Created `src/lib/calculations.ts` as single source of truth for all math — no inline calculations in components
+- **Removed Math.random():** Realized estimate is now deterministic (0.65 × ceiling) instead of random 0.55–0.75
+- **Lag multipliers applied:** Lag (Immediate 1.0, 3m 0.95, 6m 0.88, 12m 0.75) now actually affects all computed values
+- **Fixed basket math:** Basket page now computes dynamically from rankings data via `computeBasket()`, connected to URL scenario state
+- **Dual basket metrics:** Shows both weighted average price impact (%) and CPI basket contribution (pp)
+- **Canonical scenario types:** `ScenarioState`, `ScenarioResult`, `BasketResult`, `LagPeriod`, `ProvenanceMetadata`
+- **Provenance metadata:** Model version, snapshot date, data-as-of shown in assumption strip
+- **Coverage + reliability badges:** Coverage tier and reliability status (validated/indicative/experimental) displayed on all result surfaces
+- **Structural miss warnings:** Türkiye, Nigeria, Pakistan show validation warning banners
+- **Factor contribution breakdown:** Factors now sum exactly to the lag-adjusted ceiling with rounding residual correction
+- **Deterministic share links:** All URL params always serialized (no elision of defaults)
+- **Impossible-state guards:** `validateScenarioState()` blocks rendering when state is invalid
+- **Audit drawer:** Full calculation trace with formula chain, factor decomposition, provenance
+- **SaveButton defaults fixed:** passthrough changed from 0.6 to 100, lag from '3-6 months' to '6m'
+- **localStorage migration:** Old saved scenarios with decimal passthrough auto-converted
+- **Unit tests:** 37 Vitest tests covering calculations, rounding, lag, basket reconciliation, identity round-trip, validation guards
+- **Homepage hrefs completed:** Example cards now include lag and passthrough params
 
 ### 2025-03-25 — v2.0 (Next.js Migration)
 

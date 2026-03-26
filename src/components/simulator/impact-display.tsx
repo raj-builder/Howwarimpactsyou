@@ -1,24 +1,36 @@
 'use client'
 
 import { useState } from 'react'
+import type { LagPeriod } from '@/types/scenario'
+import { LAG_LABELS } from '@/types/scenario'
 
 interface ImpactDisplayProps {
-  /** The ceiling impact percentage (e.g. 18.4) */
-  ceiling: number
-  /** Pass-through percentage (0-100) */
-  passthrough: number
+  /** Lag-adjusted ceiling (already includes passthrough and lag) */
+  lagAdjustedCeiling: number
+  /** Pre-computed range low */
+  rangeLow: number
+  /** Pre-computed range high */
+  rangeHigh: number
+  /** Lag period for tooltip context */
+  lag?: LagPeriod
+  /** Lag multiplier value for tooltip context */
+  lagMultiplier?: number
 }
 
-export function ImpactDisplay({ ceiling, passthrough }: ImpactDisplayProps) {
+export function ImpactDisplay({
+  lagAdjustedCeiling,
+  rangeLow,
+  rangeHigh,
+  lag,
+  lagMultiplier,
+}: ImpactDisplayProps) {
   const [showTooltip, setShowTooltip] = useState(false)
 
-  const adjustedCeiling = +(ceiling * (passthrough / 100)).toFixed(1)
-  const rangeLow = +(adjustedCeiling * 0.55).toFixed(1)
-  const rangeHigh = +(adjustedCeiling * 0.75).toFixed(1)
-
   // Normalize bar widths: ceiling is 100% of the bar
-  const rangeLowPct = adjustedCeiling > 0 ? (rangeLow / adjustedCeiling) * 100 : 0
-  const rangeHighPct = adjustedCeiling > 0 ? (rangeHigh / adjustedCeiling) * 100 : 0
+  const rangeLowPct =
+    lagAdjustedCeiling > 0 ? (rangeLow / lagAdjustedCeiling) * 100 : 0
+  const rangeHighPct =
+    lagAdjustedCeiling > 0 ? (rangeHigh / lagAdjustedCeiling) * 100 : 0
 
   return (
     <div className="mt-2">
@@ -29,7 +41,7 @@ export function ImpactDisplay({ ceiling, passthrough }: ImpactDisplayProps) {
             Ceiling
           </span>
           <span className="font-sans text-[0.82rem] font-bold text-accent ml-1.5">
-            +{adjustedCeiling}%
+            +{lagAdjustedCeiling}%
           </span>
         </div>
         <div>
@@ -87,12 +99,17 @@ export function ImpactDisplay({ ceiling, passthrough }: ImpactDisplayProps) {
         {showTooltip && (
           <div className="mt-1 bg-bg-card border border-border rounded-lg px-3 py-2 shadow-card animate-fade-in">
             <p className="font-sans text-[0.72rem] text-ink-soft leading-relaxed">
-              The <strong className="text-ink">ceiling</strong> assumes 100%
-              pass-through of upstream commodity shocks to consumer prices.
+              The <strong className="text-ink">ceiling</strong> assumes full
+              pass-through of upstream commodity shocks to consumer prices
+              {lag && lagMultiplier !== undefined && lagMultiplier < 1 && (
+                <>, adjusted for a <strong className="text-ink">
+                  {LAG_LABELS[lag]}
+                </strong> lag (multiplier: {lagMultiplier}x)</>
+              )}.
               Historically, realized inflation has been{' '}
-              <strong className="text-ink">55&ndash;75%</strong> of the ceiling due
-              to government subsidies, price controls, currency hedging, and supply
-              chain buffers. The typical range reflects this adjustment.
+              <strong className="text-ink">55&ndash;75%</strong> of the ceiling
+              due to government subsidies, price controls, currency hedging, and
+              supply chain buffers. The typical range reflects this adjustment.
             </p>
           </div>
         )}

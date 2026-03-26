@@ -23,7 +23,7 @@ const EXAMPLE_CARDS = [
       { label: 'High Confidence', color: 'blue' },
       { label: 'Validated', color: 'amber' },
     ],
-    href: '/simulator?war=ukraine-russia&category=bread&country=Philippines',
+    href: '/simulator?war=ukraine-russia&category=bread&country=Philippines&pt=100&lag=12m',
   },
   {
     flag: '🇪🇬',
@@ -38,7 +38,7 @@ const EXAMPLE_CARDS = [
       { label: 'Full Coverage', color: 'green' },
       { label: 'Very High Pressure', color: 'red' },
     ],
-    href: '/simulator?war=ukraine-russia&category=oil&country=Egypt',
+    href: '/simulator?war=ukraine-russia&category=oil&country=Egypt&pt=100&lag=6m',
   },
   {
     flag: '🇧🇷',
@@ -53,7 +53,7 @@ const EXAMPLE_CARDS = [
       { label: 'Partial Coverage', color: 'amber' },
       { label: 'Medium Confidence', color: 'blue' },
     ],
-    href: '/simulator?war=ukraine-russia&category=fuel&country=Brazil',
+    href: '/simulator?war=ukraine-russia&category=fuel&country=Brazil&pt=100&lag=immediate',
   },
   {
     flag: '🇮🇳',
@@ -68,7 +68,7 @@ const EXAMPLE_CARDS = [
       { label: 'Full Coverage', color: 'green' },
       { label: 'Validated', color: 'green' },
     ],
-    href: '/simulator?war=ukraine-russia&category=vegetables&country=India',
+    href: '/simulator?war=ukraine-russia&category=vegetables&country=India&pt=100&lag=3m',
   },
 ]
 

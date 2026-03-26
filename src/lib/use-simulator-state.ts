@@ -1,8 +1,17 @@
 'use client'
 
 import { useSearchParams, useRouter } from 'next/navigation'
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useMemo } from 'react'
 import type { WarId, CategoryId } from '@/types'
+import type { LagPeriod, ScenarioState } from '@/types/scenario'
+import { LAG_MULTIPLIERS } from '@/types/scenario'
+import { buildScenarioId, getProvenance } from '@/lib/calculations'
+
+/** Validate and coerce a lag string to LagPeriod, defaulting to '6m'. */
+function parseLag(raw: string | null): LagPeriod {
+  if (raw && raw in LAG_MULTIPLIERS) return raw as LagPeriod
+  return '6m'
+}
 
 export function useSimulatorState() {
   const searchParams = useSearchParams()
@@ -20,22 +29,43 @@ export function useSimulatorState() {
   const [passthrough, setPassthrough] = useState(
     Number(searchParams.get('pt')) || 100,
   )
-  const [lag, setLag] = useState(searchParams.get('lag') || '6m')
+  const [lag, setLag] = useState<LagPeriod>(
+    parseLag(searchParams.get('lag')),
+  )
 
-  // Sync to URL on change
+  // Always serialize ALL params — no elision of defaults.
+  // This ensures share links are fully deterministic.
   const updateUrl = useCallback(() => {
     const params = new URLSearchParams()
     params.set('war', war)
     params.set('category', category)
     if (country) params.set('country', country)
-    if (passthrough !== 100) params.set('pt', String(passthrough))
-    if (lag !== '6m') params.set('lag', lag)
+    params.set('pt', String(passthrough))
+    params.set('lag', lag)
     router.replace(`/simulator?${params.toString()}`, { scroll: false })
   }, [war, category, country, passthrough, lag, router])
 
   useEffect(() => {
     updateUrl()
   }, [updateUrl])
+
+  // Expose a full ScenarioState for calculation consumers
+  const scenarioState: ScenarioState | null = useMemo(() => {
+    if (!country) return null
+    return {
+      war,
+      category,
+      country,
+      passthrough,
+      lag,
+      provenance: getProvenance(),
+    }
+  }, [war, category, country, passthrough, lag])
+
+  const scenarioId = useMemo(() => {
+    if (!country) return null
+    return buildScenarioId({ war, category, country, passthrough, lag })
+  }, [war, category, country, passthrough, lag])
 
   return {
     war,
@@ -48,5 +78,7 @@ export function useSimulatorState() {
     setPassthrough,
     lag,
     setLag,
+    scenarioState,
+    scenarioId,
   }
 }

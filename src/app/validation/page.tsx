@@ -153,6 +153,13 @@ export default function ValidationPage() {
             the realized price change exceeded the model ceiling, indicating the
             model failed to capture all cost drivers.
           </p>
+          <p className="font-sans text-[0.72rem] text-ink-muted mt-2 leading-relaxed bg-bg-alt border border-border rounded-lg px-3 py-2">
+            <strong className="text-ink">Validation context:</strong> Model
+            ceilings shown above are computed at 100% pass-through with
+            immediate lag (1.0x multiplier). In the simulator, selecting a
+            different lag period (e.g., 12-month at 0.75x) will reduce the
+            ceiling proportionally.
+          </p>
         </section>
 
         {/* Known failure modes */}

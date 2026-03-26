@@ -1,57 +1,62 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-
-/* ---------- types ---------- */
-interface BasketItem {
-  id: string
-  label: string
-  icon: string
-  weight: number     // CPI weight as a percentage (0-100)
-  impactPct: number  // price impact percentage
-  enabled: boolean
-}
-
-/* ---------- initial data: Philippines, Russia-Ukraine ---------- */
-const INITIAL_ITEMS: BasketItem[] = [
-  { id: 'bread', label: 'Bread & Cereals', icon: '\uD83C\uDF5E', weight: 25, impactPct: 18.4, enabled: true },
-  { id: 'oil', label: 'Cooking Oil', icon: '\uD83E\uDED2', weight: 15, impactPct: 31.2, enabled: true },
-  { id: 'fuel', label: 'Household Fuel', icon: '\u26FD', weight: 20, impactPct: 22.7, enabled: true },
-  { id: 'dairy', label: 'Milk & Dairy', icon: '\uD83E\uDD5B', weight: 15, impactPct: 14.2, enabled: true },
-  { id: 'rice', label: 'Rice', icon: '\uD83C\uDF5A', weight: 10, impactPct: 13.8, enabled: true },
-  { id: 'vegetables', label: 'Vegetables', icon: '\uD83E\uDD6C', weight: 15, impactPct: 15.6, enabled: true },
-]
+import { useSearchParams } from 'next/navigation'
+import { WARS } from '@/data/wars'
+import { COUNTRIES } from '@/data/countries'
+import { computeBasket, getProvenance } from '@/lib/calculations'
+import type { WarId, CategoryId } from '@/types'
+import type { LagPeriod } from '@/types/scenario'
+import { LAG_MULTIPLIERS, LAG_LABELS } from '@/types/scenario'
 
 /* ---------- component ---------- */
 export function BasketClient() {
-  const [items, setItems] = useState<BasketItem[]>(INITIAL_ITEMS)
+  const searchParams = useSearchParams()
 
-  /* toggle an item on/off */
-  const toggleItem = (id: string) => {
-    setItems((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, enabled: !item.enabled } : item,
-      ),
-    )
+  /* --- read scenario params from URL --- */
+  const warId = (searchParams.get('war') as WarId) || 'ukraine-russia'
+  const country = searchParams.get('country') || 'Philippines'
+  const passthrough = Number(searchParams.get('pt')) || 100
+  const lagRaw = searchParams.get('lag') || '6m'
+  const lag: LagPeriod = lagRaw in LAG_MULTIPLIERS ? (lagRaw as LagPeriod) : '6m'
+
+  /* --- enabled categories toggle state --- */
+  const [enabledSet, setEnabledSet] = useState<Set<CategoryId>>(
+    new Set<CategoryId>([
+      'bread', 'oil', 'fuel', 'dairy', 'rice', 'vegetables',
+    ]),
+  )
+
+  const toggleItem = (catId: CategoryId) => {
+    setEnabledSet((prev) => {
+      const next = new Set(prev)
+      if (next.has(catId)) {
+        next.delete(catId)
+      } else {
+        next.add(catId)
+      }
+      return next
+    })
   }
 
-  /* weighted basket total */
-  const basketTotal = useMemo(() => {
-    const enabledItems = items.filter((i) => i.enabled)
-    if (enabledItems.length === 0) return 0
-    const totalWeight = enabledItems.reduce((s, i) => s + i.weight, 0)
-    const weightedSum = enabledItems.reduce(
-      (s, i) => s + (i.weight / totalWeight) * i.impactPct,
-      0,
+  /* --- compute basket from centralized engine --- */
+  const basketResult = useMemo(() => {
+    return computeBasket(
+      {
+        war: warId,
+        country,
+        passthrough,
+        lag,
+        provenance: getProvenance(),
+      },
+      enabledSet,
     )
-    return +weightedSum.toFixed(1)
-  }, [items])
+  }, [warId, country, passthrough, lag, enabledSet])
 
-  /* max impact for bar scaling */
-  const maxImpact = useMemo(
-    () => Math.max(...items.map((i) => i.impactPct)),
-    [items],
-  )
+  /* --- UI data --- */
+  const war = WARS[warId]
+  const items = basketResult?.items ?? []
+  const maxImpact = Math.max(...items.map((i) => i.lagAdjustedImpact), 1)
 
   return (
     <div className="container-page py-8">
@@ -69,12 +74,15 @@ export function BasketClient() {
         </p>
       </div>
 
-      {/* Context badge */}
+      {/* Context badge — dynamic, not hardcoded */}
       <div className="inline-flex items-center gap-2 bg-bg-alt border border-border rounded-lg px-4 py-2 mb-6 font-sans text-[0.75rem] text-ink-muted">
-        <span className="text-base">{'\uD83C\uDDF5\uD83C\uDDED'}</span>
+        <span className="text-base">
+          {COUNTRIES.find((c) => c.id === country)?.flag ?? ''}
+        </span>
         <span>
-          Philippines &middot; Russia-Ukraine War &middot;{' '}
-          <strong className="text-ink">100% pass-through</strong>
+          {country} &middot; {war?.name ?? warId} &middot;{' '}
+          <strong className="text-ink">{passthrough}% pass-through</strong>
+          &middot; <strong className="text-ink">{LAG_LABELS[lag]} lag</strong>
         </span>
       </div>
 
@@ -84,7 +92,7 @@ export function BasketClient() {
         <div className="space-y-2 order-2 md:order-1">
           {items.map((item) => (
             <div
-              key={item.id}
+              key={item.categoryId}
               className={`border rounded-[10px] px-4 py-3.5 transition-all ${
                 item.enabled
                   ? 'border-border bg-bg-card shadow-card'
@@ -94,7 +102,7 @@ export function BasketClient() {
               <div className="flex items-center gap-3">
                 {/* Toggle */}
                 <button
-                  onClick={() => toggleItem(item.id)}
+                  onClick={() => toggleItem(item.categoryId)}
                   className={`w-9 h-5 rounded-full relative transition-colors cursor-pointer shrink-0 ${
                     item.enabled ? 'bg-accent' : 'bg-border'
                   }`}
@@ -116,15 +124,20 @@ export function BasketClient() {
                     {item.label}
                   </div>
                   <div className="font-sans text-[0.68rem] text-ink-muted">
-                    CPI weight: {item.weight}%
+                    CPI weight: {item.cpiWeight}%
                   </div>
                 </div>
 
                 {/* Impact */}
                 <div className="text-right shrink-0">
                   <div className="font-sans text-[1.05rem] font-bold text-accent">
-                    +{item.impactPct}%
+                    +{item.lagAdjustedImpact}%
                   </div>
+                  {item.ceiling !== item.lagAdjustedImpact && (
+                    <div className="font-sans text-[0.62rem] text-ink-muted">
+                      ceiling: {item.ceiling}%
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -135,7 +148,7 @@ export function BasketClient() {
                     <div
                       className="h-full rounded-sm bg-gradient-to-r from-accent-warm to-accent transition-all"
                       style={{
-                        width: `${(item.impactPct / maxImpact) * 100}%`,
+                        width: `${(item.lagAdjustedImpact / maxImpact) * 100}%`,
                       }}
                     />
                   </div>
@@ -151,14 +164,36 @@ export function BasketClient() {
             Basket Total
           </h2>
 
-          {/* Big number */}
-          <div className="text-center mb-5">
+          {/* Weighted Average — big number */}
+          <div className="text-center mb-3">
             <div className="text-[2.4rem] font-light text-accent tracking-tight">
-              +{basketTotal}%
+              +{basketResult?.weightedAverage ?? 0}%
             </div>
             <div className="font-sans text-[0.72rem] text-ink-muted">
               weighted average price impact
             </div>
+          </div>
+
+          {/* CPI Contribution — second metric */}
+          <div className="text-center mb-5 bg-bg-alt rounded-lg px-3 py-2">
+            <div className="text-[1.4rem] font-light text-ink tracking-tight">
+              +{basketResult?.cpiContribution ?? 0}pp
+            </div>
+            <div className="font-sans text-[0.68rem] text-ink-muted">
+              estimated CPI basket contribution
+            </div>
+          </div>
+
+          {/* Formula tooltips */}
+          <div className="bg-blue-light border border-[#ccdff0] rounded-lg px-3 py-2 mb-5">
+            <p className="font-sans text-[0.65rem] text-[#2a4a6a] leading-relaxed">
+              <strong>Weighted average</strong> = sum of (item weight / total active
+              weight) x item impact across enabled items.
+            </p>
+            <p className="font-sans text-[0.65rem] text-[#2a4a6a] leading-relaxed mt-1">
+              <strong>CPI contribution</strong> = sum of (item CPI weight / 100) x
+              item impact. Measures percentage-point effect on headline CPI.
+            </p>
           </div>
 
           {/* Mini bar chart */}
@@ -166,7 +201,7 @@ export function BasketClient() {
             {items
               .filter((i) => i.enabled)
               .map((item) => (
-                <div key={item.id} className="flex items-center gap-2">
+                <div key={item.categoryId} className="flex items-center gap-2">
                   <span className="font-sans text-[0.68rem] text-ink-muted w-20 truncate shrink-0">
                     {item.icon} {item.label.split(' ')[0]}
                   </span>
@@ -174,12 +209,12 @@ export function BasketClient() {
                     <div
                       className="h-full rounded-sm bg-gradient-to-r from-accent-warm to-accent transition-all"
                       style={{
-                        width: `${(item.impactPct / maxImpact) * 100}%`,
+                        width: `${(item.lagAdjustedImpact / maxImpact) * 100}%`,
                       }}
                     />
                   </div>
                   <span className="font-sans text-[0.68rem] font-semibold text-ink w-10 text-right shrink-0">
-                    +{item.impactPct}%
+                    +{item.lagAdjustedImpact}%
                   </span>
                 </div>
               ))}
@@ -195,17 +230,17 @@ export function BasketClient() {
                 .filter((i) => i.enabled)
                 .map((item) => (
                   <span
-                    key={item.id}
+                    key={item.categoryId}
                     className="font-sans text-[0.65rem] font-semibold bg-bg-alt text-ink-soft px-2 py-0.5 rounded"
                   >
-                    {item.icon} {item.weight}%
+                    {item.icon} {item.cpiWeight}%
                   </span>
                 ))}
             </div>
             <p className="font-sans text-[0.68rem] text-ink-muted mt-2">
               Total active weight:{' '}
               <strong className="text-ink">
-                {items.filter((i) => i.enabled).reduce((s, i) => s + i.weight, 0)}%
+                {items.filter((i) => i.enabled).reduce((s, i) => s + i.cpiWeight, 0)}%
               </strong>
             </p>
           </div>
@@ -214,9 +249,10 @@ export function BasketClient() {
           <div className="bg-amber-light border border-[#e8c97a] rounded-lg px-3 py-2.5 mt-4">
             <p className="font-sans text-[0.68rem] text-[#7a4f10] leading-relaxed">
               <strong className="text-[#5a3408]">Note:</strong> Basket weights are
-              approximate CPI sub-index shares for the Philippines. Impact figures
-              assume 100% pass-through under the Russia-Ukraine scenario. Actual
-              shelf prices will differ.
+              approximate CPI sub-index shares for {country}. Impact figures
+              assume {passthrough}% pass-through under the {war?.name ?? warId} scenario
+              with {LAG_LABELS[lag]} lag ({LAG_MULTIPLIERS[lag]}x multiplier).
+              Actual shelf prices will differ.
             </p>
           </div>
         </aside>

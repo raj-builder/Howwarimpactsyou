@@ -7,38 +7,32 @@ import { COUNTRIES, COUNTRY_MAP } from '@/data/countries'
 import { CURRENCIES } from '@/data/currencies'
 import { COUNTRY_REASONS } from '@/data/reasons'
 import { useSimulatorState } from '@/lib/use-simulator-state'
+import {
+  computeScenario,
+  roundValue,
+  isStructuralMiss,
+  validateScenarioState,
+  getProvenance,
+} from '@/lib/calculations'
 import { ImpactDisplay } from '@/components/simulator/impact-display'
+import { CoverageBadge } from '@/components/ui/coverage-badge'
+import { ReliabilityBadge } from '@/components/ui/reliability-badge'
 import { SoftGate, incrementExplorationCount } from '@/components/simulator/soft-gate'
-import type { WarId, CategoryId, RankingEntry } from '@/types'
+import type { CategoryId, RankingEntry, CoverageStatus } from '@/types'
+import type { LagPeriod, ScenarioResult } from '@/types/scenario'
+import { LAG_MULTIPLIERS, LAG_LABELS } from '@/types/scenario'
 
 /* ---------- constants ---------- */
 const PASS_OPTIONS = [100, 75, 50, 25] as const
-const LAG_OPTIONS = [
+const LAG_OPTIONS: { label: string; value: LagPeriod }[] = [
   { label: 'Immediate', value: 'immediate' },
   { label: '3m', value: '3m' },
   { label: '6m', value: '6m' },
   { label: '12m', value: '12m' },
-] as const
-
-const WATERFALL_FACTORS = [
-  { label: 'Grains', pct: 42, color: 'bg-amber' },
-  { label: 'FX', pct: 22, color: 'bg-blue' },
-  { label: 'Energy', pct: 21, color: 'bg-accent' },
-  { label: 'Fertilizer', pct: 10, color: 'bg-green' },
-  { label: 'Metals', pct: 5, color: 'bg-ink-muted' },
 ]
-
-/* ---------- helper: find a country entry in rankings ---------- */
-function findCountryImpact(
-  entries: RankingEntry[],
-  country: string,
-): RankingEntry | undefined {
-  return entries.find((e) => e.c === country)
-}
 
 /* ---------- component ---------- */
 export function SimulatorClient() {
-  /* --- use the URL-synced state hook --- */
   const {
     war: warId,
     setWar: setWarId,
@@ -77,6 +71,35 @@ export function SimulatorClient() {
     return warReasons
   }, [warId])
 
+  /* --- centralized scenario result (replaces Math.random inline calc) --- */
+  const result: ScenarioResult | null = useMemo(() => {
+    if (!expandedCountry) return null
+    return computeScenario({
+      war: warId,
+      category: categoryId,
+      country: expandedCountry,
+      passthrough: passThrough,
+      lag,
+      provenance: getProvenance(),
+    })
+  }, [warId, categoryId, expandedCountry, passThrough, lag])
+
+  /* --- validation guard --- */
+  const validationErrors = useMemo(() => {
+    if (!expandedCountry) return []
+    return validateScenarioState({
+      war: warId,
+      category: categoryId,
+      country: expandedCountry,
+      passthrough: passThrough,
+      lag,
+      provenance: getProvenance(),
+    })
+  }, [warId, categoryId, expandedCountry, passThrough, lag])
+
+  /* --- provenance --- */
+  const provenance = useMemo(() => getProvenance(), [])
+
   /* --- handlers --- */
   const handleUpdate = useCallback(() => {
     setShowResults(true)
@@ -104,19 +127,8 @@ export function SimulatorClient() {
     return { full, partial, experimental }
   }, [])
 
-  /* --- find impact for expanded country --- */
-  const expandedEntry = useMemo(() => {
-    if (!expandedCountry) return null
-    const top = findCountryImpact(ranking.top5, expandedCountry)
-    if (top) return top
-    return findCountryImpact(ranking.bot5, expandedCountry) ?? null
-  }, [expandedCountry, ranking])
-
-  const ceilingPct = expandedEntry ? expandedEntry.p : 0
-  const realizedPct = expandedEntry
-    ? +(ceilingPct * (passThrough / 100) * (0.55 + Math.random() * 0.2)).toFixed(1)
-    : 0
-  const modelGap = expandedEntry ? +(ceilingPct - realizedPct).toFixed(1) : 0
+  /* --- lag multiplier for display --- */
+  const lagMultiplier = LAG_MULTIPLIERS[lag]
 
   return (
     <div className="container-page py-8">
@@ -330,7 +342,7 @@ export function SimulatorClient() {
                 </div>
               </div>
 
-              {/* Assumption strip */}
+              {/* Assumption strip with provenance */}
               <div className="bg-bg-alt border border-border rounded-lg px-4 py-2.5 mb-5 flex flex-wrap gap-x-5 gap-y-1 font-sans text-[0.72rem] text-ink-muted">
                 <span>
                   Category: <strong className="text-ink">{categoryLabel}</strong>
@@ -339,10 +351,16 @@ export function SimulatorClient() {
                   Pass-through: <strong className="text-ink">{passThrough}%</strong>
                 </span>
                 <span>
-                  Lag: <strong className="text-ink">{lag}</strong>
+                  Lag: <strong className="text-ink">{LAG_LABELS[lag]}</strong>
+                  {lagMultiplier < 1 && (
+                    <span className="text-ink-muted"> ({lagMultiplier}x)</span>
+                  )}
                 </span>
                 <span>
-                  Data: <strong className="text-ink">Static model v1</strong>
+                  Model: <strong className="text-ink">v{provenance.modelVersion}</strong>
+                </span>
+                <span>
+                  Data as of: <strong className="text-ink">{provenance.dataAsOf}</strong>
                 </span>
               </div>
 
@@ -355,6 +373,7 @@ export function SimulatorClient() {
                 expandedCountry={expandedCountry}
                 onRowClick={handleRowClick}
                 passThrough={passThrough}
+                lag={lag}
               />
 
               <RankingSection
@@ -365,15 +384,38 @@ export function SimulatorClient() {
                 expandedCountry={expandedCountry}
                 onRowClick={handleRowClick}
                 passThrough={passThrough}
+                lag={lag}
               />
 
+              {/* Ranking methodology note */}
+              <div className="font-sans text-[0.68rem] text-ink-muted mt-1 mb-5 px-1">
+                Ranked out of 10 countries with full coverage. Rankings
+                reflect {passThrough}% pass-through and {LAG_LABELS[lag]} lag.
+              </div>
+
+              {/* Validation errors guard */}
+              {expandedCountry && validationErrors.length > 0 && (
+                <div className="bg-accent-light border border-accent/30 rounded-lg px-4 py-3 mb-4">
+                  <p className="font-sans text-[0.78rem] text-accent font-semibold mb-1">
+                    Cannot compute results
+                  </p>
+                  <ul className="font-sans text-[0.72rem] text-accent/80 list-disc pl-4 space-y-0.5">
+                    {validationErrors.map((e) => (
+                      <li key={e.field}>{e.message}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
               {/* Country detail panel */}
-              {expandedCountry && expandedEntry && (
+              {expandedCountry && result && validationErrors.length === 0 && (
                 <div className="bg-bg-card border border-border rounded-[10px] p-5 mt-5 animate-fade-in">
-                  {/* Header */}
+                  {/* Header with coverage + reliability badges */}
                   <div className="flex items-center justify-between mb-5">
                     <div className="flex items-center gap-3">
-                      <span className="text-2xl">{expandedEntry.f}</span>
+                      <span className="text-2xl">
+                        {COUNTRY_MAP[expandedCountry]?.flag ?? ''}
+                      </span>
                       <div>
                         <h3 className="font-sans text-[0.95rem] font-bold text-ink">
                           {expandedCountry}
@@ -381,6 +423,10 @@ export function SimulatorClient() {
                         <p className="font-sans text-[0.72rem] text-ink-muted">
                           {categoryLabel}
                         </p>
+                      </div>
+                      <div className="flex gap-1.5 ml-2">
+                        <CoverageBadge status={result.coverage} />
+                        <ReliabilityBadge status={result.reliability} showTooltip />
                       </div>
                     </div>
                     <button
@@ -392,57 +438,97 @@ export function SimulatorClient() {
                     </button>
                   </div>
 
+                  {/* Structural miss warning */}
+                  {isStructuralMiss(expandedCountry) && (
+                    <div className="bg-amber-light border border-[#e8c97a] rounded-lg px-3 py-2.5 mb-4">
+                      <p className="font-sans text-[0.72rem] text-[#7a4f10] leading-relaxed">
+                        <strong className="text-[#5a3408]">Validation note:</strong> The
+                        model has known structural underestimates for {expandedCountry}.
+                        Realized CPI changes have historically exceeded the model ceiling
+                        in this market. See the{' '}
+                        <a href="/validation" className="underline text-[#5a3408]">
+                          validation page
+                        </a>{' '}
+                        for details.
+                      </p>
+                    </div>
+                  )}
+
                   {/* Impact range display */}
                   <div className="mb-6">
                     <ImpactDisplay
-                      ceiling={ceilingPct}
-                      passthrough={passThrough}
+                      lagAdjustedCeiling={result.lagAdjustedCeiling}
+                      rangeLow={result.rangeLow}
+                      rangeHigh={result.rangeHigh}
+                      lag={lag}
+                      lagMultiplier={result.lagMultiplier}
                     />
                   </div>
 
-                  {/* 4 big-number cards */}
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+                  {/* 5 big-number cards */}
+                  <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
                     <StatCard
                       label="Impact Ceiling"
-                      value={`+${ceilingPct}%`}
+                      value={`+${result.lagAdjustedCeiling}%`}
                       accent
                     />
                     <StatCard
                       label="Realized Est."
-                      value={`+${realizedPct}%`}
+                      value={`+${result.realized}%`}
                     />
                     <StatCard
                       label="Model Gap"
-                      value={`${modelGap}pp`}
+                      value={`${result.modelGap}pp`}
                     />
                     <StatCard
-                      label="Implied Pass-Through"
+                      label="Pass-Through"
                       value={`${passThrough}%`}
+                    />
+                    <StatCard
+                      label="Lag Multiplier"
+                      value={`${result.lagMultiplier}x`}
                     />
                   </div>
 
-                  {/* Waterfall breakdown */}
+                  {/* Factor contribution breakdown */}
                   <div className="mb-6">
                     <h4 className="font-sans text-[0.78rem] font-bold text-ink mb-3 tracking-wide">
-                      Factor Breakdown (Model Weights)
+                      Factor Contribution Breakdown
                     </h4>
                     <div className="space-y-2">
-                      {WATERFALL_FACTORS.map((f) => (
+                      {result.factors.map((f) => (
                         <div key={f.label} className="flex items-center gap-3">
-                          <span className="font-sans text-[0.72rem] text-ink-muted w-20 shrink-0">
+                          <span className="font-sans text-[0.72rem] text-ink-muted w-24 shrink-0">
                             {f.label}
                           </span>
                           <div className="flex-1 h-5 bg-bg-alt rounded-sm overflow-hidden">
                             <div
                               className={`h-full ${f.color} rounded-sm transition-all`}
-                              style={{ width: `${f.pct}%` }}
+                              style={{
+                                width: `${
+                                  result.lagAdjustedCeiling > 0
+                                    ? (f.absolutePct / result.lagAdjustedCeiling) * 100
+                                    : 0
+                                }%`,
+                              }}
                             />
                           </div>
-                          <span className="font-sans text-[0.72rem] font-semibold text-ink w-10 text-right">
-                            {f.pct}%
+                          <span className="font-sans text-[0.72rem] font-semibold text-ink w-16 text-right">
+                            +{f.absolutePct}%
+                          </span>
+                          <span className="font-sans text-[0.62rem] text-ink-muted w-10 text-right">
+                            {f.sharePct}%
                           </span>
                         </div>
                       ))}
+                    </div>
+                    <div className="flex items-center gap-3 mt-1.5 font-sans text-[0.68rem] text-ink-muted border-t border-border pt-1.5">
+                      <span className="w-24 shrink-0" />
+                      <span className="flex-1" />
+                      <span className="font-semibold text-ink w-16 text-right">
+                        ={result.lagAdjustedCeiling}%
+                      </span>
+                      <span className="w-10 text-right">100%</span>
                     </div>
                   </div>
 
@@ -514,6 +600,7 @@ function RankingSection({
   expandedCountry,
   onRowClick,
   passThrough,
+  lag,
 }: {
   title: string
   entries: RankingEntry[]
@@ -522,7 +609,10 @@ function RankingSection({
   expandedCountry: string | null
   onRowClick: (c: string) => void
   passThrough: number
+  lag: LagPeriod
 }) {
+  const lagMultiplier = LAG_MULTIPLIERS[lag]
+
   return (
     <div className="mb-5">
       <h3 className="font-sans text-[0.78rem] font-bold text-ink-muted uppercase tracking-[0.06em] mb-2">
@@ -532,9 +622,17 @@ function RankingSection({
         {entries.map((entry, i) => {
           const rank = startRank + i
           const isExpanded = expandedCountry === entry.c
-          const adjustedPct = +(entry.p * (passThrough / 100)).toFixed(1)
-          const maxPct = 55 // scale bar to ~55% max
+          // Apply both passthrough AND lag multiplier
+          const adjustedPct = roundValue(
+            entry.p * (passThrough / 100) * lagMultiplier,
+            'display',
+          )
+          const maxPct = 55
           const barWidth = Math.min((adjustedPct / maxPct) * 100, 100)
+
+          // Get coverage for inline badge
+          const countryData = COUNTRY_MAP[entry.c]
+          const coverage: CoverageStatus = countryData?.coverage ?? 'unavailable'
 
           return (
             <div key={entry.c}>
@@ -552,10 +650,21 @@ function RankingSection({
                 </span>
                 {/* Flag */}
                 <span className="text-lg shrink-0">{entry.f}</span>
-                {/* Name + reason */}
+                {/* Name + reason + coverage */}
                 <div className="flex-1 min-w-0">
-                  <div className="font-sans text-[0.82rem] font-semibold text-ink">
-                    {entry.c}
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-sans text-[0.82rem] font-semibold text-ink">
+                      {entry.c}
+                    </span>
+                    {coverage !== 'full' && (
+                      <span className={`font-sans text-[0.58rem] font-semibold px-1.5 py-0.5 rounded tracking-[0.04em] uppercase ${
+                        coverage === 'partial'
+                          ? 'bg-amber-light text-amber'
+                          : 'bg-blue-light text-blue'
+                      }`}>
+                        {coverage}
+                      </span>
+                    )}
                   </div>
                   {reasons?.[entry.c] && (
                     <div className="font-sans text-[0.68rem] text-ink-muted leading-snug mt-0.5 truncate">
@@ -580,8 +689,11 @@ function RankingSection({
               {isExpanded && (
                 <div className="ml-8 mr-4 mt-1 mb-2 animate-fade-in">
                   <ImpactDisplay
-                    ceiling={entry.p}
-                    passthrough={passThrough}
+                    lagAdjustedCeiling={adjustedPct}
+                    rangeLow={roundValue(adjustedPct * 0.55, 'display')}
+                    rangeHigh={roundValue(adjustedPct * 0.75, 'display')}
+                    lag={lag}
+                    lagMultiplier={lagMultiplier}
                   />
                 </div>
               )}

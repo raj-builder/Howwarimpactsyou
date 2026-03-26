@@ -9,6 +9,27 @@ export const metadata: Metadata = {
 
 const VERSIONS = [
   {
+    version: 'v2.1',
+    date: 'March 2025',
+    title: 'Scenario Builder Refactoring',
+    changes: [
+      'Centralized all calculation logic into a shared engine \u2014 no more inline math in components',
+      'Removed Math.random() from realized estimates \u2014 all results are now deterministic and reproducible',
+      'Lag multipliers (1.0, 0.95, 0.88, 0.75) now actually applied to all calculations',
+      'Basket page connected to URL scenario state \u2014 no more hardcoded Philippines/Russia-Ukraine data',
+      'Two distinct basket metrics: weighted average price impact (%) and CPI basket contribution (pp)',
+      'Coverage and reliability badges shown on all result surfaces',
+      'Structural miss warnings for T\u00fcrkiye, Nigeria, and Pakistan with link to validation page',
+      'Factor contribution breakdown that sums exactly to the lag-adjusted ceiling',
+      'Provenance metadata (model version, snapshot date, data-as-of) in assumption strip',
+      'Full audit trace drawer with formula chain, factor decomposition, and provenance',
+      'Deterministic share links \u2014 all URL params always serialized',
+      'Impossible-state guards block rendering when inputs are invalid',
+      'Fixed SaveButton defaults (passthrough 0.6 \u2192 100, lag "3-6 months" \u2192 "6m")',
+      'Added 37 unit tests covering all calculation logic (Vitest)',
+    ],
+  },
+  {
     version: 'v1.0',
     date: 'March 2025',
     title: 'Initial release',

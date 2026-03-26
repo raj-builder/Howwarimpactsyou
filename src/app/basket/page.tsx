@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 import { BasketClient } from '@/components/basket/basket-client'
 
 export const metadata: Metadata = {
@@ -9,5 +10,15 @@ export const metadata: Metadata = {
 }
 
 export default function BasketPage() {
-  return <BasketClient />
+  return (
+    <Suspense
+      fallback={
+        <div className="container-page py-14 text-center text-ink-muted font-sans text-[0.9rem]">
+          Loading basket...
+        </div>
+      }
+    >
+      <BasketClient />
+    </Suspense>
+  )
 }

@@ -8,21 +8,22 @@ import {
   getSavedScenarios,
 } from '@/lib/saved-scenarios'
 import { analytics } from '@/lib/analytics'
+import type { LagPeriod } from '@/types/scenario'
 
 interface SaveButtonProps {
   war: string
   category: string
   country: string
   passthrough?: number
-  lag?: string
+  lag?: LagPeriod
 }
 
 export function SaveButton({
   war,
   category,
   country,
-  passthrough = 0.6,
-  lag = '3-6 months',
+  passthrough = 100,
+  lag = '6m',
 }: SaveButtonProps) {
   const [saved, setSaved] = useState(false)
 
