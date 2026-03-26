@@ -18,6 +18,7 @@ import { ImpactDisplay } from '@/components/simulator/impact-display'
 import { CoverageBadge } from '@/components/ui/coverage-badge'
 import { ReliabilityBadge } from '@/components/ui/reliability-badge'
 import { SoftGate, incrementExplorationCount } from '@/components/simulator/soft-gate'
+import { usePricesFreshness } from '@/lib/use-prices-freshness'
 import type { CategoryId, RankingEntry, CoverageStatus } from '@/types'
 import type { LagPeriod, ScenarioResult } from '@/types/scenario'
 import { LAG_MULTIPLIERS, LAG_LABELS } from '@/types/scenario'
@@ -71,6 +72,9 @@ export function SimulatorClient() {
     return warReasons
   }, [warId])
 
+  /* --- live data freshness from SerpAPI --- */
+  const freshness = usePricesFreshness()
+
   /* --- centralized scenario result (replaces Math.random inline calc) --- */
   const result: ScenarioResult | null = useMemo(() => {
     if (!expandedCountry) return null
@@ -80,9 +84,9 @@ export function SimulatorClient() {
       country: expandedCountry,
       passthrough: passThrough,
       lag,
-      provenance: getProvenance(),
+      provenance: getProvenance(freshness.fetchedAt),
     })
-  }, [warId, categoryId, expandedCountry, passThrough, lag])
+  }, [warId, categoryId, expandedCountry, passThrough, lag, freshness.fetchedAt])
 
   /* --- validation guard --- */
   const validationErrors = useMemo(() => {
@@ -93,12 +97,12 @@ export function SimulatorClient() {
       country: expandedCountry,
       passthrough: passThrough,
       lag,
-      provenance: getProvenance(),
+      provenance: getProvenance(freshness.fetchedAt),
     })
-  }, [warId, categoryId, expandedCountry, passThrough, lag])
+  }, [warId, categoryId, expandedCountry, passThrough, lag, freshness.fetchedAt])
 
   /* --- provenance --- */
-  const provenance = useMemo(() => getProvenance(), [])
+  const provenance = useMemo(() => getProvenance(freshness.fetchedAt), [freshness.fetchedAt])
 
   /* --- handlers --- */
   const handleUpdate = useCallback(() => {

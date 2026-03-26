@@ -19,16 +19,35 @@ import { LAG_MULTIPLIERS } from '@/types/scenario'
 
 /* ── Provenance ──────────────────────────────────────────────── */
 
-const CURRENT_PROVENANCE: ProvenanceMetadata = {
+const BASE_PROVENANCE: Omit<ProvenanceMetadata, 'snapshotDate' | 'dataAsOf'> = {
   modelVersion: '1.0.0',
-  snapshotDate: '2025-03-25',
-  dataAsOf: 'Mar 25, 2025',
   factorWindow: 'Varies by conflict',
   sourceVersion: 'wars.ts@fc1ec55',
 }
 
-export function getProvenance(): ProvenanceMetadata {
-  return { ...CURRENT_PROVENANCE }
+/**
+ * Build provenance metadata.
+ * Pass the SerpAPI `fetched_at` ISO timestamp to get a real data date.
+ * If omitted, falls back to a static placeholder.
+ */
+export function getProvenance(serpApiFetchedAt?: string | null): ProvenanceMetadata {
+  if (serpApiFetchedAt) {
+    const d = new Date(serpApiFetchedAt)
+    const dataAsOf =
+      d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) +
+      ' · ' +
+      d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
+    return {
+      ...BASE_PROVENANCE,
+      snapshotDate: serpApiFetchedAt,
+      dataAsOf,
+    }
+  }
+  return {
+    ...BASE_PROVENANCE,
+    snapshotDate: new Date().toISOString(),
+    dataAsOf: 'Loading...',
+  }
 }
 
 /* ── Scenario Identity ───────────────────────────────────────── */

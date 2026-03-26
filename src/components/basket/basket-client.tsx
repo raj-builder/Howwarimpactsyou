@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation'
 import { WARS } from '@/data/wars'
 import { COUNTRIES } from '@/data/countries'
 import { computeBasket, getProvenance } from '@/lib/calculations'
+import { usePricesFreshness } from '@/lib/use-prices-freshness'
 import type { WarId, CategoryId } from '@/types'
 import type { LagPeriod } from '@/types/scenario'
 import { LAG_MULTIPLIERS, LAG_LABELS } from '@/types/scenario'
@@ -39,6 +40,9 @@ export function BasketClient() {
     })
   }
 
+  /* --- live data freshness from SerpAPI --- */
+  const freshness = usePricesFreshness()
+
   /* --- compute basket from centralized engine --- */
   const basketResult = useMemo(() => {
     return computeBasket(
@@ -47,11 +51,11 @@ export function BasketClient() {
         country,
         passthrough,
         lag,
-        provenance: getProvenance(),
+        provenance: getProvenance(freshness.fetchedAt),
       },
       enabledSet,
     )
-  }, [warId, country, passthrough, lag, enabledSet])
+  }, [warId, country, passthrough, lag, enabledSet, freshness.fetchedAt])
 
   /* --- UI data --- */
   const war = WARS[warId]
