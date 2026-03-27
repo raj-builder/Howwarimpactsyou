@@ -76,6 +76,8 @@ export interface ScenarioResult {
   coverage: CoverageStatus
   reliability: ReliabilityStatus
   provenance: ProvenanceMetadata
+  /** True when a user-supplied refinement overrode the static ceiling value */
+  userRefined?: boolean
 }
 
 /* ── Basket ───────────────────────────────────────────────────── */

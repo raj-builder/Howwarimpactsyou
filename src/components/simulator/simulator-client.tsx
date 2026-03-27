@@ -18,13 +18,22 @@ import { ImpactDisplay } from '@/components/simulator/impact-display'
 import { CoverageBadge } from '@/components/ui/coverage-badge'
 import { ReliabilityBadge } from '@/components/ui/reliability-badge'
 import { SoftGate, incrementExplorationCount } from '@/components/simulator/soft-gate'
+import { WarEscalationCard } from '@/components/simulator/war-escalation-card'
+import { RefinementPanel } from '@/components/simulator/refinement-panel'
+import { PRE_ESCALATION_PRICES } from '@/data/pre-escalation-prices'
 import { usePricesFreshness } from '@/lib/use-prices-freshness'
-import type { CategoryId, RankingEntry, CoverageStatus } from '@/types'
+import { loadRefinements, saveRefinements } from '@/lib/user-refinements'
+import type { UserRefinements } from '@/types/user-refinements'
+import type { WarId, CategoryId, RankingEntry, CoverageStatus } from '@/types'
 import type { LagPeriod, ScenarioResult } from '@/types/scenario'
 import { LAG_MULTIPLIERS, LAG_LABELS } from '@/types/scenario'
 
 /* ---------- constants ---------- */
 const PASS_OPTIONS = [100, 75, 50, 25] as const
+/** Fallback escalation priority order (highest-tension first) */
+const WAR_ESCALATION_ORDER: WarId[] = [
+  'iran-israel-us', 'ukraine-russia', 'gaza-2023', 'covid', 'gulf-2003',
+]
 const LAG_OPTIONS: { label: string; value: LagPeriod }[] = [
   { label: 'Immediate', value: 'immediate' },
   { label: '3m', value: '3m' },
@@ -46,6 +55,13 @@ export function SimulatorClient() {
     lag,
     setLag,
   } = useSimulatorState()
+
+  /* --- user refinements (localStorage-backed) --- */
+  const [refinements, setRefinements] = useState<UserRefinements>(() => loadRefinements())
+  const handleRefinementsChange = useCallback((r: UserRefinements) => {
+    setRefinements(r)
+    saveRefinements(r)
+  }, [])
 
   const [showResults, setShowResults] = useState(
     !!(warId || categoryId),
@@ -72,6 +88,17 @@ export function SimulatorClient() {
     return warReasons
   }, [warId])
 
+  /* --- currency data for escalation cards (based on selected country) --- */
+  const warCurrencyForCards = useCallback(
+    (wId: WarId) => {
+      if (!country) return null
+      const warCurrencies = CURRENCIES[wId]
+      if (!warCurrencies) return null
+      return warCurrencies[country] ?? null
+    },
+    [country],
+  )
+
   /* --- live data freshness from SerpAPI --- */
   const freshness = usePricesFreshness()
 
@@ -85,8 +112,8 @@ export function SimulatorClient() {
       passthrough: passThrough,
       lag,
       provenance: getProvenance(freshness.fetchedAt),
-    })
-  }, [warId, categoryId, expandedCountry, passThrough, lag, freshness.fetchedAt])
+    }, 'display', refinements)
+  }, [warId, categoryId, expandedCountry, passThrough, lag, freshness.fetchedAt, refinements])
 
   /* --- validation guard --- */
   const validationErrors = useMemo(() => {
@@ -123,13 +150,19 @@ export function SimulatorClient() {
     [expandedCountry, setCountry],
   )
 
-  /* --- grouped countries for dropdown --- */
+  /* --- grouped countries for dropdown (includes user-added) --- */
   const groupedCountries = useMemo(() => {
     const full = COUNTRIES.filter((c) => c.coverage === 'full')
     const partial = COUNTRIES.filter((c) => c.coverage === 'partial')
     const experimental = COUNTRIES.filter((c) => c.coverage === 'experimental')
-    return { full, partial, experimental }
-  }, [])
+    const userAdded = refinements.newCountries.map((c) => ({
+      id: c.country,
+      name: c.country,
+      flag: c.flag,
+      coverage: 'experimental' as const,
+    }))
+    return { full, partial, experimental, userAdded }
+  }, [refinements.newCountries])
 
   /* --- lag multiplier for display --- */
   const lagMultiplier = LAG_MULTIPLIERS[lag]
@@ -157,50 +190,37 @@ export function SimulatorClient() {
             Scenario Controls
           </h2>
 
-          {/* War selector */}
+          {/* War selector — escalation cards */}
           <fieldset className="mb-5">
             <legend className="font-sans text-[0.72rem] font-bold text-ink-muted uppercase tracking-[0.06em] mb-2">
               Conflict
             </legend>
             <div className="flex flex-col gap-2">
-              {WAR_LIST.map((w) => (
-                <button
-                  key={w.id}
-                  onClick={() => setWarId(w.id)}
-                  className={`text-left border rounded-lg p-3 transition-all cursor-pointer ${
-                    warId === w.id
-                      ? 'border-accent bg-accent-light shadow-sm'
-                      : 'border-border bg-bg-card hover:border-accent-warm'
-                  }`}
-                >
-                  <div className="flex items-center gap-2">
-                    <span className="font-sans text-[0.82rem] font-semibold text-ink">
-                      {w.name}
-                    </span>
-                    {w.live && (
-                      <span className="inline-flex items-center gap-1 font-sans text-[0.62rem] font-bold uppercase tracking-[0.06em] bg-accent text-white px-1.5 py-0.5 rounded">
-                        <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
-                        Live
-                      </span>
-                    )}
-                  </div>
-                  <div className="font-sans text-[0.7rem] text-ink-muted mt-0.5">
-                    {w.dates}
-                  </div>
-                  {warId === w.id && (
-                    <div className="flex flex-wrap gap-1 mt-2">
-                      {WARS[w.id].shocks.slice(0, 3).map((s) => (
-                        <span
-                          key={s.factor}
-                          className="font-sans text-[0.62rem] bg-bg-alt text-ink-soft px-1.5 py-0.5 rounded"
-                        >
-                          {s.factor} {s.val}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </button>
-              ))}
+              {WAR_ESCALATION_ORDER.map((wId) => {
+                const w = WARS[wId]
+                if (!w) return null
+                const anchors = PRE_ESCALATION_PRICES[wId]
+                const currForCard = warCurrencyForCards(wId)
+                return (
+                  <WarEscalationCard
+                    key={wId}
+                    warId={wId}
+                    warName={w.name}
+                    warDates={w.dates}
+                    live={w.live}
+                    escalationDate={anchors?.escalationDate ?? ''}
+                    pivotalEvent={anchors?.pivotalEvent ?? ''}
+                    selectedCountry={country || null}
+                    currencyCode={currForCard?.code ?? null}
+                    currencyName={currForCard?.name ?? null}
+                    fxPreRate={currForCard?.preRate ?? null}
+                    fxPostRate={currForCard?.postRate ?? null}
+                    fxDepPct={currForCard?.depPct ?? null}
+                    isSelected={warId === wId}
+                    onClick={() => setWarId(wId)}
+                  />
+                )
+              })}
             </div>
           </fieldset>
 
@@ -254,6 +274,15 @@ export function SimulatorClient() {
                   </option>
                 ))}
               </optgroup>
+              {groupedCountries.userAdded.length > 0 && (
+                <optgroup label="User-added">
+                  {groupedCountries.userAdded.map((c) => (
+                    <option key={c.id} value={c.id}>
+                      {c.flag} {c.name} (user)
+                    </option>
+                  ))}
+                </optgroup>
+              )}
             </select>
           </fieldset>
 
@@ -308,6 +337,12 @@ export function SimulatorClient() {
           >
             Update View
           </button>
+
+          {/* Refinement panel */}
+          <RefinementPanel
+            refinements={refinements}
+            onRefinementsChange={handleRefinementsChange}
+          />
         </aside>
 
         {/* ====== RIGHT PANEL ====== */}
@@ -320,31 +355,23 @@ export function SimulatorClient() {
             </div>
           ) : (
             <div className="animate-fade-in">
-              {/* War overview card */}
-              <div className="bg-gradient-to-br from-[#1a1a1a] via-[#2d2420] to-[#3a2216] text-white rounded-[10px] p-5 mb-4">
-                <div className="flex items-center gap-3 mb-2">
-                  <h2 className="font-sans text-[1rem] font-bold">{war.name}</h2>
-                  {war.live && (
-                    <span className="inline-flex items-center gap-1 font-sans text-[0.62rem] font-bold uppercase tracking-[0.06em] bg-accent text-white px-1.5 py-0.5 rounded">
-                      <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
-                      Live
-                    </span>
-                  )}
-                </div>
-                <p className="font-sans text-[0.75rem] text-white/60 mb-3">
-                  {war.dates}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {war.shocks.map((s) => (
-                    <span
-                      key={s.factor}
-                      className="font-sans text-[0.7rem] bg-white/10 text-white/80 px-2 py-1 rounded-md"
-                    >
-                      {s.factor} <strong className="text-accent-warm">{s.val}</strong>
-                    </span>
-                  ))}
-                </div>
-              </div>
+              {/* War overview — expanded escalation card in results area */}
+              <WarEscalationCard
+                warId={warId}
+                warName={war.name}
+                warDates={war.dates}
+                live={war.live}
+                escalationDate={PRE_ESCALATION_PRICES[warId]?.escalationDate ?? ''}
+                pivotalEvent={PRE_ESCALATION_PRICES[warId]?.pivotalEvent ?? ''}
+                selectedCountry={expandedCountry}
+                currencyCode={currencyData?.code ?? null}
+                currencyName={currencyData?.name ?? null}
+                fxPreRate={currencyData?.preRate ?? null}
+                fxPostRate={currencyData?.postRate ?? null}
+                fxDepPct={currencyData?.depPct ?? null}
+                isSelected={true}
+                onClick={() => {}}
+              />
 
               {/* Assumption strip with provenance */}
               <div className="bg-bg-alt border border-border rounded-lg px-4 py-2.5 mb-5 flex flex-wrap gap-x-5 gap-y-1 font-sans text-[0.72rem] text-ink-muted">
@@ -431,6 +458,11 @@ export function SimulatorClient() {
                       <div className="flex gap-1.5 ml-2">
                         <CoverageBadge status={result.coverage} />
                         <ReliabilityBadge status={result.reliability} showTooltip />
+                        {result.userRefined && (
+                          <span className="inline-block font-sans text-[0.62rem] font-bold bg-blue-light text-blue px-1.5 py-0.5 rounded tracking-[0.04em]">
+                            User data
+                          </span>
+                        )}
                       </div>
                     </div>
                     <button

@@ -16,6 +16,9 @@ import type {
   ValidationError,
 } from '@/types/scenario'
 import { LAG_MULTIPLIERS } from '@/types/scenario'
+import type { UserRefinements } from '@/types/user-refinements'
+import { EMPTY_REFINEMENTS } from '@/types/user-refinements'
+import { findImpactRefinement } from '@/lib/user-refinements'
 
 /* ── Provenance ──────────────────────────────────────────────── */
 
@@ -245,6 +248,7 @@ function computeFactors(
 export function computeScenario(
   state: ScenarioState,
   mode: PrecisionMode = 'display',
+  refinements: UserRefinements = EMPTY_REFINEMENTS,
 ): ScenarioResult | null {
   const entry = findCountryEntry(state.war, state.category, state.country)
   if (!entry) return null
@@ -253,7 +257,10 @@ export function computeScenario(
   const coverage: CoverageStatus = countryData?.coverage ?? 'unavailable'
   const reliability = getReliability(state.country, coverage)
 
-  const ceiling = entry.p
+  // Check for user-supplied impact refinement
+  const refinement = findImpactRefinement(refinements, state.country, state.category, state.war)
+  const userRefined = refinement !== null
+  const ceiling = userRefined ? refinement.impactPct : entry.p
   const adjustedCeiling = roundValue(ceiling * (state.passthrough / 100), mode)
   const lagMultiplier = LAG_MULTIPLIERS[state.lag]
   const lagAdjustedCeiling = roundValue(adjustedCeiling * lagMultiplier, mode)
@@ -279,6 +286,7 @@ export function computeScenario(
     coverage,
     reliability,
     provenance,
+    userRefined,
   }
 }
 
@@ -346,6 +354,7 @@ export function computeBasket(
   state: Omit<ScenarioState, 'category'>,
   enabledCategories: Set<CategoryId>,
   mode: PrecisionMode = 'display',
+  refinements: UserRefinements = EMPTY_REFINEMENTS,
 ): BasketResult | null {
   if (!state.country) return null
 
@@ -358,7 +367,8 @@ export function computeBasket(
     const entry = findCountryEntry(state.war, catId, state.country)
     const cat = CATEGORY_MAP[catId]
     const cpiWeight = weights[catId] ?? 0
-    const ceiling = entry?.p ?? 0
+    const refinement = findImpactRefinement(refinements, state.country, catId, state.war)
+    const ceiling = refinement ? refinement.impactPct : (entry?.p ?? 0)
     const lagAdjustedImpact = roundValue(
       ceiling * (state.passthrough / 100) * lagMultiplier,
       mode,
