@@ -1,4 +1,5 @@
 import type { ReliabilityStatus } from '@/types/scenario'
+import { t } from '@/lib/use-t'
 
 const STYLES: Record<ReliabilityStatus, string> = {
   validated: 'bg-green-light text-green',
@@ -6,19 +7,16 @@ const STYLES: Record<ReliabilityStatus, string> = {
   experimental: 'bg-blue-light text-blue',
 }
 
-const LABELS: Record<ReliabilityStatus, string> = {
-  validated: 'Validated',
-  indicative: 'Indicative',
-  experimental: 'Experimental',
+const LABEL_KEYS: Record<ReliabilityStatus, string> = {
+  validated: 'badges.validated',
+  indicative: 'badges.indicative',
+  experimental: 'badges.experimental',
 }
 
-const DESCRIPTIONS: Record<ReliabilityStatus, string> = {
-  validated:
-    'Model ceiling has historically exceeded realized CPI changes in this market.',
-  indicative:
-    'Model may underestimate due to structural factors not fully captured.',
-  experimental:
-    'Limited validation data available. Treat estimates with caution.',
+const DESC_KEYS: Record<ReliabilityStatus, string> = {
+  validated: 'badges.validatedDesc',
+  indicative: 'badges.indicativeDesc',
+  experimental: 'badges.experimentalDesc',
 }
 
 export function ReliabilityBadge({
@@ -29,11 +27,11 @@ export function ReliabilityBadge({
   showTooltip?: boolean
 }) {
   return (
-    <span className="inline-flex items-center gap-1" title={showTooltip ? DESCRIPTIONS[status] : undefined}>
+    <span className="inline-flex items-center gap-1" title={showTooltip ? t(DESC_KEYS[status]) : undefined}>
       <span
         className={`inline-block font-sans text-[0.67rem] font-semibold px-2 py-0.5 rounded tracking-[0.04em] uppercase ${STYLES[status]}`}
       >
-        {LABELS[status]}
+        {t(LABEL_KEYS[status])}
       </span>
     </span>
   )

@@ -8,6 +8,7 @@ import {
   getSavedScenarios,
 } from '@/lib/saved-scenarios'
 import { analytics } from '@/lib/analytics'
+import { useT } from '@/lib/use-t'
 import type { LagPeriod } from '@/types/scenario'
 
 interface SaveButtonProps {
@@ -25,6 +26,7 @@ export function SaveButton({
   passthrough = 100,
   lag = '6m',
 }: SaveButtonProps) {
+  const t = useT()
   const [saved, setSaved] = useState(false)
 
   useEffect(() => {
@@ -52,7 +54,7 @@ export function SaveButton({
   return (
     <button
       onClick={toggle}
-      title={saved ? 'Remove from saved scenarios' : 'Save this scenario'}
+      title={saved ? t('save.removeTooltip') : t('save.saveTooltip')}
       className="inline-flex items-center gap-1.5 font-sans text-[0.8rem] font-semibold px-3 py-1.5 rounded-md border transition-colors focus:outline-none focus:ring-2 focus:ring-accent/40"
       style={{
         borderColor: saved ? 'var(--color-accent)' : 'var(--color-border)',
@@ -72,7 +74,7 @@ export function SaveButton({
       >
         <path d="M1 3C1 1.89543 1.89543 1 3 1H11C12.1046 1 13 1.89543 13 3V17L7 13L1 17V3Z" />
       </svg>
-      {saved ? 'Saved' : 'Save'}
+      {saved ? t('save.saved') : t('save.save')}
     </button>
   )
 }

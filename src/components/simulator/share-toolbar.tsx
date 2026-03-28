@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useState } from 'react'
+import { useT } from '@/lib/use-t'
 
 interface ShareToolbarProps {
   /** Model version to encode in shared URL (e.g. "1.0.0") */
@@ -22,6 +23,7 @@ function buildShareUrl(modelVersion?: string, snapshotDate?: string): string {
 }
 
 export function ShareToolbar({ modelVersion, snapshotDate }: ShareToolbarProps) {
+  const t = useT()
   const [copied, setCopied] = useState(false)
   const [canShare, setCanShare] = useState(false)
 
@@ -88,7 +90,7 @@ export function ShareToolbar({ modelVersion, snapshotDate }: ShareToolbarProps) 
           <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
           <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
         </svg>
-        {copied ? 'Copied!' : 'Copy link'}
+        {copied ? t('share.copied') : t('share.copyLink')}
       </button>
 
       {/* Native share */}
@@ -114,7 +116,7 @@ export function ShareToolbar({ modelVersion, snapshotDate }: ShareToolbarProps) 
             <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
             <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
           </svg>
-          Share
+          {t('share.share')}
         </button>
       )}
 
@@ -138,7 +140,7 @@ export function ShareToolbar({ modelVersion, snapshotDate }: ShareToolbarProps) 
           <path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2" />
           <rect x="6" y="14" width="12" height="8" />
         </svg>
-        Print
+        {t('share.print')}
       </button>
     </div>
   )

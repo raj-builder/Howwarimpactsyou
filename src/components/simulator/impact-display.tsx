@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useT } from '@/lib/use-t'
 import type { LagPeriod } from '@/types/scenario'
 import { LAG_LABELS } from '@/types/scenario'
 
@@ -24,6 +25,7 @@ export function ImpactDisplay({
   lag,
   lagMultiplier,
 }: ImpactDisplayProps) {
+  const t = useT()
   const [showTooltip, setShowTooltip] = useState(false)
 
   // Normalize bar widths: ceiling is 100% of the bar
@@ -38,7 +40,7 @@ export function ImpactDisplay({
       <div className="flex items-baseline gap-4 mb-1.5">
         <div>
           <span className="font-sans text-[0.65rem] text-ink-muted uppercase tracking-[0.04em]">
-            Ceiling
+            {t('impact.ceiling')}
           </span>
           <span className="font-sans text-[0.82rem] font-bold text-accent ml-1.5">
             +{lagAdjustedCeiling}%
@@ -46,7 +48,7 @@ export function ImpactDisplay({
         </div>
         <div>
           <span className="font-sans text-[0.65rem] text-ink-muted uppercase tracking-[0.04em]">
-            Typical range
+            {t('impact.typicalRange')}
           </span>
           <span className="font-sans text-[0.82rem] font-semibold text-ink ml-1.5">
             +{rangeLow}% &ndash; {rangeHigh}%
@@ -94,7 +96,7 @@ export function ImpactDisplay({
           onClick={() => setShowTooltip(!showTooltip)}
           className="font-sans text-[0.65rem] text-ink-muted hover:text-accent transition-colors cursor-pointer underline decoration-dotted underline-offset-2"
         >
-          How is this calculated?
+          {t('impact.howCalculated')}
         </button>
         {showTooltip && (
           <div className="mt-1 bg-bg-card border border-border rounded-lg px-3 py-2 shadow-card animate-fade-in">

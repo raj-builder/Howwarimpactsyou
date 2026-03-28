@@ -2,19 +2,21 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useT } from '@/lib/use-t'
 
-const NAV_LINKS = [
-  { href: '/', label: 'Home' },
-  { href: '/simulator', label: 'Simulator' },
-  { href: '/basket', label: 'Basket' },
-  { href: '/methodology', label: 'Methodology' },
-  { href: '/validation', label: 'Validation' },
-  { href: '/data-sources', label: 'Data Sources' },
-  { href: '/learn', label: 'Learn' },
+const NAV_KEYS: { href: string; key: string }[] = [
+  { href: '/', key: 'nav.home' },
+  { href: '/simulator', key: 'nav.simulator' },
+  { href: '/basket', key: 'nav.basket' },
+  { href: '/methodology', key: 'nav.methodology' },
+  { href: '/validation', key: 'nav.validation' },
+  { href: '/data-sources', key: 'nav.dataSources' },
+  { href: '/learn', key: 'nav.learn' },
 ]
 
 export function Nav() {
   const pathname = usePathname()
+  const t = useT()
 
   return (
     <nav className="bg-bg-card border-b border-border sticky top-0 z-50 px-4 md:px-8">
@@ -27,7 +29,7 @@ export function Nav() {
         </Link>
 
         <ul className="hidden lg:flex gap-5 list-none">
-          {NAV_LINKS.map((link) => (
+          {NAV_KEYS.map((link) => (
             <li key={link.href}>
               <Link
                 href={link.href}
@@ -37,7 +39,7 @@ export function Nav() {
                     : 'text-ink-soft hover:text-accent'
                 }`}
               >
-                {link.label}
+                {t(link.key)}
               </Link>
             </li>
           ))}
@@ -47,7 +49,7 @@ export function Nav() {
           href="/simulator"
           className="bg-accent text-white font-sans text-[0.78rem] font-semibold px-4 py-2 rounded-md no-underline tracking-wide hover:bg-[#b03e27] transition-colors shrink-0"
         >
-          Open Simulator →
+          {t('nav.openSimulator')} &rarr;
         </Link>
       </div>
     </nav>
