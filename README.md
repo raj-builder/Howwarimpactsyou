@@ -270,6 +270,21 @@ npm start
 
 ## Changelog
 
+### 2025-03-28 — v2.2 (Pre-escalation anchors, user refinements, i18n, surface fixes)
+
+- **Pre-escalation price anchors:** Researched Before/After commodity prices for all 5 wars (Brent, NatGas, Wheat, Copper, Gold, consumer goods). New WarEscalationCard replaces old war selector buttons
+- **User data refinement panel:** 3-tab panel (Commodity Prices, Category Impacts, FX Rates) with localStorage persistence, "Add New Country" flow, export/clear. User overrides flow through `computeScenario`/`computeBasket` with "User data" badge
+- **i18n infrastructure:** Zero-dependency `useT()` hook, ~200 translation keys in `en.json`/`ar.json`/`tl.json`. 19 components + homepage wired to translation keys
+- **Compare page:** Per-scenario pass-through and lag controls, coverage badges per country row, URL-serialized assumptions
+- **Saved scenarios page:** Fixed passthrough display bug, added coverage/reliability badges, full simulator links
+- **Embed endpoints:** Accept `pt` and `lag` query params, show assumption chips and coverage badges
+- **Share toolbar:** Encodes `mv` (modelVersion) and `sd` (snapshotDate) in shared URLs
+- **Homepage cards:** Fixed lag params to `immediate` to match displayed ceiling numbers
+- **SerpAPI caching:** 3-layer cache (module + sessionStorage + Vercel CDN), max 1 call per 24h
+- **Real provenance timestamps:** Data-as-of shows actual SerpAPI `fetched_at` date+time
+- **Fallback prices:** Updated with post-escalation reference values and provenance notes
+- **Gitignore:** MEMORY.md, CLAUDE.md, COS-Report files excluded from public repo
+
 ### 2025-03-26 — v2.1 (Scenario Builder Refactoring)
 
 Centralized all calculation logic, fixed numerical inconsistencies, and made every result auditable and reproducible. Addresses 14 scenario builder tickets (SB-001 through SB-014):
