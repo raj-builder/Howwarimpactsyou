@@ -15,6 +15,7 @@ import {
 } from '@/lib/calculations'
 import { LAG_MULTIPLIERS } from '@/types/scenario'
 import type { LagPeriod, ScenarioState } from '@/types/scenario'
+import { getWarAnchors } from '@/data/pre-escalation-prices'
 
 /* ── Helpers ─────────────────────────────────────────────────── */
 
@@ -346,5 +347,224 @@ describe('findCountryEntry', () => {
   it('returns null for unlisted country', () => {
     const entry = findCountryEntry('ukraine-russia', 'bread', 'Narnia')
     expect(entry).toBeNull()
+  })
+})
+
+/* ══════════════════════════════════════════════════════════════
+   COMPREHENSIVE QA — verify every surface's numbers
+   ══════════════════════════════════════════════════════════════ */
+
+describe('QA: homepage card numbers match computeScenario', () => {
+  // These match the EXAMPLE_CARDS in src/app/page.tsx
+  const HOMEPAGE_CARDS = [
+    { war: 'ukraine-russia' as const, category: 'bread' as const, country: 'Philippines', pt: 100, lag: 'immediate' as LagPeriod, expectedCeiling: 18.4 },
+    { war: 'ukraine-russia' as const, category: 'oil' as const, country: 'Egypt', pt: 100, lag: 'immediate' as LagPeriod, expectedCeiling: 52.1 },
+    { war: 'ukraine-russia' as const, category: 'fuel' as const, country: 'Brazil', pt: 100, lag: 'immediate' as LagPeriod, expectedCeiling: 11.2 },
+    { war: 'ukraine-russia' as const, category: 'vegetables' as const, country: 'India', pt: 100, lag: 'immediate' as LagPeriod, expectedCeiling: 9.7 },
+  ]
+
+  for (const card of HOMEPAGE_CARDS) {
+    it(`${card.country}/${card.category} at ${card.pt}%/${card.lag} = ${card.expectedCeiling}%`, () => {
+      const result = computeScenario(makeState({
+        war: card.war, category: card.category, country: card.country,
+        passthrough: card.pt, lag: card.lag,
+      }))!
+      expect(result).not.toBeNull()
+      // At 100% passthrough + immediate lag, lagAdjustedCeiling should equal raw ceiling
+      expect(result.lagAdjustedCeiling).toBe(card.expectedCeiling)
+      expect(result.ceiling).toBe(card.expectedCeiling)
+    })
+  }
+})
+
+describe('QA: all wars top-1 country ceilings match wars.ts', () => {
+  // Verify the #1 ranked country ceiling for each war's bread category
+  const TOP_CEILINGS: { war: string; country: string; ceiling: number }[] = [
+    { war: 'ukraine-russia', country: 'Egypt', ceiling: 41.3 },
+    { war: 'iran-israel-us', country: 'Egypt', ceiling: 22.8 },
+    { war: 'gaza-2023', country: 'Egypt', ceiling: 18.4 },
+  ]
+
+  for (const tc of TOP_CEILINGS) {
+    it(`${tc.war} bread #1 = ${tc.country} at ${tc.ceiling}%`, () => {
+      const entry = findCountryEntry(tc.war as any, 'bread', tc.country)
+      expect(entry).not.toBeNull()
+      expect(entry!.p).toBe(tc.ceiling)
+    })
+  }
+})
+
+describe('QA: full calculation chain accuracy', () => {
+  it('Egypt/Oil/Ukraine-Russia at 75%/6m produces correct chain', () => {
+    const result = computeScenario(makeState({
+      war: 'ukraine-russia', category: 'oil', country: 'Egypt',
+      passthrough: 75, lag: '6m',
+    }))!
+    expect(result).not.toBeNull()
+
+    // Manual calculation:
+    // ceiling = 52.1 (from wars.ts)
+    // adjustedCeiling = 52.1 * 0.75 = 39.075 → 39.1
+    // lagAdjustedCeiling = 39.1 * 0.88 = 34.408 → 34.4
+    // rangeLow = 34.4 * 0.55 = 18.92 → 18.9
+    // rangeHigh = 34.4 * 0.75 = 25.8
+    // realized = 34.4 * 0.65 = 22.36 → 22.4
+    // modelGap = 34.4 - 22.4 = 12.0
+    expect(result.ceiling).toBe(52.1)
+    expect(result.adjustedCeiling).toBe(39.1)
+    expect(result.lagAdjustedCeiling).toBe(34.4)
+    expect(result.rangeLow).toBe(18.9)
+    expect(result.rangeHigh).toBe(25.8)
+    expect(result.realized).toBe(22.4)
+    expect(result.modelGap).toBe(12.0)
+  })
+
+  it('zero passthrough produces zero across the board', () => {
+    const result = computeScenario(makeState({ passthrough: 0 }))!
+    expect(result.adjustedCeiling).toBe(0)
+    expect(result.lagAdjustedCeiling).toBe(0)
+    expect(result.rangeLow).toBe(0)
+    expect(result.rangeHigh).toBe(0)
+    expect(result.realized).toBe(0)
+    expect(result.modelGap).toBe(0)
+  })
+
+  it('25% passthrough with 12m lag produces correct small numbers', () => {
+    const result = computeScenario(makeState({
+      country: 'Philippines', category: 'bread',
+      passthrough: 25, lag: '12m',
+    }))!
+    // ceiling = 18.4
+    // adjustedCeiling = 18.4 * 0.25 = 4.6
+    // lagAdjustedCeiling = 4.6 * 0.75 = 3.45 → 3.5 (display rounding)
+    expect(result.ceiling).toBe(18.4)
+    expect(result.adjustedCeiling).toBe(4.6)
+    expect(result.lagAdjustedCeiling).toBe(3.5)
+  })
+})
+
+describe('QA: basket reconciliation across countries', () => {
+  const COUNTRIES_TO_TEST = ['Philippines', 'Egypt', 'India', 'Brazil']
+
+  for (const country of COUNTRIES_TO_TEST) {
+    it(`${country} basket weighted avg reconciles from individual items`, () => {
+      const enabled = new Set(['bread', 'oil', 'fuel', 'dairy', 'rice', 'vegetables'] as const)
+      const result = computeBasket(
+        { war: 'ukraine-russia', country, passthrough: 100, lag: 'immediate', provenance: getProvenance() },
+        enabled as Set<any>,
+      )!
+      if (!result) return // Skip countries with no ranking data
+
+      const enabledItems = result.items.filter(i => i.enabled)
+      const totalWeight = enabledItems.reduce((s, i) => s + i.cpiWeight, 0)
+
+      // Recompute weighted average from full precision
+      const recomputed = enabledItems.reduce(
+        (s, i) => s + (i.cpiWeight / totalWeight) * i.lagAdjustedImpact,
+        0,
+      )
+      const recomputedRounded = roundValue(recomputed, 'display')
+
+      // Must match within 0.2pp (rounding tolerance)
+      expect(withinTolerance(recomputedRounded, result.weightedAverage, 0.2)).toBe(true)
+    })
+
+    it(`${country} basket CPI contribution reconciles`, () => {
+      const enabled = new Set(['bread', 'oil', 'fuel', 'dairy', 'rice', 'vegetables'] as const)
+      const result = computeBasket(
+        { war: 'ukraine-russia', country, passthrough: 100, lag: 'immediate', provenance: getProvenance() },
+        enabled as Set<any>,
+      )!
+      if (!result) return
+
+      const enabledItems = result.items.filter(i => i.enabled)
+      const recomputed = enabledItems.reduce(
+        (s, i) => s + (i.cpiWeight / 100) * i.lagAdjustedImpact,
+        0,
+      )
+      const recomputedRounded = roundValue(recomputed, 'display')
+
+      expect(withinTolerance(recomputedRounded, result.cpiContribution, 0.2)).toBe(true)
+    })
+  }
+})
+
+describe('QA: user refinement override', () => {
+  it('user-supplied impact replaces static ceiling', () => {
+    const refinements = {
+      version: 1 as const,
+      commodities: [],
+      categoryImpacts: [{
+        country: 'Philippines',
+        categoryId: 'bread',
+        warId: 'ukraine-russia',
+        impactPct: 25.0,
+        updatedAt: new Date().toISOString(),
+        source: 'user' as const,
+      }],
+      fxRates: [],
+      newCountries: [],
+      lastUpdated: new Date().toISOString(),
+    }
+
+    const result = computeScenario(makeState(), 'display', refinements)!
+    expect(result).not.toBeNull()
+    // Should use 25.0 instead of 18.4
+    expect(result.ceiling).toBe(25.0)
+    expect(result.lagAdjustedCeiling).toBe(25.0) // 100% pt, immediate lag
+    expect(result.userRefined).toBe(true)
+  })
+
+  it('without refinement, userRefined is false', () => {
+    const result = computeScenario(makeState())!
+    expect(result.userRefined).toBe(false)
+  })
+
+  it('refinement for different country does not affect original', () => {
+    const refinements = {
+      version: 1 as const,
+      commodities: [],
+      categoryImpacts: [{
+        country: 'Egypt',
+        categoryId: 'bread',
+        warId: 'ukraine-russia',
+        impactPct: 99.0,
+        updatedAt: new Date().toISOString(),
+        source: 'user' as const,
+      }],
+      fxRates: [],
+      newCountries: [],
+      lastUpdated: new Date().toISOString(),
+    }
+
+    // Philippines should still use static data
+    const result = computeScenario(makeState({ country: 'Philippines' }), 'display', refinements)!
+    expect(result.ceiling).toBe(18.4)
+    expect(result.userRefined).toBe(false)
+  })
+})
+
+describe('QA: pre-escalation price anchors', () => {
+  it('changePct is computed correctly for ukraine-russia brent', () => {
+    // prePrice: 96.84, postPrice: 133.18
+    // changePct = ((133.18 - 96.84) / 96.84) * 100 = 37.5%
+    const anchors = getWarAnchors('ukraine-russia')
+    expect(anchors).not.toBeNull()
+    const brent = anchors.commodities.find((c: any) => c.id === 'brent')
+    expect(brent).not.toBeUndefined()
+    expect(brent.changePct).toBeCloseTo(37.5, 0)
+  })
+
+  it('all changePct values are consistent with pre/post prices', () => {
+    for (const warId of ['ukraine-russia', 'iran-israel-us', 'gaza-2023']) {
+      const anchors = getWarAnchors(warId)
+      if (!anchors) continue
+      for (const item of [...anchors.commodities, ...anchors.consumerGoods]) {
+        if (item.changePct !== undefined && item.prePrice > 0) {
+          const expected = Math.round(((item.postPrice - item.prePrice) / item.prePrice) * 1000) / 10
+          expect(item.changePct).toBeCloseTo(expected, 1)
+        }
+      }
+    }
   })
 })

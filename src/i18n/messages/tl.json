@@ -79,7 +79,7 @@
     "howCalculated": "How is this calculated?",
     "ceilingExplainer": "The ceiling assumes full pass-through of upstream commodity shocks to consumer prices",
     "lagAdjusted": ", adjusted for a {lag} lag (multiplier: {mult}x)",
-    "rangeExplainer": ". Historically, realized inflation has been 55\u201375% of the ceiling due to government subsidies, price controls, currency hedging, and supply chain buffers. The typical range reflects this adjustment."
+    "rangeExplainer": ". Historically, realized inflation has been 55–75% of the ceiling due to government subsidies, price controls, currency hedging, and supply chain buffers. The typical range reflects this adjustment."
   },
   "basket": {
     "eyebrow": "Basket View",
@@ -254,5 +254,67 @@
     "priceCeiling": "price ceiling",
     "user": "(user)",
     "na": "n/a"
+  },
+  "methodology": {
+    "title": "How the model works",
+    "subtitle": "Full transparency on every assumption, coefficient, and data source that powers the impact estimates.",
+    "coreFormula": "Core formula",
+    "knownLimitations": "Known limitations"
+  },
+  "validation": {
+    "title": "Model validation",
+    "subtitle": "Comparing model ceiling estimates against realized CPI data to understand where the model performs well and where it falls short.",
+    "validationData": "Validation data",
+    "ceilingHeld": "Ceiling held",
+    "undershot": "Undershot",
+    "fxStable": "Model performs well where FX is stable",
+    "knownFailures": "Known failure modes",
+    "validationContext": "Validation context:",
+    "validationContextDesc": "Model ceilings shown above are computed at 100% pass-through with immediate lag (1.0x multiplier). In the simulator, selecting a different lag period (e.g., 12-month at 0.75x) will reduce the ceiling proportionally."
+  },
+  "dataSources": {
+    "title": "Data sources",
+    "subtitle": "Every data point has a provenance. Here is where our numbers come from, how often they update, and what they cover."
+  },
+  "about": {
+    "title": "About howwarimpactsyou.com",
+    "subtitle": "A free, transparent tool that connects macro-level commodity and currency shocks to consumer-level price impacts.",
+    "mission": "Mission",
+    "missionTagline": "Connecting macro shocks to consumer reality",
+    "editorialStandards": "Editorial standards",
+    "timeline": "Project timeline"
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "Questions, corrections, or ideas? We want to hear from you.",
+    "getInTouch": "Get in touch",
+    "dataCorrections": "Data corrections",
+    "methodologyFeedback": "Methodology feedback",
+    "partnerships": "Partnership inquiries"
+  },
+  "learn": {
+    "title": "Learning Hub",
+    "subtitle": "Understanding war's impact on prices",
+    "deepDives": "Deep dives into the economics behind conflict-driven price shocks."
+  },
+  "data": {
+    "title": "Datasets & API",
+    "subtitle": "All impact data is freely available for research, journalism, and public interest use.",
+    "availableDatasets": "Available datasets",
+    "dataDictionary": "Data dictionary",
+    "usageNotes": "Usage notes"
+  },
+  "changelog": {
+    "title": "Changelog",
+    "subtitle": "Every change to the model, data sources, and interface is documented here. Transparency is not just about the formula — it includes how the tool evolves over time."
+  },
+  "press": {
+    "title": "Press Kit",
+    "subtitle": "Resources for journalists, researchers, and media professionals.",
+    "aboutProject": "About the project",
+    "keyStats": "Key statistics",
+    "howToCite": "How to cite",
+    "mediaInquiries": "Media inquiries",
+    "screenshots": "Screenshots & assets"
   }
 }

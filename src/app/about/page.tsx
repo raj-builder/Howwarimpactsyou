@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
+import { getMessages } from '@/lib/use-t'
 
 export const metadata: Metadata = {
   title: 'About',
@@ -8,6 +9,7 @@ export const metadata: Metadata = {
 }
 
 export default function AboutPage() {
+  const m = getMessages()
   return (
     <>
       {/* Hero */}
@@ -21,11 +23,10 @@ export default function AboutPage() {
             <span className="text-white/70">About</span>
           </nav>
           <h1 className="text-[clamp(2rem,4.5vw,3.2rem)] font-normal leading-[1.2] mb-4 tracking-tight font-serif">
-            About howwarimpactsyou.com
+            {m.about.title}
           </h1>
           <p className="text-[1.05rem] text-white/65 max-w-[600px] leading-relaxed font-serif">
-            A free, transparent tool for understanding how macro-level shocks
-            translate into the prices you pay every day.
+            {m.about.subtitle}
           </p>
         </div>
       </section>

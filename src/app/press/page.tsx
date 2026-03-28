@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
+import { getMessages } from '@/lib/use-t'
 
 export const metadata: Metadata = {
   title: 'Press Kit',
@@ -15,6 +16,7 @@ const STATS = [
 ]
 
 export default function PressPage() {
+  const m = getMessages()
   return (
     <>
       {/* Hero */}
@@ -31,11 +33,10 @@ export default function PressPage() {
             <span className="text-white/70">Press Kit</span>
           </nav>
           <h1 className="text-[clamp(2rem,4.5vw,3.2rem)] font-normal leading-[1.2] mb-4 tracking-tight font-serif">
-            Press Kit
+            {m.press.title}
           </h1>
           <p className="text-[1.05rem] text-white/65 max-w-[600px] leading-relaxed font-serif">
-            Resources for journalists, researchers, and media professionals
-            covering the macro-to-consumer price impact space.
+            {m.press.subtitle}
           </p>
         </div>
       </section>

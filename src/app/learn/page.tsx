@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ARTICLES } from '@/content/articles'
+import { getMessages } from '@/lib/use-t'
 
 export const metadata: Metadata = {
   title: 'Learn',
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
 }
 
 export default function LearnPage() {
+  const m = getMessages()
   return (
     <>
       {/* Hero */}
@@ -26,10 +28,10 @@ export default function LearnPage() {
             <span className="text-white/70">Learn</span>
           </nav>
           <p className="font-sans text-[0.72rem] font-bold tracking-[0.14em] uppercase text-accent-warm mb-4">
-            Learning Hub
+            {m.learn.title}
           </p>
           <h1 className="text-[clamp(2rem,4.5vw,3.2rem)] font-normal leading-[1.2] mb-4 tracking-tight font-serif">
-            Understanding war&apos;s impact on prices
+            {m.learn.subtitle}
           </h1>
           <p className="text-[1.05rem] text-white/65 max-w-[600px] leading-relaxed font-serif">
             Deep dives into the economics behind our model. Learn how commodity

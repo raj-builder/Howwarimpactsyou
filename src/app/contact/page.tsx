@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
+import { getMessages } from '@/lib/use-t'
 
 export const metadata: Metadata = {
   title: 'Contact',
@@ -8,6 +9,7 @@ export const metadata: Metadata = {
 }
 
 export default function ContactPage() {
+  const m = getMessages()
   return (
     <>
       {/* Hero */}
@@ -21,10 +23,10 @@ export default function ContactPage() {
             <span className="text-white/70">Contact</span>
           </nav>
           <h1 className="text-[clamp(2rem,4.5vw,3.2rem)] font-normal leading-[1.2] mb-4 tracking-tight font-serif">
-            Contact
+            {m.contact.title}
           </h1>
           <p className="text-[1.05rem] text-white/65 max-w-[600px] leading-relaxed font-serif">
-            Questions, corrections, or ideas? We want to hear from you.
+            {m.contact.subtitle}
           </p>
         </div>
       </section>

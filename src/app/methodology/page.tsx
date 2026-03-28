@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
+import { getMessages } from '@/lib/use-t'
 
 export const metadata: Metadata = {
   title: 'Methodology',
@@ -41,6 +42,7 @@ const METHOD_CARDS = [
 ]
 
 export default function MethodologyPage() {
+  const m = getMessages()
   return (
     <>
       {/* Hero */}
@@ -54,11 +56,10 @@ export default function MethodologyPage() {
             <span className="text-white/70">Methodology</span>
           </nav>
           <h1 className="text-[clamp(2rem,4.5vw,3.2rem)] font-normal leading-[1.2] mb-4 tracking-tight font-serif">
-            How the model works
+            {m.methodology.title}
           </h1>
           <p className="text-[1.05rem] text-white/65 max-w-[600px] leading-relaxed font-serif">
-            Full transparency on every assumption, coefficient, and limitation.
-            If you can see the wiring, you can judge the output.
+            {m.methodology.subtitle}
           </p>
         </div>
       </section>

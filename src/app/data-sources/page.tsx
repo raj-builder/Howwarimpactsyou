@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { COUNTRIES } from '@/data/countries'
+import { getMessages } from '@/lib/use-t'
 
 export const metadata: Metadata = {
   title: 'Data Sources',
@@ -72,6 +73,7 @@ const DATA_SOURCES = [
 ]
 
 export default function DataSourcesPage() {
+  const m = getMessages()
   return (
     <>
       {/* Hero */}
@@ -85,11 +87,10 @@ export default function DataSourcesPage() {
             <span className="text-white/70">Data Sources</span>
           </nav>
           <h1 className="text-[clamp(2rem,4.5vw,3.2rem)] font-normal leading-[1.2] mb-4 tracking-tight font-serif">
-            Data sources
+            {m.dataSources.title}
           </h1>
           <p className="text-[1.05rem] text-white/65 max-w-[600px] leading-relaxed font-serif">
-            Every data point has a provenance. Here is where our numbers come
-            from, how often they update, and what each source covers.
+            {m.dataSources.subtitle}
           </p>
         </div>
       </section>

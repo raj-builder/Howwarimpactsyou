@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
+import { getMessages } from '@/lib/use-t'
 
 export const metadata: Metadata = {
   title: 'Datasets & API',
@@ -64,6 +65,7 @@ const DATASETS = [
 ]
 
 export default function DataPage() {
+  const m = getMessages()
   return (
     <>
       {/* Hero */}
@@ -77,11 +79,10 @@ export default function DataPage() {
             <span className="text-white/70">Datasets & API</span>
           </nav>
           <h1 className="text-[clamp(2rem,4.5vw,3.2rem)] font-normal leading-[1.2] mb-4 tracking-tight font-serif">
-            Datasets & API
+            {m.data.title}
           </h1>
           <p className="text-[1.05rem] text-white/65 max-w-[600px] leading-relaxed font-serif">
-            All impact data is freely available under CC BY 4.0. Download JSON datasets
-            or query the public API endpoints directly.
+            {m.data.subtitle}
           </p>
         </div>
       </section>

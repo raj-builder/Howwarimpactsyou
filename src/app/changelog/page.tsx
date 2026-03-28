@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
+import { getMessages } from '@/lib/use-t'
 
 export const metadata: Metadata = {
   title: 'Changelog',
@@ -69,6 +70,7 @@ const VERSIONS = [
 ]
 
 export default function ChangelogPage() {
+  const m = getMessages()
   return (
     <>
       {/* Hero */}
@@ -82,12 +84,10 @@ export default function ChangelogPage() {
             <span className="text-white/70">Changelog</span>
           </nav>
           <h1 className="text-[clamp(2rem,4.5vw,3.2rem)] font-normal leading-[1.2] mb-4 tracking-tight font-serif">
-            Changelog
+            {m.changelog.title}
           </h1>
           <p className="text-[1.05rem] text-white/65 max-w-[600px] leading-relaxed font-serif">
-            Every change to the model, data sources, and interface is documented
-            here. Transparency is not just about the formula &mdash; it includes
-            how the tool evolves over time.
+            {m.changelog.subtitle}
           </p>
         </div>
       </section>

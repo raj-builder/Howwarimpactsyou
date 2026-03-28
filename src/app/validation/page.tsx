@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
+import { getMessages } from '@/lib/use-t'
 
 export const metadata: Metadata = {
   title: 'Validation',
@@ -27,6 +28,7 @@ const VALIDATION_DATA: ValidationRow[] = [
 ]
 
 export default function ValidationPage() {
+  const m = getMessages()
   return (
     <>
       {/* Hero */}
@@ -40,11 +42,10 @@ export default function ValidationPage() {
             <span className="text-white/70">Validation</span>
           </nav>
           <h1 className="text-[clamp(2rem,4.5vw,3.2rem)] font-normal leading-[1.2] mb-4 tracking-tight font-serif">
-            Model validation
+            {m.validation.title}
           </h1>
           <p className="text-[1.05rem] text-white/65 max-w-[600px] leading-relaxed font-serif">
-            Comparing model ceiling estimates against realized CPI data to
-            understand where the model performs well and where it falls short.
+            {m.validation.subtitle}
           </p>
         </div>
       </section>
