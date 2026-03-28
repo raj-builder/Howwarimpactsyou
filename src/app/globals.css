@@ -87,6 +87,17 @@ canvas {
   max-width: 100%;
 }
 
+/* Respect reduced motion preferences (WCAG 2.3.3) */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .animate-pulse,
+  .animate-fade-in {
+    animation: none;
+  }
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .container-page {
