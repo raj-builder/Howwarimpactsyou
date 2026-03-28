@@ -9,7 +9,7 @@ const NAV_KEYS: { href: string; key: string }[] = [
   { href: '/simulator', key: 'nav.simulator' },
   { href: '/basket', key: 'nav.basket' },
   { href: '/methodology', key: 'nav.methodology' },
-  { href: '/validation', key: 'nav.validation' },
+  { href: '/countries', key: 'nav.countries' },
   { href: '/data-sources', key: 'nav.dataSources' },
   { href: '/learn', key: 'nav.learn' },
 ]

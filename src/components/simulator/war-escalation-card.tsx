@@ -20,6 +20,8 @@ interface WarEscalationCardProps {
   fxDepPct: number | null
   isSelected: boolean
   onClick: () => void
+  /** Use compact padding when rendered in the left sidebar */
+  compact?: boolean
 }
 
 function ChangeBadge({ pct }: { pct: number | null | undefined }) {
@@ -63,6 +65,7 @@ export function WarEscalationCard({
   fxDepPct,
   isSelected,
   onClick,
+  compact,
 }: WarEscalationCardProps) {
   const t = useT()
   const anchors = useMemo(() => getWarAnchors(warId), [warId])
@@ -92,7 +95,7 @@ export function WarEscalationCard({
           : 'hover:shadow-md'
       }`}
     >
-      <div className="bg-gradient-to-br from-[#1a1a1a] via-[#2d2420] to-[#3a2216] text-white rounded-[10px] p-4 md:p-5">
+      <div className={`bg-gradient-to-br from-[#1a1a1a] via-[#2d2420] to-[#3a2216] text-white rounded-[10px] ${compact ? 'p-3' : 'p-4 md:p-5'}`}>
         {/* Header */}
         <div className="flex items-center gap-2 mb-1.5">
           <span className="font-sans text-[0.9rem] font-bold">{warName}</span>
@@ -171,8 +174,11 @@ export function WarEscalationCard({
             )}
 
             {/* Footer */}
-            <p className="font-sans text-[0.58rem] text-white/25 mt-2">
-              Prices as of {anchors.commodities[0]?.anchorDate ?? escalationDate} · Hardcoded benchmark · Live API pending
+            <p className="font-sans text-[0.7rem] text-white/70 mt-2">
+              {t('soWhat.provenanceNote', {
+                date: anchors.commodities[0]?.anchorDate ?? escalationDate,
+                source: t('escalation.hardcodedNote'),
+              })}
             </p>
           </div>
         )}

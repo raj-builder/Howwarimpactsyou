@@ -1,0 +1,33 @@
+## [2026-03-28] — Simulator UI overhaul, basket controls, page restructure
+
+### What changed
+- **Default war changed to Iran–Israel–US** — simulator and basket page now default to the Iran-Israel-US conflict (Strait of Hormuz focus) instead of Russia-Ukraine
+- **"So What" summary card** replaces duplicate war escalation card at top of right panel; shows personal impact hero number, 3-category mini insights (bread/fuel/oil), basket weighted average, and integrated ShareToolbar
+- **Country detail promoted to top** — clicking a country in rankings now shows the detail panel directly below the summary card instead of buried after rankings; auto-scrolls into view
+- **War card alignment** — left-panel war cards use compact padding to align properly within the controls aside
+- **Price provenance readability** — footer text in war cards changed from 9px/25% opacity (~1.25:1 contrast) to 11px/70% opacity (~5.8:1 contrast, WCAG AA compliant)
+- **Quick scenarios redesigned** — moved from above the grid into the right panel; uses callback-based navigation instead of Link page reloads; computes impact dynamically from rankings data; shows clear "Try this scenario" CTA
+- **ShareToolbar activated** — the existing but unused ShareToolbar component is now rendered in the So What card (dark variant) and basket page summary
+- **Basket page interactive controls** — added war selector, country dropdown (grouped full/partial/experimental), pass-through chips, lag chips; all sync to URL for shareable state
+- **Methodology & Validation merged** — single page at /methodology with validation section accessible via #validation anchor; /validation route redirects
+- **Countries Involved page** — new /countries page showing belligerent nations (USA, Israel, Iran, Russia, Ukraine, Saudi Arabia) with GDP, oil/gas production, key exports, and conflict impact descriptions
+- **Homepage examples updated** — all 4 example cards now feature Iran-Israel-US conflict scenarios (Egypt fuel, Pakistan bread, Philippines fuel, India cooking oil)
+- **Navigation updated** — Validation tab replaced with Countries tab; methodology tab points to merged page
+- **i18n improvements** — new translation keys for soWhat.*, presets.*, basket.selectCountry, basket.selectWar, nav.countries; purchasing power text now uses i18n interpolation instead of hardcoded template literals
+
+### Why
+The simulator's right panel was duplicating data the user already saw on the left (same war card shown twice). The user needed a clear personal "So What" — not raw commodity numbers but a direct statement like "Your bread could cost 18.4% more." Combined with repositioning quick scenarios and promoting country detail to the top, this reduces scroll and puts actionable insights first. The Iran-Israel-US default reflects the current most relevant geopolitical flashpoint (Hormuz). The basket page had zero interactive controls. The methodology and validation pages were unnecessarily split.
+
+### Data & calculation notes
+None. No calculation logic changed. All numbers still flow through `computeScenario()` and `computeBasket()` in `src/lib/calculations.ts`. The WarSummaryCard's mini insights and basket average are computed from the same centralized functions.
+
+### Upgrade notes for the next engineer or AI session
+- The old `/validation` page now redirects to `/methodology#validation` — update any external links
+- `PresetCards` component API changed: now requires `onSelect` callback prop instead of rendering `<Link>` elements
+- `WarEscalationCard` has new optional `compact` prop for left-panel use
+- `ShareToolbar` has new optional `variant` prop ('light' | 'dark')
+- Countries page data (GDP, oil production) is hardcoded — will need periodic updates from World Bank/EIA sources
+- Open items remain: i18n for all hardcoded strings in methodology/validation/countries pages, accessibility audit, compare page, saved scenarios page
+
+### Credits & third-party use
+- Countries page economic data: World Bank (GDP, 2023), EIA/OPEC (oil production), IEA (gas production), UN Comtrade (export categories). All public domain / CC BY 4.0.

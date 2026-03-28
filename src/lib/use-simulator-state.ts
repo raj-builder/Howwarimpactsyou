@@ -18,7 +18,7 @@ export function useSimulatorState() {
   const router = useRouter()
 
   const [war, setWar] = useState<WarId>(
-    (searchParams.get('war') as WarId) || 'ukraine-russia',
+    (searchParams.get('war') as WarId) || 'iran-israel-us',
   )
   const [category, setCategory] = useState<CategoryId>(
     (searchParams.get('category') as CategoryId) || 'bread',

@@ -1,26 +1,64 @@
 'use client'
 
-import { useState, useMemo } from 'react'
-import { useSearchParams } from 'next/navigation'
-import { WARS } from '@/data/wars'
+import { useState, useMemo, useEffect, useCallback } from 'react'
+import { useSearchParams, useRouter } from 'next/navigation'
+import { WARS, WAR_LIST } from '@/data/wars'
 import { COUNTRIES } from '@/data/countries'
 import { computeBasket, getProvenance } from '@/lib/calculations'
 import { usePricesFreshness } from '@/lib/use-prices-freshness'
+import { ShareToolbar } from '@/components/simulator/share-toolbar'
 import { useT } from '@/lib/use-t'
 import type { WarId, CategoryId } from '@/types'
 import type { LagPeriod } from '@/types/scenario'
 import { LAG_MULTIPLIERS, LAG_LABELS } from '@/types/scenario'
 
+/* ---------- constants ---------- */
+const PASS_OPTIONS = [100, 75, 50, 25] as const
+const LAG_OPTIONS: { label: string; value: LagPeriod }[] = [
+  { label: 'Immediate', value: 'immediate' },
+  { label: '3m', value: '3m' },
+  { label: '6m', value: '6m' },
+  { label: '12m', value: '12m' },
+]
+
+function parseLag(raw: string | null): LagPeriod {
+  if (raw && raw in LAG_MULTIPLIERS) return raw as LagPeriod
+  return '6m'
+}
+
 /* ---------- component ---------- */
 export function BasketClient() {
   const searchParams = useSearchParams()
+  const router = useRouter()
+  const t = useT()
 
-  /* --- read scenario params from URL --- */
-  const warId = (searchParams.get('war') as WarId) || 'ukraine-russia'
-  const country = searchParams.get('country') || 'Philippines'
-  const passthrough = Number(searchParams.get('pt')) || 100
-  const lagRaw = searchParams.get('lag') || '6m'
-  const lag: LagPeriod = lagRaw in LAG_MULTIPLIERS ? (lagRaw as LagPeriod) : '6m'
+  /* --- interactive state (initialized from URL) --- */
+  const [warId, setWarId] = useState<WarId>(
+    (searchParams.get('war') as WarId) || 'iran-israel-us',
+  )
+  const [country, setCountry] = useState(
+    searchParams.get('country') || 'Philippines',
+  )
+  const [passthrough, setPassthrough] = useState(
+    Number(searchParams.get('pt')) || 100,
+  )
+  const [lag, setLag] = useState<LagPeriod>(
+    parseLag(searchParams.get('lag')),
+  )
+
+  /* --- URL sync --- */
+  const updateUrl = useCallback(() => {
+    const params = new URLSearchParams()
+    params.set('war', warId)
+    params.set('country', country)
+    params.set('pt', String(passthrough))
+    params.set('lag', lag)
+    router.replace(`/basket?${params.toString()}`, { scroll: false })
+  }, [warId, country, passthrough, lag, router])
+
+  useEffect(() => {
+    updateUrl()
+  }, [updateUrl])
 
   /* --- enabled categories toggle state --- */
   const [enabledSet, setEnabledSet] = useState<Set<CategoryId>>(
@@ -58,12 +96,20 @@ export function BasketClient() {
     )
   }, [warId, country, passthrough, lag, enabledSet, freshness.fetchedAt])
 
-  const t = useT()
+  const provenance = useMemo(() => getProvenance(freshness.fetchedAt), [freshness.fetchedAt])
 
   /* --- UI data --- */
   const war = WARS[warId]
   const items = basketResult?.items ?? []
   const maxImpact = Math.max(...items.map((i) => i.lagAdjustedImpact), 1)
+
+  /* --- grouped countries for dropdown --- */
+  const groupedCountries = useMemo(() => {
+    const full = COUNTRIES.filter((c) => c.coverage === 'full')
+    const partial = COUNTRIES.filter((c) => c.coverage === 'partial')
+    const experimental = COUNTRIES.filter((c) => c.coverage === 'experimental')
+    return { full, partial, experimental }
+  }, [])
 
   return (
     <div className="container-page py-8">
@@ -80,15 +126,106 @@ export function BasketClient() {
         </p>
       </div>
 
-      {/* Context badge — dynamic, not hardcoded */}
+      {/* Controls bar */}
+      <div className="bg-bg-card border border-border rounded-[10px] p-4 mb-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* War selector */}
+        <fieldset>
+          <legend className="font-sans text-[0.72rem] font-bold text-ink-muted uppercase tracking-[0.06em] mb-1.5">
+            {t('basket.selectWar')}
+          </legend>
+          <select
+            value={warId}
+            onChange={(e) => setWarId(e.target.value as WarId)}
+            className="w-full border border-border rounded-lg px-3 py-2 font-sans text-[0.82rem] text-ink bg-bg-card focus:outline-none focus:border-accent focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-1"
+          >
+            {WAR_LIST.map((w) => (
+              <option key={w.id} value={w.id}>{w.name}</option>
+            ))}
+          </select>
+        </fieldset>
+
+        {/* Country selector */}
+        <fieldset>
+          <legend className="font-sans text-[0.72rem] font-bold text-ink-muted uppercase tracking-[0.06em] mb-1.5">
+            {t('basket.selectCountry')}
+          </legend>
+          <select
+            value={country}
+            onChange={(e) => setCountry(e.target.value)}
+            className="w-full border border-border rounded-lg px-3 py-2 font-sans text-[0.82rem] text-ink bg-bg-card focus:outline-none focus:border-accent focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-1"
+          >
+            <optgroup label={t('simulator.fullCoverage')}>
+              {groupedCountries.full.map((c) => (
+                <option key={c.id} value={c.id}>{c.flag} {c.name}</option>
+              ))}
+            </optgroup>
+            <optgroup label={t('simulator.partialCoverage')}>
+              {groupedCountries.partial.map((c) => (
+                <option key={c.id} value={c.id}>{c.flag} {c.name}</option>
+              ))}
+            </optgroup>
+            <optgroup label={t('simulator.experimental')}>
+              {groupedCountries.experimental.map((c) => (
+                <option key={c.id} value={c.id}>{c.flag} {c.name}</option>
+              ))}
+            </optgroup>
+          </select>
+        </fieldset>
+
+        {/* Pass-through chips */}
+        <fieldset>
+          <legend className="font-sans text-[0.72rem] font-bold text-ink-muted uppercase tracking-[0.06em] mb-1.5">
+            {t('simulator.passthrough')}
+          </legend>
+          <div className="flex gap-1.5">
+            {PASS_OPTIONS.map((val) => (
+              <button
+                key={val}
+                onClick={() => setPassthrough(val)}
+                className={`flex-1 font-sans text-[0.75rem] font-semibold rounded-md py-1.5 transition-colors cursor-pointer ${
+                  passthrough === val
+                    ? 'bg-accent text-white'
+                    : 'bg-bg-alt text-ink-muted hover:text-ink'
+                }`}
+              >
+                {val}%
+              </button>
+            ))}
+          </div>
+        </fieldset>
+
+        {/* Lag chips */}
+        <fieldset>
+          <legend className="font-sans text-[0.72rem] font-bold text-ink-muted uppercase tracking-[0.06em] mb-1.5">
+            {t('simulator.lagPeriod')}
+          </legend>
+          <div className="flex gap-1.5">
+            {LAG_OPTIONS.map((opt) => (
+              <button
+                key={opt.value}
+                onClick={() => setLag(opt.value)}
+                className={`flex-1 font-sans text-[0.75rem] font-semibold rounded-md py-1.5 transition-colors cursor-pointer ${
+                  lag === opt.value
+                    ? 'bg-accent text-white'
+                    : 'bg-bg-alt text-ink-muted hover:text-ink'
+                }`}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+        </fieldset>
+      </div>
+
+      {/* Context badge — dynamic */}
       <div className="inline-flex items-center gap-2 bg-bg-alt border border-border rounded-lg px-4 py-2 mb-6 font-sans text-[0.75rem] text-ink-muted">
         <span className="text-base">
           {COUNTRIES.find((c) => c.id === country)?.flag ?? ''}
         </span>
         <span>
           {country} &middot; {war?.name ?? warId} &middot;{' '}
-          <strong className="text-ink">{passthrough}% pass-through</strong>
-          &middot; <strong className="text-ink">{LAG_LABELS[lag]} lag</strong>
+          <strong className="text-ink">{passthrough}% {t('simulator.passthrough').toLowerCase()}</strong>
+          &middot; <strong className="text-ink">{LAG_LABELS[lag]} {t('simulator.lagPeriod').toLowerCase()}</strong>
         </span>
       </div>
 
@@ -130,7 +267,7 @@ export function BasketClient() {
                     {item.label}
                   </div>
                   <div className="font-sans text-[0.68rem] text-ink-muted">
-                    CPI weight: {item.cpiWeight}%
+                    {t('basket.cpiWeight', { pct: String(item.cpiWeight) })}
                   </div>
                 </div>
 
@@ -141,7 +278,7 @@ export function BasketClient() {
                   </div>
                   {item.ceiling !== item.lagAdjustedImpact && (
                     <div className="font-sans text-[0.62rem] text-ink-muted">
-                      ceiling: {item.ceiling}%
+                      {t('basket.ceilingLabel', { pct: String(item.ceiling) })}
                     </div>
                   )}
                 </div>
@@ -224,6 +361,14 @@ export function BasketClient() {
               ))}
           </div>
 
+          {/* Share toolbar */}
+          <div className="mb-4">
+            <ShareToolbar
+              modelVersion={provenance.modelVersion}
+              snapshotDate={provenance.snapshotDate}
+            />
+          </div>
+
           {/* Weight breakdown */}
           <div className="border-t border-border pt-4">
             <h3 className="font-sans text-[0.72rem] font-bold text-ink-muted uppercase tracking-[0.06em] mb-2">
@@ -242,7 +387,7 @@ export function BasketClient() {
                 ))}
             </div>
             <p className="font-sans text-[0.68rem] text-ink-muted mt-2">
-              Total active weight:{' '}
+              {t('basket.totalActiveWeight')}{' '}
               <strong className="text-ink">
                 {items.filter((i) => i.enabled).reduce((s, i) => s + i.cpiWeight, 0)}%
               </strong>
@@ -252,11 +397,14 @@ export function BasketClient() {
           {/* Disclaimer */}
           <div className="bg-amber-light border border-[#e8c97a] rounded-lg px-3 py-2.5 mt-4">
             <p className="font-sans text-[0.68rem] text-[#7a4f10] leading-relaxed">
-              <strong className="text-[#5a3408]">Note:</strong> Basket weights are
-              approximate CPI sub-index shares for {country}. Impact figures
-              assume {passthrough}% pass-through under the {war?.name ?? warId} scenario
-              with {LAG_LABELS[lag]} lag ({LAG_MULTIPLIERS[lag]}x multiplier).
-              Actual shelf prices will differ.
+              <strong className="text-[#5a3408]">{t('basket.disclaimerNote')}</strong>{' '}
+              {t('basket.disclaimerText', {
+                country,
+                pt: String(passthrough),
+                war: war?.name ?? warId,
+                lag: LAG_LABELS[lag],
+                mult: String(LAG_MULTIPLIERS[lag]),
+              })}
             </p>
           </div>
         </aside>

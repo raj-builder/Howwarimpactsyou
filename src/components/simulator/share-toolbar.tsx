@@ -8,6 +8,8 @@ interface ShareToolbarProps {
   modelVersion?: string
   /** Snapshot date ISO string to encode in shared URL */
   snapshotDate?: string
+  /** Visual variant: 'light' for default bg, 'dark' for dark gradient bg */
+  variant?: 'light' | 'dark'
 }
 
 /**
@@ -22,7 +24,7 @@ function buildShareUrl(modelVersion?: string, snapshotDate?: string): string {
   return url.toString()
 }
 
-export function ShareToolbar({ modelVersion, snapshotDate }: ShareToolbarProps) {
+export function ShareToolbar({ modelVersion, snapshotDate, variant = 'light' }: ShareToolbarProps) {
   const t = useT()
   const [copied, setCopied] = useState(false)
   const [canShare, setCanShare] = useState(false)
@@ -69,12 +71,16 @@ export function ShareToolbar({ modelVersion, snapshotDate }: ShareToolbarProps) 
     window.print()
   }, [])
 
+  const btnClass = variant === 'dark'
+    ? 'inline-flex items-center gap-1.5 px-3 py-1.5 text-[0.75rem] font-medium rounded-md border border-white/20 bg-white/10 text-white/70 hover:text-white hover:border-white/40 transition-colors cursor-pointer'
+    : 'inline-flex items-center gap-1.5 px-3 py-1.5 text-[0.75rem] font-medium rounded-md border border-border bg-bg-card text-ink-soft hover:text-ink hover:border-ink-muted transition-colors cursor-pointer'
+
   return (
     <div className="flex items-center gap-2 font-sans">
       {/* Copy link */}
       <button
         onClick={handleCopy}
-        className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[0.75rem] font-medium rounded-md border border-border bg-bg-card text-ink-soft hover:text-ink hover:border-ink-muted transition-colors cursor-pointer"
+        className={btnClass}
         aria-label="Copy link to clipboard"
       >
         <svg
@@ -97,7 +103,7 @@ export function ShareToolbar({ modelVersion, snapshotDate }: ShareToolbarProps) 
       {canShare && (
         <button
           onClick={handleShare}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[0.75rem] font-medium rounded-md border border-border bg-bg-card text-ink-soft hover:text-ink hover:border-ink-muted transition-colors cursor-pointer"
+          className={btnClass}
           aria-label="Share this page"
         >
           <svg
@@ -123,7 +129,7 @@ export function ShareToolbar({ modelVersion, snapshotDate }: ShareToolbarProps) 
       {/* Print */}
       <button
         onClick={handlePrint}
-        className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[0.75rem] font-medium rounded-md border border-border bg-bg-card text-ink-soft hover:text-ink hover:border-ink-muted transition-colors cursor-pointer"
+        className={btnClass}
         aria-label="Print this page"
       >
         <svg

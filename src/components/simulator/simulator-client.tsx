@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useRef, useEffect } from 'react'
 import { WARS, WAR_LIST } from '@/data/wars'
 import { CATEGORIES, CATEGORY_MAP } from '@/data/categories'
 import { COUNTRIES, COUNTRY_MAP } from '@/data/countries'
@@ -19,7 +19,9 @@ import { CoverageBadge } from '@/components/ui/coverage-badge'
 import { ReliabilityBadge } from '@/components/ui/reliability-badge'
 import { SoftGate, incrementExplorationCount } from '@/components/simulator/soft-gate'
 import { WarEscalationCard } from '@/components/simulator/war-escalation-card'
+import { WarSummaryCard } from '@/components/simulator/war-summary-card'
 import { RefinementPanel } from '@/components/simulator/refinement-panel'
+import { PresetCards } from '@/components/simulator/preset-cards'
 import { PRE_ESCALATION_PRICES } from '@/data/pre-escalation-prices'
 import { usePricesFreshness } from '@/lib/use-prices-freshness'
 import { loadRefinements, saveRefinements } from '@/lib/user-refinements'
@@ -74,7 +76,7 @@ export function SimulatorClient() {
   )
 
   /* --- derived data --- */
-  const war = WARS[warId] ?? WARS['ukraine-russia']
+  const war = WARS[warId] ?? WARS['iran-israel-us']
   const ranking = war.rankings[categoryId] ?? war.rankings['bread']
   const categoryLabel =
     CATEGORY_MAP[categoryId]?.label ?? categoryId
@@ -153,6 +155,26 @@ export function SimulatorClient() {
     [expandedCountry, setCountry],
   )
 
+  const handlePresetSelect = useCallback(
+    (w: WarId, cat: CategoryId, c: string) => {
+      setWarId(w)
+      setCategoryId(cat)
+      setCountry(c)
+      setExpandedCountry(c)
+      setShowResults(true)
+      incrementExplorationCount()
+    },
+    [setWarId, setCategoryId, setCountry],
+  )
+
+  /* --- scroll country detail into view on selection --- */
+  const countryDetailRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    if (expandedCountry && countryDetailRef.current) {
+      countryDetailRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }, [expandedCountry])
+
   /* --- grouped countries for dropdown (includes user-added) --- */
   const groupedCountries = useMemo(() => {
     const full = COUNTRIES.filter((c) => c.coverage === 'full')
@@ -221,6 +243,7 @@ export function SimulatorClient() {
                     fxDepPct={currForCard?.depPct ?? null}
                     isSelected={warId === wId}
                     onClick={() => setWarId(wId)}
+                    compact
                   />
                 )
               })}
@@ -358,75 +381,25 @@ export function SimulatorClient() {
             </div>
           ) : (
             <div className="animate-fade-in">
-              {/* War overview — expanded escalation card in results area */}
-              <WarEscalationCard
+              {/* 1. "So What" summary card — personal insight + share */}
+              <WarSummaryCard
                 warId={warId}
                 warName={war.name}
                 warDates={war.dates}
                 live={war.live}
-                escalationDate={PRE_ESCALATION_PRICES[warId]?.escalationDate ?? ''}
-                pivotalEvent={PRE_ESCALATION_PRICES[warId]?.pivotalEvent ?? ''}
-                selectedCountry={expandedCountry}
-                currencyCode={currencyData?.code ?? null}
-                currencyName={currencyData?.name ?? null}
-                fxPreRate={currencyData?.preRate ?? null}
-                fxPostRate={currencyData?.postRate ?? null}
-                fxDepPct={currencyData?.depPct ?? null}
-                isSelected={true}
-                onClick={() => {}}
-              />
-
-              {/* Assumption strip with provenance */}
-              <div className="bg-bg-alt border border-border rounded-lg px-4 py-2.5 mb-5 flex flex-wrap gap-x-5 gap-y-1 font-sans text-[0.72rem] text-ink-muted">
-                <span>
-                  {t('simulator.category')}: <strong className="text-ink">{categoryLabel}</strong>
-                </span>
-                <span>
-                  {t('simulator.passthrough')}: <strong className="text-ink">{passThrough}%</strong>
-                </span>
-                <span>
-                  Lag: <strong className="text-ink">{LAG_LABELS[lag]}</strong>
-                  {lagMultiplier < 1 && (
-                    <span className="text-ink-muted"> ({lagMultiplier}x)</span>
-                  )}
-                </span>
-                <span>
-                  Model: <strong className="text-ink">v{provenance.modelVersion}</strong>
-                </span>
-                <span>
-                  Data as of: <strong className="text-ink">{provenance.dataAsOf}</strong>
-                </span>
-              </div>
-
-              {/* Rankings */}
-              <RankingSection
-                title={t('simulator.topImpacted')}
-                entries={ranking.top5}
-                startRank={1}
-                reasons={countryReason}
-                expandedCountry={expandedCountry}
-                onRowClick={handleRowClick}
-                passThrough={passThrough}
+                categoryId={categoryId}
+                categoryLabel={categoryLabel}
+                country={expandedCountry}
+                countryFlag={expandedCountry ? COUNTRY_MAP[expandedCountry]?.flag ?? null : null}
+                passthrough={passThrough}
                 lag={lag}
+                lagMultiplier={lagMultiplier}
+                lagAdjustedCeiling={result?.lagAdjustedCeiling ?? null}
+                provenance={provenance}
+                serpApiFetchedAt={freshness.fetchedAt}
               />
 
-              <RankingSection
-                title={t('simulator.bottomImpacted')}
-                entries={ranking.bot5}
-                startRank={6}
-                reasons={countryReason}
-                expandedCountry={expandedCountry}
-                onRowClick={handleRowClick}
-                passThrough={passThrough}
-                lag={lag}
-              />
-
-              {/* Ranking methodology note */}
-              <div className="font-sans text-[0.68rem] text-ink-muted mt-1 mb-5 px-1">
-                {t('simulator.rankingNote', { pt: String(passThrough), lag: LAG_LABELS[lag] })}
-              </div>
-
-              {/* Validation errors guard */}
+              {/* 2. Country detail panel — promoted to top when selected */}
               {expandedCountry && validationErrors.length > 0 && (
                 <div className="bg-accent-light border border-accent/30 rounded-lg px-4 py-3 mb-4">
                   <p className="font-sans text-[0.78rem] text-accent font-semibold mb-1">
@@ -440,9 +413,8 @@ export function SimulatorClient() {
                 </div>
               )}
 
-              {/* Country detail panel */}
               {expandedCountry && result && validationErrors.length === 0 && (
-                <div className="bg-bg-card border border-border rounded-[10px] p-5 mt-5 animate-fade-in">
+                <div ref={countryDetailRef} className="bg-bg-card border border-border rounded-[10px] p-5 mb-5 animate-fade-in">
                   {/* Header with coverage + reliability badges */}
                   <div className="flex items-center justify-between mb-5">
                     <div className="flex items-center gap-3">
@@ -462,7 +434,7 @@ export function SimulatorClient() {
                         <ReliabilityBadge status={result.reliability} showTooltip />
                         {result.userRefined && (
                           <span className="inline-block font-sans text-[0.62rem] font-bold bg-blue-light text-blue px-1.5 py-0.5 rounded tracking-[0.04em]">
-                            User data
+                            {t('badges.userData')}
                           </span>
                         )}
                       </div>
@@ -480,14 +452,12 @@ export function SimulatorClient() {
                   {isStructuralMiss(expandedCountry) && (
                     <div className="bg-amber-light border border-[#e8c97a] rounded-lg px-3 py-2.5 mb-4">
                       <p className="font-sans text-[0.72rem] text-[#7a4f10] leading-relaxed">
-                        <strong className="text-[#5a3408]">Validation note:</strong> The
-                        model has known structural underestimates for {expandedCountry}.
-                        Realized CPI changes have historically exceeded the model ceiling
-                        in this market. See the{' '}
-                        <a href="/validation" className="underline text-[#5a3408]">
-                          validation page
+                        <strong className="text-[#5a3408]">{t('simulator.validationNote')}</strong>{' '}
+                        {t('simulator.validationWarning', { country: expandedCountry })}{' '}
+                        <a href="/methodology#validation" className="underline text-[#5a3408]">
+                          {t('simulator.seeValidation')}
                         </a>{' '}
-                        for details.
+                        {t('simulator.forDetails')}
                       </p>
                     </div>
                   )}
@@ -599,10 +569,10 @@ export function SimulatorClient() {
                       </div>
                       <p className="font-sans text-[0.72rem] text-ink-muted leading-relaxed">
                         {currencyData.depPct < 0
-                          ? `The ${currencyData.name} depreciated ${Math.abs(currencyData.depPct)}% against USD during ${currencyData.window}, making imports more expensive and amplifying upstream commodity price shocks.`
+                          ? t('simulator.depreciated', { currency: currencyData.name, pct: String(Math.abs(currencyData.depPct)), window: currencyData.window })
                           : currencyData.depPct > 0
-                            ? `The ${currencyData.name} appreciated ${currencyData.depPct}% against USD during ${currencyData.window}, partially offsetting upstream commodity price shocks.`
-                            : `The ${currencyData.name} remained stable against USD during ${currencyData.window}.`}
+                            ? t('simulator.appreciated', { currency: currencyData.name, pct: String(currencyData.depPct), window: currencyData.window })
+                            : t('simulator.stable', { currency: currencyData.name, window: currencyData.window })}
                       </p>
                       <div className="flex gap-4 mt-2 font-sans text-[0.68rem] text-ink-muted">
                         <span>
@@ -617,6 +587,64 @@ export function SimulatorClient() {
                   )}
                 </div>
               )}
+
+              {/* 3. Quick scenarios */}
+              <PresetCards
+                onSelect={handlePresetSelect}
+                activeWar={warId}
+                activeCategory={categoryId}
+                activeCountry={expandedCountry ?? undefined}
+              />
+
+              {/* 4. Assumption strip with provenance */}
+              <div className="bg-bg-alt border border-border rounded-lg px-4 py-2.5 mb-5 flex flex-wrap gap-x-5 gap-y-1 font-sans text-[0.72rem] text-ink-muted">
+                <span>
+                  {t('simulator.category')}: <strong className="text-ink">{categoryLabel}</strong>
+                </span>
+                <span>
+                  {t('simulator.passthrough')}: <strong className="text-ink">{passThrough}%</strong>
+                </span>
+                <span>
+                  {t('simulator.lagPeriod')}: <strong className="text-ink">{LAG_LABELS[lag]}</strong>
+                  {lagMultiplier < 1 && (
+                    <span className="text-ink-muted"> ({lagMultiplier}x)</span>
+                  )}
+                </span>
+                <span>
+                  Model: <strong className="text-ink">v{provenance.modelVersion}</strong>
+                </span>
+                <span>
+                  Data as of: <strong className="text-ink">{provenance.dataAsOf}</strong>
+                </span>
+              </div>
+
+              {/* 4. Rankings */}
+              <RankingSection
+                title={t('simulator.topImpacted')}
+                entries={ranking.top5}
+                startRank={1}
+                reasons={countryReason}
+                expandedCountry={expandedCountry}
+                onRowClick={handleRowClick}
+                passThrough={passThrough}
+                lag={lag}
+              />
+
+              <RankingSection
+                title={t('simulator.bottomImpacted')}
+                entries={ranking.bot5}
+                startRank={6}
+                reasons={countryReason}
+                expandedCountry={expandedCountry}
+                onRowClick={handleRowClick}
+                passThrough={passThrough}
+                lag={lag}
+              />
+
+              {/* Ranking methodology note */}
+              <div className="font-sans text-[0.68rem] text-ink-muted mt-1 mb-5 px-1">
+                {t('simulator.rankingNote', { pt: String(passThrough), lag: LAG_LABELS[lag] })}
+              </div>
 
               {/* Soft gate banner */}
               <SoftGate war={warId} category={categoryId} />

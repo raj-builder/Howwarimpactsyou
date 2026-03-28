@@ -7,6 +7,7 @@
     "saved": "Saved",
     "methodology": "Methodology",
     "validation": "Validation",
+    "countries": "Countries",
     "dataSources": "Data Sources",
     "learn": "Learn",
     "press": "Press",
@@ -90,6 +91,8 @@
     "cpiContribution": "estimated CPI basket contribution",
     "formulaWeightedAvg": "Weighted average = sum of (item weight / total active weight) x item impact across enabled items.",
     "formulaCpi": "CPI contribution = sum of (item CPI weight / 100) x item impact. Measures percentage-point effect on headline CPI.",
+    "selectCountry": "Select a country",
+    "selectWar": "Select a conflict",
     "activeWeights": "Active Weights",
     "totalActiveWeight": "Total active weight:",
     "cpiWeight": "CPI weight: {pct}%",
@@ -235,11 +238,22 @@
     "change": "Change",
     "hardcodedNote": "Hardcoded benchmark · Live API pending"
   },
+  "soWhat": {
+    "headline": "How this conflict affects your daily costs",
+    "noCountry": "Select a country to see your personal impact",
+    "topShocks": "Key commodity shocks from this conflict",
+    "basketImpact": "Your household basics could cost {pct}% more under this scenario",
+    "categoryImpact": "{category} in {country}",
+    "sharePrompt": "Share this insight",
+    "provenanceNote": "Prices as of {date} · {source}"
+  },
   "presets": {
     "title": "Quick Scenarios",
+    "subtitle": "See how different conflicts affect everyday costs",
     "breadEgypt": "Bread in Egypt",
     "fuelPhilippines": "Fuel in Philippines",
-    "covidIndia": "COVID food basket in India"
+    "covidIndia": "COVID food basket in India",
+    "tryThis": "Try this scenario"
   },
   "common": {
     "learnMore": "Learn more",

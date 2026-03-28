@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import { SimulatorClient } from '@/components/simulator/simulator-client'
-import { PresetCards } from '@/components/simulator/preset-cards'
 
 export const metadata: Metadata = {
   title: 'War Impact Simulator',
@@ -19,9 +18,6 @@ export default function SimulatorPage() {
         </div>
       }
     >
-      <div className="container-page pt-8">
-        <PresetCards />
-      </div>
       <SimulatorClient />
     </Suspense>
   )

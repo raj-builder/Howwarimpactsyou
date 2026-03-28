@@ -8,6 +8,19 @@ Translates upstream commodity and currency shocks (oil, war, grain prices, FX) i
 
 ---
 
+## What Changed in v2.3 (2026-03-28)
+
+- **Default conflict: Iran–Israel–US** — simulator and basket now default to the Strait of Hormuz scenario
+- **"So What" summary card** — right panel leads with a personal impact insight (hero number + 3-category breakdown + share button) instead of duplicating the war data table
+- **Country detail promoted** — selected country appears at top of results, not buried below rankings
+- **Basket page controls** — interactive war/country/passthrough/lag selectors (previously URL-only)
+- **Methodology & Validation merged** — single page at `/methodology` with validation section; `/validation` redirects
+- **Countries page** — new `/countries` tab profiling belligerent nations (USA, Israel, Iran, Russia, Ukraine, Saudi Arabia)
+- **Homepage updated** — example cards now feature Iran–Israel–US conflict scenarios
+- **Quick scenarios redesigned** — repositioned inside right panel with dynamic impact computation and clear CTAs
+
+---
+
 ## What Changed in v2.0
 
 This release is a full architectural migration from a single vanilla HTML file to a Next.js 16 App Router application. The original site was a 2,860-line `index.html` with inline CSS and JavaScript. That approach was fast to ship but couldn't support indexable routes, server-side rendering, OG images, or any of the 20 feature requests that had accumulated.
