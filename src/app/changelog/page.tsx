@@ -9,6 +9,27 @@ export const metadata: Metadata = {
 
 const VERSIONS = [
   {
+    version: 'v2.2',
+    date: 'March 2025',
+    title: 'Pre-escalation anchors, user refinements, i18n, surface fixes',
+    changes: [
+      'Pre-escalation price anchors: researched Before/After commodity prices for all 5 wars with war-escalation cards replacing the old war selector',
+      'User data refinement panel: 3-tab panel (Commodity Prices, Category Impacts, FX Rates) with localStorage persistence and Add New Country flow',
+      'User-supplied impact overrides flow through computeScenario/computeBasket with "User data" badge',
+      'i18n infrastructure: zero-dependency useT() hook with ~200 translation keys in en.json, ar.json, tl.json',
+      'All interactive components + homepage wired to translation keys (19 components)',
+      'Compare page: per-scenario pass-through and lag controls, coverage badges per country row',
+      'Saved scenarios page: fixed passthrough display, added coverage/reliability badges, full simulator links',
+      'Embed endpoints: accept pt and lag query params, show assumption chips and coverage badges',
+      'Share toolbar: encodes model version and snapshot date in shared URLs',
+      'Homepage example cards: fixed lag params to match displayed ceiling numbers',
+      'SerpAPI 3-layer caching: module cache + sessionStorage + Vercel CDN (max 1 call per 24h)',
+      'Real SerpAPI fetched_at timestamp for provenance data-as-of display',
+      'Fallback prices updated with post-escalation reference values and provenance notes',
+      'MEMORY.md, CLAUDE.md, COS-Report files gitignored from public repo',
+    ],
+  },
+  {
     version: 'v2.1',
     date: 'March 2025',
     title: 'Scenario Builder Refactoring',
