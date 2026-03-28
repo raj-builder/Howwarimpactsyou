@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useT } from '@/lib/use-t'
 import type { ScenarioResult } from '@/types/scenario'
 import { LAG_LABELS } from '@/types/scenario'
 import type { LagPeriod } from '@/types/scenario'
@@ -12,6 +13,7 @@ interface AuditDrawerProps {
 }
 
 export function AuditDrawer({ result, passthrough, lag }: AuditDrawerProps) {
+  const t = useT()
   const [isOpen, setIsOpen] = useState(false)
 
   if (!isOpen) {
@@ -20,7 +22,7 @@ export function AuditDrawer({ result, passthrough, lag }: AuditDrawerProps) {
         onClick={() => setIsOpen(true)}
         className="font-sans text-[0.68rem] text-ink-muted hover:text-accent transition-colors cursor-pointer underline decoration-dotted underline-offset-2 mt-3"
       >
-        Show audit trace
+        {t('audit.showTrace')}
       </button>
     )
   }
@@ -29,55 +31,55 @@ export function AuditDrawer({ result, passthrough, lag }: AuditDrawerProps) {
     <div className="mt-3 bg-bg-alt border border-border rounded-lg p-4 animate-fade-in">
       <div className="flex items-center justify-between mb-3">
         <h4 className="font-sans text-[0.78rem] font-bold text-ink tracking-wide">
-          Calculation Audit Trace
+          {t('audit.title')}
         </h4>
         <button
           onClick={() => setIsOpen(false)}
           className="font-sans text-[0.72rem] text-ink-muted hover:text-accent cursor-pointer"
         >
-          Hide
+          {t('audit.hide')}
         </button>
       </div>
 
       {/* Formula chain */}
       <div className="space-y-2 font-mono text-[0.7rem] text-ink-soft">
         <div className="flex items-center gap-2">
-          <span className="text-ink-muted w-36 shrink-0">Raw ceiling:</span>
+          <span className="text-ink-muted w-36 shrink-0">{t('audit.rawCeiling')}</span>
           <span className="text-ink font-semibold">{result.ceiling}%</span>
-          <span className="text-ink-muted text-[0.62rem]">(from rankings data)</span>
+          <span className="text-ink-muted text-[0.62rem]">{t('audit.fromRankings')}</span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-ink-muted w-36 shrink-0">x Pass-through:</span>
+          <span className="text-ink-muted w-36 shrink-0">{t('audit.xPassthrough')}</span>
           <span className="text-ink font-semibold">{passthrough / 100}</span>
           <span className="text-ink-muted text-[0.62rem]">({passthrough}%)</span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-ink-muted w-36 shrink-0">= Adjusted ceiling:</span>
+          <span className="text-ink-muted w-36 shrink-0">{t('audit.adjustedCeiling')}</span>
           <span className="text-ink font-semibold">{result.adjustedCeiling}%</span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-ink-muted w-36 shrink-0">x Lag multiplier:</span>
+          <span className="text-ink-muted w-36 shrink-0">{t('audit.xLagMultiplier')}</span>
           <span className="text-ink font-semibold">{result.lagMultiplier}</span>
           <span className="text-ink-muted text-[0.62rem]">({LAG_LABELS[lag]})</span>
         </div>
         <div className="flex items-center gap-2 border-t border-border pt-2">
-          <span className="text-ink-muted w-36 shrink-0">= Lag-adj. ceiling:</span>
+          <span className="text-ink-muted w-36 shrink-0">{t('audit.lagAdjCeiling')}</span>
           <span className="text-accent font-bold">{result.lagAdjustedCeiling}%</span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-ink-muted w-36 shrink-0">Range low (x0.55):</span>
+          <span className="text-ink-muted w-36 shrink-0">{t('audit.rangeLow')}</span>
           <span className="text-ink font-semibold">{result.rangeLow}%</span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-ink-muted w-36 shrink-0">Range high (x0.75):</span>
+          <span className="text-ink-muted w-36 shrink-0">{t('audit.rangeHigh')}</span>
           <span className="text-ink font-semibold">{result.rangeHigh}%</span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-ink-muted w-36 shrink-0">Realized est. (x0.65):</span>
+          <span className="text-ink-muted w-36 shrink-0">{t('audit.realizedEst')}</span>
           <span className="text-ink font-semibold">{result.realized}%</span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-ink-muted w-36 shrink-0">Model gap:</span>
+          <span className="text-ink-muted w-36 shrink-0">{t('audit.modelGap')}</span>
           <span className="text-ink font-semibold">{result.modelGap}pp</span>
         </div>
       </div>
@@ -85,7 +87,7 @@ export function AuditDrawer({ result, passthrough, lag }: AuditDrawerProps) {
       {/* Factor decomposition */}
       <div className="mt-4 border-t border-border pt-3">
         <h5 className="font-sans text-[0.72rem] font-bold text-ink-muted mb-2">
-          Factor Decomposition
+          {t('audit.factorDecomposition')}
         </h5>
         <table className="w-full font-mono text-[0.68rem]">
           <thead>
@@ -121,7 +123,7 @@ export function AuditDrawer({ result, passthrough, lag }: AuditDrawerProps) {
       {/* Provenance */}
       <div className="mt-4 border-t border-border pt-3">
         <h5 className="font-sans text-[0.72rem] font-bold text-ink-muted mb-2">
-          Provenance
+          {t('audit.provenance')}
         </h5>
         <div className="grid grid-cols-2 gap-1 font-sans text-[0.68rem] text-ink-muted">
           <span>Model version:</span>

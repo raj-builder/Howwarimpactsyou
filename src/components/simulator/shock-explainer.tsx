@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useT } from '@/lib/use-t'
 import type { Shock } from '@/types'
 
 interface ShockExplainerProps {
@@ -14,6 +15,7 @@ export function ShockExplainer({
   dates,
   shocks,
 }: ShockExplainerProps) {
+  const t = useT()
   const [isOpen, setIsOpen] = useState(false)
 
   return (
@@ -22,7 +24,7 @@ export function ShockExplainer({
         onClick={() => setIsOpen(!isOpen)}
         className="font-sans text-[0.65rem] text-white/50 hover:text-white/80 transition-colors cursor-pointer underline decoration-dotted underline-offset-2"
       >
-        {isOpen ? 'Hide shock details' : 'How are these shocks measured?'}
+        {isOpen ? t('shock.hideDetails') : t('shock.howMeasured')}
       </button>
       {isOpen && (
         <div className="mt-2 bg-white/10 rounded-lg px-3 py-2.5 animate-fade-in">

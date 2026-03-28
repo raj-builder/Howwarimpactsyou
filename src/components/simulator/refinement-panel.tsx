@@ -7,6 +7,7 @@ import { COUNTRIES } from '@/data/countries'
 import { CURRENCIES } from '@/data/currencies'
 import { WAR_LIST } from '@/data/wars'
 import { exportRefinementsJSON, clearRefinements } from '@/lib/user-refinements'
+import { useT } from '@/lib/use-t'
 import type { UserRefinements, CommodityRefinement, CategoryImpactRefinement, FxRefinement, NewCountryRefinement } from '@/types/user-refinements'
 import type { WarId } from '@/types'
 
@@ -18,6 +19,7 @@ interface RefinementPanelProps {
 }
 
 export function RefinementPanel({ refinements, onRefinementsChange }: RefinementPanelProps) {
+  const t = useT()
   const [isOpen, setIsOpen] = useState(false)
   const [activeTab, setActiveTab] = useState<Tab>('commodities')
   const [showClearConfirm, setShowClearConfirm] = useState(false)
@@ -58,7 +60,7 @@ export function RefinementPanel({ refinements, onRefinementsChange }: Refinement
         onClick={() => setIsOpen(true)}
         className="w-full mt-4 border border-dashed border-border rounded-lg px-3 py-2.5 font-sans text-[0.75rem] text-ink-muted hover:text-accent hover:border-accent transition-colors cursor-pointer text-center"
       >
-        <span className="mr-1">&#9998;</span> Refine data
+        <span className="mr-1">&#9998;</span> {t('refinement.refineData')}
         {totalRefinements > 0 && (
           <span className="ml-1.5 bg-blue-light text-blue font-bold px-1.5 py-0.5 rounded text-[0.62rem]">
             {totalRefinements}
@@ -73,25 +75,25 @@ export function RefinementPanel({ refinements, onRefinementsChange }: Refinement
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-border">
         <div>
-          <h3 className="font-sans text-[0.82rem] font-bold text-ink">Refine Data</h3>
+          <h3 className="font-sans text-[0.82rem] font-bold text-ink">{t('refinement.title')}</h3>
           <p className="font-sans text-[0.65rem] text-ink-muted mt-0.5">
-            You know your market better than our model does. Add what you know and we&apos;ll use it in the calculation — clearly labelled.
+            {t('refinement.subtitle')}
           </p>
         </div>
         <button
           onClick={() => setIsOpen(false)}
           className="font-sans text-[0.75rem] text-ink-muted hover:text-accent cursor-pointer shrink-0 ml-2"
         >
-          Close
+          {t('refinement.close')}
         </button>
       </div>
 
       {/* Tabs */}
       <div className="flex border-b border-border">
         {([
-          { id: 'commodities' as Tab, label: 'Commodity Prices' },
-          { id: 'impacts' as Tab, label: 'Category Impacts' },
-          { id: 'fx' as Tab, label: 'FX Rates' },
+          { id: 'commodities' as Tab, label: t('refinement.tabCommodities') },
+          { id: 'impacts' as Tab, label: t('refinement.tabImpacts') },
+          { id: 'fx' as Tab, label: t('refinement.tabFx') },
         ]).map((t) => (
           <button
             key={t.id}
@@ -127,20 +129,20 @@ export function RefinementPanel({ refinements, onRefinementsChange }: Refinement
             onClick={handleExport}
             className="font-sans text-[0.68rem] text-ink-muted hover:text-accent cursor-pointer underline decoration-dotted"
           >
-            Export my data
+            {t('refinement.exportData')}
           </button>
           {showClearConfirm ? (
             <span className="flex items-center gap-1.5">
-              <span className="font-sans text-[0.68rem] text-accent">Clear all data?</span>
-              <button onClick={handleClearAll} className="font-sans text-[0.68rem] font-bold text-accent cursor-pointer">Yes</button>
-              <button onClick={() => setShowClearConfirm(false)} className="font-sans text-[0.68rem] text-ink-muted cursor-pointer">No</button>
+              <span className="font-sans text-[0.68rem] text-accent">{t('refinement.clearConfirm')}</span>
+              <button onClick={handleClearAll} className="font-sans text-[0.68rem] font-bold text-accent cursor-pointer">{t('refinement.yes')}</button>
+              <button onClick={() => setShowClearConfirm(false)} className="font-sans text-[0.68rem] text-ink-muted cursor-pointer">{t('refinement.no')}</button>
             </span>
           ) : (
             <button
               onClick={() => setShowClearConfirm(true)}
               className="font-sans text-[0.68rem] text-ink-muted hover:text-accent cursor-pointer underline decoration-dotted"
             >
-              Clear all my data
+              {t('refinement.clearAll')}
             </button>
           )}
         </div>

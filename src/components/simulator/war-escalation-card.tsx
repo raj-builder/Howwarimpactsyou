@@ -2,6 +2,7 @@
 
 import { useMemo } from 'react'
 import { getWarAnchors } from '@/data/pre-escalation-prices'
+import { useT } from '@/lib/use-t'
 import type { PriceAnchor } from '@/data/pre-escalation-prices'
 
 interface WarEscalationCardProps {
@@ -63,6 +64,7 @@ export function WarEscalationCard({
   isSelected,
   onClick,
 }: WarEscalationCardProps) {
+  const t = useT()
   const anchors = useMemo(() => getWarAnchors(warId), [warId])
 
   const topCommodities = useMemo(() => {
@@ -112,16 +114,16 @@ export function WarEscalationCard({
             <div className="grid grid-cols-[1fr_auto_auto_auto] gap-x-3 gap-y-1.5 items-center mb-3">
               {/* Header row */}
               <span className="font-sans text-[0.6rem] font-bold text-white/30 uppercase tracking-wider">
-                Commodity
+                {t('escalation.commodity')}
               </span>
               <span className="font-sans text-[0.6rem] font-bold text-white/30 uppercase tracking-wider text-right">
-                Before
+                {t('escalation.before')}
               </span>
               <span className="font-sans text-[0.6rem] font-bold text-white/30 uppercase tracking-wider text-right">
-                After
+                {t('escalation.after')}
               </span>
               <span className="font-sans text-[0.6rem] font-bold text-white/30 uppercase tracking-wider text-right">
-                Change
+                {t('escalation.change')}
               </span>
 
               {allItems.map((item: PriceAnchor) => (
