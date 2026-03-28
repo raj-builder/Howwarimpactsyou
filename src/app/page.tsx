@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
+import { getMessages } from '@/lib/use-t'
 
 export const metadata: Metadata = {
   title: 'howwarimpactsyou.com — Macro-to-Consumer Price Impact Simulator',
@@ -80,13 +81,14 @@ const BADGE_STYLES: Record<string, string> = {
 }
 
 export default function HomePage() {
+  const m = getMessages()
   return (
     <>
       {/* Hero */}
       <section className="bg-gradient-to-br from-[#1a1a1a] via-[#2d2420] to-[#3a2216] text-white py-20 px-8 md:py-24">
         <div className="max-w-[820px] mx-auto">
           <p className="font-sans text-[0.72rem] font-bold tracking-[0.14em] uppercase text-accent-warm mb-5">
-            Macro-to-Consumer Price Impact Simulator
+            {m.home.eyebrow}
           </p>
           <h1 className="text-[clamp(2rem,4.5vw,3.2rem)] font-normal leading-[1.2] mb-5 tracking-tight font-serif">
             How could <span className="text-accent-warm">oil, war, and currency</span>
@@ -94,9 +96,7 @@ export default function HomePage() {
             affect what you pay?
           </h1>
           <p className="text-[1.1rem] text-white/70 max-w-[620px] mb-8 leading-relaxed font-serif">
-            Select a country and a consumer category. We&apos;ll show you how upstream
-            commodity and currency shocks could flow into everyday prices —
-            transparently, with every assumption visible.
+            {m.home.subtitle}
           </p>
           <div className="inline-block bg-accent/20 border border-accent/35 rounded-md px-4 py-2.5 font-sans text-[0.79rem] text-white/80 mb-10 max-w-[600px]">
             <strong className="text-accent-warm">Important:</strong> This tool
@@ -108,7 +108,7 @@ export default function HomePage() {
               href="/simulator"
               className="bg-accent text-white font-sans text-[0.9rem] font-semibold px-7 py-3 rounded-lg no-underline tracking-wide hover:bg-[#b03e27] transition-colors"
             >
-              Open Simulator &rarr;
+              {m.nav.openSimulator} &rarr;
             </Link>
             <Link
               href="/methodology"
@@ -133,10 +133,10 @@ export default function HomePage() {
       {/* Example impact cards */}
       <section className="container-page py-14">
         <p className="font-sans text-[0.72rem] font-bold tracking-[0.13em] uppercase text-accent mb-2">
-          Example impact estimates
+          {m.home.examplesTitle}
         </p>
         <h2 className="text-[clamp(1.4rem,2.5vw,1.9rem)] font-normal tracking-tight mb-3 text-ink font-serif">
-          See how macro shocks translate to consumer categories
+          {m.home.examplesSubtitle}
         </h2>
         <p className="font-sans text-[0.88rem] text-ink-soft max-w-[640px] leading-relaxed">
           Each card below shows a sample scenario. Click any card to open the full
@@ -215,7 +215,7 @@ export default function HomePage() {
       <section className="bg-bg-card border-y border-border py-14 px-8">
         <div className="max-w-[820px] mx-auto text-center">
           <h2 className="text-[clamp(1.4rem,2.5vw,1.9rem)] font-normal tracking-tight mb-4 font-serif">
-            Connecting macro shocks to your grocery bill
+            {m.home.tagline}
           </h2>
           <p className="font-sans text-[0.88rem] text-ink-soft leading-relaxed mb-8 max-w-[600px] mx-auto">
             Most people hear about oil spikes or currency crashes but can&apos;t connect
@@ -224,10 +224,10 @@ export default function HomePage() {
           </p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
-              { num: '12+', label: 'Countries' },
-              { num: '10', label: 'Categories' },
-              { num: '6', label: 'Factor types' },
-              { num: '100%', label: 'Transparency' },
+              { num: '12+', label: m.home.statsCountries },
+              { num: '10', label: m.home.statsCategories },
+              { num: '6', label: m.home.statsFactors },
+              { num: '100%', label: m.home.statsTransparency },
             ].map((stat) => (
               <div key={stat.label}>
                 <div className="text-[2rem] font-light text-accent tracking-tight">
