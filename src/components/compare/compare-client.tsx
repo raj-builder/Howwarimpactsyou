@@ -8,6 +8,7 @@ import { CATEGORIES } from '@/data/categories'
 import { COUNTRY_MAP } from '@/data/countries'
 import { roundValue } from '@/lib/calculations'
 import { analytics } from '@/lib/analytics'
+import { useT } from '@/lib/use-t'
 import type { WarId, CategoryId, RankingEntry, CoverageStatus } from '@/types'
 import { LAG_MULTIPLIERS, LAG_LABELS } from '@/types/scenario'
 import type { LagPeriod } from '@/types/scenario'
@@ -57,6 +58,7 @@ function CompareInner() {
   const [sortDir, setSortDir] = useState<SortDir>('desc')
   const [mobileView, setMobileView] = useState<'left' | 'right'>('left')
 
+  const t = useT()
   useEffect(() => { analytics.compareView() }, [])
 
   const updateUrl = useCallback(
@@ -148,10 +150,10 @@ function CompareInner() {
             <span className="text-white/70">Compare</span>
           </nav>
           <h1 className="text-[clamp(2rem,4.5vw,3.2rem)] font-normal leading-[1.2] mb-4 tracking-tight font-serif">
-            Compare Scenarios
+            {t('compare.title')}
           </h1>
           <p className="text-[1.05rem] text-white/65 max-w-[600px] leading-relaxed font-serif">
-            Select two war/shock scenarios with different assumptions and compare country-level impact side by side.
+            {t('compare.subtitle')}
           </p>
         </div>
       </section>
@@ -204,7 +206,7 @@ function CompareInner() {
         {/* Comparison table */}
         <section>
           <h2 className="font-sans text-[0.72rem] font-bold tracking-[0.13em] uppercase text-accent mb-3">
-            Country-level comparison
+            {t('compare.countryComparison')}
           </h2>
           <div className="bg-bg-card border border-border rounded-[10px] shadow-card overflow-x-auto">
             <table className="w-full text-left text-[0.84rem] font-sans">
@@ -224,7 +226,7 @@ function CompareInner() {
                     {sortIndicator('right')}
                   </th>
                   <th className="px-4 py-3 font-semibold text-ink cursor-pointer hover:text-accent transition-colors text-right hidden md:table-cell select-none" onClick={() => handleSort('delta')}>
-                    Delta{sortIndicator('delta')}
+                    {t('compare.delta')}{sortIndicator('delta')}
                   </th>
                 </tr>
               </thead>
@@ -261,7 +263,7 @@ function CompareInner() {
                 {sortedRows.length === 0 && (
                   <tr>
                     <td colSpan={4} className="px-4 py-8 text-center text-ink-muted">
-                      No data available for the selected scenarios.
+                      {t('compare.noData')}
                     </td>
                   </tr>
                 )}

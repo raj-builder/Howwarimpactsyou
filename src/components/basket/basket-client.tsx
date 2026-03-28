@@ -6,6 +6,7 @@ import { WARS } from '@/data/wars'
 import { COUNTRIES } from '@/data/countries'
 import { computeBasket, getProvenance } from '@/lib/calculations'
 import { usePricesFreshness } from '@/lib/use-prices-freshness'
+import { useT } from '@/lib/use-t'
 import type { WarId, CategoryId } from '@/types'
 import type { LagPeriod } from '@/types/scenario'
 import { LAG_MULTIPLIERS, LAG_LABELS } from '@/types/scenario'
@@ -57,6 +58,8 @@ export function BasketClient() {
     )
   }, [warId, country, passthrough, lag, enabledSet, freshness.fetchedAt])
 
+  const t = useT()
+
   /* --- UI data --- */
   const war = WARS[warId]
   const items = basketResult?.items ?? []
@@ -67,14 +70,13 @@ export function BasketClient() {
       {/* Page header */}
       <div className="mb-6">
         <p className="font-sans text-[0.72rem] font-bold tracking-[0.13em] uppercase text-accent mb-1">
-          Basket View
+          {t('basket.eyebrow')}
         </p>
         <h1 className="text-[clamp(1.6rem,3vw,2.2rem)] font-normal tracking-tight text-ink font-serif">
-          Household Basics Basket
+          {t('basket.title')}
         </h1>
         <p className="font-sans text-[0.85rem] text-ink-soft mt-1 max-w-[600px] leading-relaxed">
-          A weighted basket showing how conflict shocks combine across everyday goods.
-          Toggle items on or off to see how the overall basket impact changes.
+          {t('basket.subtitle')}
         </p>
       </div>
 
@@ -165,7 +167,7 @@ export function BasketClient() {
         {/* ====== RIGHT: Basket Summary ====== */}
         <aside className="bg-bg-card border border-border rounded-[10px] p-5 shadow-card md:sticky md:top-[72px] order-1 md:order-2">
           <h2 className="font-sans text-[0.82rem] font-bold text-ink mb-4 tracking-wide">
-            Basket Total
+            {t('basket.total')}
           </h2>
 
           {/* Weighted Average — big number */}
@@ -174,7 +176,7 @@ export function BasketClient() {
               +{basketResult?.weightedAverage ?? 0}%
             </div>
             <div className="font-sans text-[0.72rem] text-ink-muted">
-              weighted average price impact
+              {t('basket.weightedAvg')}
             </div>
           </div>
 
@@ -184,19 +186,17 @@ export function BasketClient() {
               +{basketResult?.cpiContribution ?? 0}pp
             </div>
             <div className="font-sans text-[0.68rem] text-ink-muted">
-              estimated CPI basket contribution
+              {t('basket.cpiContribution')}
             </div>
           </div>
 
           {/* Formula tooltips */}
           <div className="bg-blue-light border border-[#ccdff0] rounded-lg px-3 py-2 mb-5">
             <p className="font-sans text-[0.65rem] text-[#2a4a6a] leading-relaxed">
-              <strong>Weighted average</strong> = sum of (item weight / total active
-              weight) x item impact across enabled items.
+              <strong>{t('basket.weightedAvg')}</strong> {t('basket.formulaWeightedAvg')}
             </p>
             <p className="font-sans text-[0.65rem] text-[#2a4a6a] leading-relaxed mt-1">
-              <strong>CPI contribution</strong> = sum of (item CPI weight / 100) x
-              item impact. Measures percentage-point effect on headline CPI.
+              <strong>{t('basket.cpiContribution')}</strong> {t('basket.formulaCpi')}
             </p>
           </div>
 
@@ -227,7 +227,7 @@ export function BasketClient() {
           {/* Weight breakdown */}
           <div className="border-t border-border pt-4">
             <h3 className="font-sans text-[0.72rem] font-bold text-ink-muted uppercase tracking-[0.06em] mb-2">
-              Active Weights
+              {t('basket.activeWeights')}
             </h3>
             <div className="flex flex-wrap gap-1.5">
               {items

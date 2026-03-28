@@ -10,11 +10,13 @@ import { COUNTRY_MAP } from '@/data/countries'
 import { CoverageBadge } from '@/components/ui/coverage-badge'
 import { ReliabilityBadge } from '@/components/ui/reliability-badge'
 import { getReliability } from '@/lib/calculations'
+import { useT } from '@/lib/use-t'
 import type { WarId, CategoryId } from '@/types'
 import { LAG_LABELS } from '@/types/scenario'
 import type { LagPeriod } from '@/types/scenario'
 
 export function SavedClient() {
+  const t = useT()
   const [scenarios, setScenarios] = useState<SavedScenario[]>([])
   const [loaded, setLoaded] = useState(false)
 
@@ -56,11 +58,10 @@ export function SavedClient() {
             <span className="text-white/70">Saved Scenarios</span>
           </nav>
           <h1 className="text-[clamp(2rem,4.5vw,3.2rem)] font-normal leading-[1.2] mb-4 tracking-tight font-serif">
-            Saved Scenarios
+            {t('saved.title')}
           </h1>
           <p className="text-[1.05rem] text-white/65 max-w-[600px] leading-relaxed font-serif">
-            Scenarios you have bookmarked for quick access. Data is stored
-            locally in your browser.
+            {t('saved.subtitle')}
           </p>
         </div>
       </section>
@@ -86,17 +87,16 @@ export function SavedClient() {
               </svg>
             </div>
             <h2 className="font-serif text-[1.2rem] font-normal text-ink mb-2">
-              No saved scenarios yet
+              {t('saved.noSaved')}
             </h2>
             <p className="font-sans text-[0.88rem] text-ink-soft leading-relaxed mb-6">
-              Use the simulator to explore war-impact scenarios and save the
-              ones you want to revisit later.
+              {t('saved.noSavedDesc')}
             </p>
             <Link
               href="/simulator"
               className="inline-block bg-accent text-white font-sans text-[0.8rem] font-semibold px-5 py-2.5 rounded-md no-underline tracking-wide hover:bg-[#b03e27] transition-colors"
             >
-              Open Simulator
+              {t('saved.openSimulator')}
             </Link>
           </div>
         ) : (
@@ -141,13 +141,13 @@ export function SavedClient() {
                       href={simulatorHref}
                       className="font-sans text-[0.78rem] font-semibold px-3 py-1.5 rounded-md bg-accent text-white no-underline hover:bg-[#b03e27] transition-colors"
                     >
-                      Open in Simulator
+                      {t('saved.openInSimulator')}
                     </Link>
                     <button
                       onClick={() => handleRemove(s.id)}
                       className="font-sans text-[0.78rem] font-semibold px-3 py-1.5 rounded-md border border-border text-ink-soft hover:text-red-500 hover:border-red-300 transition-colors"
                     >
-                      Remove
+                      {t('saved.remove')}
                     </button>
                   </div>
                 </article>

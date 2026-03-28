@@ -23,6 +23,7 @@ import { RefinementPanel } from '@/components/simulator/refinement-panel'
 import { PRE_ESCALATION_PRICES } from '@/data/pre-escalation-prices'
 import { usePricesFreshness } from '@/lib/use-prices-freshness'
 import { loadRefinements, saveRefinements } from '@/lib/user-refinements'
+import { useT } from '@/lib/use-t'
 import type { UserRefinements } from '@/types/user-refinements'
 import type { WarId, CategoryId, RankingEntry, CoverageStatus } from '@/types'
 import type { LagPeriod, ScenarioResult } from '@/types/scenario'
@@ -55,6 +56,8 @@ export function SimulatorClient() {
     lag,
     setLag,
   } = useSimulatorState()
+
+  const t = useT()
 
   /* --- user refinements (localStorage-backed) --- */
   const [refinements, setRefinements] = useState<UserRefinements>(() => loadRefinements())
@@ -172,13 +175,13 @@ export function SimulatorClient() {
       {/* Page header */}
       <div className="mb-6">
         <p className="font-sans text-[0.72rem] font-bold tracking-[0.13em] uppercase text-accent mb-1">
-          Interactive Tool
+          {t('simulator.eyebrow')}
         </p>
         <h1 className="text-[clamp(1.6rem,3vw,2.2rem)] font-normal tracking-tight text-ink font-serif">
-          War Impact Simulator
+          {t('simulator.title')}
         </h1>
         <p className="font-sans text-[0.85rem] text-ink-soft mt-1 max-w-[600px] leading-relaxed">
-          Choose a conflict, category, and country to see how macro shocks could affect consumer prices.
+          {t('simulator.subtitle')}
         </p>
       </div>
 
@@ -187,13 +190,13 @@ export function SimulatorClient() {
         {/* ====== LEFT PANEL ====== */}
         <aside className="bg-bg-card border border-border rounded-[10px] p-5 shadow-card md:sticky md:top-[72px] order-1">
           <h2 className="font-sans text-[0.82rem] font-bold text-ink mb-4 tracking-wide">
-            Scenario Controls
+            {t('simulator.controls')}
           </h2>
 
           {/* War selector — escalation cards */}
           <fieldset className="mb-5">
             <legend className="font-sans text-[0.72rem] font-bold text-ink-muted uppercase tracking-[0.06em] mb-2">
-              Conflict
+              {t('simulator.conflict')}
             </legend>
             <div className="flex flex-col gap-2">
               {WAR_ESCALATION_ORDER.map((wId) => {
@@ -227,7 +230,7 @@ export function SimulatorClient() {
           {/* Category dropdown */}
           <fieldset className="mb-4">
             <legend className="font-sans text-[0.72rem] font-bold text-ink-muted uppercase tracking-[0.06em] mb-1.5">
-              Category
+              {t('simulator.category')}
             </legend>
             <select
               value={categoryId}
@@ -245,14 +248,14 @@ export function SimulatorClient() {
           {/* Country dropdown */}
           <fieldset className="mb-4">
             <legend className="font-sans text-[0.72rem] font-bold text-ink-muted uppercase tracking-[0.06em] mb-1.5">
-              Country
+              {t('simulator.country')}
             </legend>
             <select
               value={country}
               onChange={(e) => setCountry(e.target.value)}
               className="w-full border border-border rounded-lg px-3 py-2 font-sans text-[0.82rem] text-ink bg-bg-card focus:outline-none focus:border-accent"
             >
-              <option value="">All countries</option>
+              <option value="">{t('simulator.allCountries')}</option>
               <optgroup label="Full coverage">
                 {groupedCountries.full.map((c) => (
                   <option key={c.id} value={c.id}>
@@ -289,7 +292,7 @@ export function SimulatorClient() {
           {/* Pass-through chips */}
           <fieldset className="mb-4">
             <legend className="font-sans text-[0.72rem] font-bold text-ink-muted uppercase tracking-[0.06em] mb-1.5">
-              Pass-through
+              {t('simulator.passthrough')}
             </legend>
             <div className="flex gap-2">
               {PASS_OPTIONS.map((p) => (
@@ -311,7 +314,7 @@ export function SimulatorClient() {
           {/* Lag chips */}
           <fieldset className="mb-5">
             <legend className="font-sans text-[0.72rem] font-bold text-ink-muted uppercase tracking-[0.06em] mb-1.5">
-              Lag period
+              {t('simulator.lagPeriod')}
             </legend>
             <div className="flex gap-2">
               {LAG_OPTIONS.map((l) => (
@@ -335,7 +338,7 @@ export function SimulatorClient() {
             onClick={handleUpdate}
             className="w-full bg-accent text-white font-sans text-[0.85rem] font-semibold py-2.5 rounded-lg hover:bg-[#b03e27] transition-colors cursor-pointer"
           >
-            Update View
+            {t('simulator.updateView')}
           </button>
 
           {/* Refinement panel */}
@@ -350,7 +353,7 @@ export function SimulatorClient() {
           {!showResults ? (
             <div className="bg-bg-card border border-border rounded-[10px] p-10 text-center">
               <p className="font-sans text-[0.9rem] text-ink-muted">
-                Select a scenario and click <strong>Update View</strong> to see results.
+                {t('simulator.selectPrompt')}
               </p>
             </div>
           ) : (
@@ -376,10 +379,10 @@ export function SimulatorClient() {
               {/* Assumption strip with provenance */}
               <div className="bg-bg-alt border border-border rounded-lg px-4 py-2.5 mb-5 flex flex-wrap gap-x-5 gap-y-1 font-sans text-[0.72rem] text-ink-muted">
                 <span>
-                  Category: <strong className="text-ink">{categoryLabel}</strong>
+                  {t('simulator.category')}: <strong className="text-ink">{categoryLabel}</strong>
                 </span>
                 <span>
-                  Pass-through: <strong className="text-ink">{passThrough}%</strong>
+                  {t('simulator.passthrough')}: <strong className="text-ink">{passThrough}%</strong>
                 </span>
                 <span>
                   Lag: <strong className="text-ink">{LAG_LABELS[lag]}</strong>
@@ -397,7 +400,7 @@ export function SimulatorClient() {
 
               {/* Rankings */}
               <RankingSection
-                title="Top 5 Most Impacted"
+                title={t('simulator.topImpacted')}
                 entries={ranking.top5}
                 startRank={1}
                 reasons={countryReason}
@@ -408,7 +411,7 @@ export function SimulatorClient() {
               />
 
               <RankingSection
-                title="Bottom 5 Least Impacted"
+                title={t('simulator.bottomImpacted')}
                 entries={ranking.bot5}
                 startRank={6}
                 reasons={countryReason}
@@ -420,15 +423,14 @@ export function SimulatorClient() {
 
               {/* Ranking methodology note */}
               <div className="font-sans text-[0.68rem] text-ink-muted mt-1 mb-5 px-1">
-                Ranked out of 10 countries with full coverage. Rankings
-                reflect {passThrough}% pass-through and {LAG_LABELS[lag]} lag.
+                {t('simulator.rankingNote', { pt: String(passThrough), lag: LAG_LABELS[lag] })}
               </div>
 
               {/* Validation errors guard */}
               {expandedCountry && validationErrors.length > 0 && (
                 <div className="bg-accent-light border border-accent/30 rounded-lg px-4 py-3 mb-4">
                   <p className="font-sans text-[0.78rem] text-accent font-semibold mb-1">
-                    Cannot compute results
+                    {t('simulator.cannotCompute')}
                   </p>
                   <ul className="font-sans text-[0.72rem] text-accent/80 list-disc pl-4 space-y-0.5">
                     {validationErrors.map((e) => (
@@ -468,9 +470,9 @@ export function SimulatorClient() {
                     <button
                       onClick={() => setExpandedCountry(null)}
                       className="font-sans text-[0.8rem] text-ink-muted hover:text-accent transition-colors cursor-pointer"
-                      aria-label="Close detail"
+                      aria-label={t('simulator.close')}
                     >
-                      Close
+                      {t('simulator.close')}
                     </button>
                   </div>
 
@@ -504,24 +506,24 @@ export function SimulatorClient() {
                   {/* 5 big-number cards */}
                   <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
                     <StatCard
-                      label="Impact Ceiling"
+                      label={t('simulator.impactCeiling')}
                       value={`+${result.lagAdjustedCeiling}%`}
                       accent
                     />
                     <StatCard
-                      label="Realized Est."
+                      label={t('simulator.realizedEst')}
                       value={`+${result.realized}%`}
                     />
                     <StatCard
-                      label="Model Gap"
+                      label={t('simulator.modelGap')}
                       value={`${result.modelGap}pp`}
                     />
                     <StatCard
-                      label="Pass-Through"
+                      label={t('simulator.passThroughLabel')}
                       value={`${passThrough}%`}
                     />
                     <StatCard
-                      label="Lag Multiplier"
+                      label={t('simulator.lagMultiplier')}
                       value={`${result.lagMultiplier}x`}
                     />
                   </div>
@@ -529,7 +531,7 @@ export function SimulatorClient() {
                   {/* Factor contribution breakdown */}
                   <div className="mb-6">
                     <h4 className="font-sans text-[0.78rem] font-bold text-ink mb-3 tracking-wide">
-                      Factor Contribution Breakdown
+                      {t('simulator.factorBreakdown')}
                     </h4>
                     <div className="space-y-2">
                       {result.factors.map((f) => (
@@ -572,7 +574,7 @@ export function SimulatorClient() {
                   {currencyData && (
                     <div className="bg-bg-alt border border-border rounded-lg p-4">
                       <h4 className="font-sans text-[0.78rem] font-bold text-ink mb-3 tracking-wide">
-                        Purchasing Power Erosion
+                        {t('simulator.purchasingPower')}
                       </h4>
                       <div className="flex items-baseline gap-2 mb-2">
                         <span className="text-[1.5rem] font-light text-accent tracking-tight">
