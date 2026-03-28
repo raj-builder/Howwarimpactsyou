@@ -24,4 +24,6 @@ Thumbs.db
 
 # AI session files — local only, not for the repo
 CLAUDE.md
-CLAUDE_PROMPT_V3.md
+CLAUDE_PROMPT*.md
+MEMORY.md
+COS-Report-*.docx
