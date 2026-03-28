@@ -6,7 +6,13 @@ import { getSavedScenarios, removeSavedScenario } from '@/lib/saved-scenarios'
 import type { SavedScenario } from '@/lib/saved-scenarios'
 import { WARS } from '@/data/wars'
 import { CATEGORY_MAP } from '@/data/categories'
+import { COUNTRY_MAP } from '@/data/countries'
+import { CoverageBadge } from '@/components/ui/coverage-badge'
+import { ReliabilityBadge } from '@/components/ui/reliability-badge'
+import { getReliability } from '@/lib/calculations'
 import type { WarId, CategoryId } from '@/types'
+import { LAG_LABELS } from '@/types/scenario'
+import type { LagPeriod } from '@/types/scenario'
 
 export function SavedClient() {
   const [scenarios, setScenarios] = useState<SavedScenario[]>([])
@@ -66,7 +72,6 @@ export function SavedClient() {
           /* Empty state */
           <div className="bg-bg-card border border-border rounded-[10px] p-8 shadow-card max-w-[600px] mx-auto text-center">
             <div className="text-4xl mb-4">
-              {/* Bookmark outline */}
               <svg
                 width="32"
                 height="42"
@@ -103,6 +108,13 @@ export function SavedClient() {
               const warName = war?.name ?? s.war
               const catLabel = cat?.label ?? s.category
               const catIcon = cat?.icon ?? ''
+              const countryData = COUNTRY_MAP[s.country]
+              const coverage = countryData?.coverage ?? 'unavailable'
+              const reliability = getReliability(s.country, coverage)
+              const lagLabel = LAG_LABELS[s.lag as LagPeriod] ?? s.lag
+
+              // Build simulator link with full scenario params
+              const simulatorHref = `/simulator?war=${encodeURIComponent(s.war)}&category=${encodeURIComponent(s.category)}&country=${encodeURIComponent(s.country)}&pt=${s.passthrough}&lag=${s.lag}`
 
               return (
                 <article
@@ -110,20 +122,23 @@ export function SavedClient() {
                   className="bg-bg-card border border-border rounded-[10px] p-5 shadow-card flex flex-col sm:flex-row sm:items-center gap-4"
                 >
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-sans text-[0.92rem] font-bold text-ink mb-1 truncate">
-                      {catIcon} {catLabel}
-                    </h3>
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className="font-sans text-[0.92rem] font-bold text-ink truncate">
+                        {catIcon} {catLabel}
+                      </h3>
+                      <CoverageBadge status={coverage} />
+                      <ReliabilityBadge status={reliability} />
+                    </div>
                     <p className="font-sans text-[0.82rem] text-ink-soft truncate">
-                      {warName} &mdash; {s.country}
+                      {countryData?.flag ?? ''} {s.country} &mdash; {warName}
                     </p>
                     <p className="font-sans text-[0.74rem] text-ink-muted mt-1">
-                      Saved {formatDate(s.savedAt)} &middot; Passthrough{' '}
-                      {Math.round(s.passthrough * 100)}% &middot; Lag {s.lag}
+                      Saved {formatDate(s.savedAt)} &middot; {s.passthrough}% pass-through &middot; {lagLabel} lag
                     </p>
                   </div>
                   <div className="flex gap-2 shrink-0">
                     <Link
-                      href={`/impact/${s.war}/${s.category}`}
+                      href={simulatorHref}
                       className="font-sans text-[0.78rem] font-semibold px-3 py-1.5 rounded-md bg-accent text-white no-underline hover:bg-[#b03e27] transition-colors"
                     >
                       Open in Simulator

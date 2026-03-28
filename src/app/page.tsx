@@ -17,13 +17,13 @@ const EXAMPLE_CARDS = [
     impact: '+18.4%',
     barWidth: 74,
     explainer:
-      'Bread prices could rise up to 18.4% if all upstream wheat, fuel, and currency costs pass through to consumers. Based on 12-month lag.',
+      'Bread prices could rise up to 18.4% if all upstream wheat, fuel, and currency costs pass through to consumers. Ceiling at 100% pass-through, immediate lag.',
     badges: [
       { label: 'Full Coverage', color: 'green' },
       { label: 'High Confidence', color: 'blue' },
       { label: 'Validated', color: 'amber' },
     ],
-    href: '/simulator?war=ukraine-russia&category=bread&country=Philippines&pt=100&lag=12m',
+    href: '/simulator?war=ukraine-russia&category=bread&country=Philippines&pt=100&lag=immediate',
   },
   {
     flag: '🇪🇬',
@@ -33,12 +33,12 @@ const EXAMPLE_CARDS = [
     impact: '+52.1%',
     barWidth: 92,
     explainer:
-      'Cooking oil prices could surge up to 52.1% driven by soybean and sunflower cost spikes combined with a sharp currency devaluation. Based on 6-month lag.',
+      'Cooking oil prices could surge up to 52.1% driven by soybean and sunflower cost spikes combined with a sharp currency devaluation. Ceiling at 100% pass-through, immediate lag.',
     badges: [
       { label: 'Full Coverage', color: 'green' },
       { label: 'Very High Pressure', color: 'red' },
     ],
-    href: '/simulator?war=ukraine-russia&category=oil&country=Egypt&pt=100&lag=6m',
+    href: '/simulator?war=ukraine-russia&category=oil&country=Egypt&pt=100&lag=immediate',
   },
   {
     flag: '🇧🇷',
@@ -63,12 +63,12 @@ const EXAMPLE_CARDS = [
     impact: '+9.7%',
     barWidth: 39,
     explainer:
-      'Vegetable prices could increase up to 9.7% as fertilizer and diesel cost surges raise farming and transport expenses. Based on 3-month lag.',
+      'Vegetable prices could increase up to 9.7% as fertilizer and diesel cost surges raise farming and transport expenses. Ceiling at 100% pass-through, immediate lag.',
     badges: [
       { label: 'Full Coverage', color: 'green' },
       { label: 'Validated', color: 'green' },
     ],
-    href: '/simulator?war=ukraine-russia&category=vegetables&country=India&pt=100&lag=3m',
+    href: '/simulator?war=ukraine-russia&category=vegetables&country=India&pt=100&lag=immediate',
   },
 ]
 

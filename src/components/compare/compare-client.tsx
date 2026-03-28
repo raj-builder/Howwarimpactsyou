@@ -5,29 +5,26 @@ import { useSearchParams, useRouter } from 'next/navigation'
 import { useState, useMemo, useCallback, useEffect, Suspense } from 'react'
 import { WARS, WAR_LIST } from '@/data/wars'
 import { CATEGORIES } from '@/data/categories'
+import { COUNTRY_MAP } from '@/data/countries'
+import { roundValue } from '@/lib/calculations'
 import { analytics } from '@/lib/analytics'
-import type { WarId, CategoryId, RankingEntry } from '@/types'
+import type { WarId, CategoryId, RankingEntry, CoverageStatus } from '@/types'
+import { LAG_MULTIPLIERS, LAG_LABELS } from '@/types/scenario'
+import type { LagPeriod } from '@/types/scenario'
 
 type SortKey = 'country' | 'left' | 'right' | 'delta'
 type SortDir = 'asc' | 'desc'
 
+const PASS_OPTIONS = [100, 75, 50, 25] as const
+const LAG_OPTIONS: LagPeriod[] = ['immediate', '3m', '6m', '12m']
+
 interface ComparisonRow {
   flag: string
   country: string
+  coverage: CoverageStatus
   leftPct: number | null
   rightPct: number | null
   delta: number | null
-}
-
-function parseScenario(val: string | null): { war: WarId; category: CategoryId } | null {
-  if (!val) return null
-  const parts = val.split(':')
-  if (parts.length !== 2) return null
-  const war = parts[0] as WarId
-  const category = parts[1] as CategoryId
-  if (!WARS[war]) return null
-  if (!CATEGORIES.find((c) => c.id === category)) return null
-  return { war, category }
 }
 
 function getAllCountries(entries: RankingEntry[]): Map<string, { flag: string; pct: number }> {
@@ -42,53 +39,47 @@ function CompareInner() {
   const searchParams = useSearchParams()
   const router = useRouter()
 
+  // Parse URL params
   const leftParam = searchParams.get('left')
   const rightParam = searchParams.get('right')
+  const leftParts = leftParam?.split(':') ?? []
+  const rightParts = rightParam?.split(':') ?? []
 
-  const leftScenario = parseScenario(leftParam)
-  const rightScenario = parseScenario(rightParam)
-
-  const [leftWar, setLeftWar] = useState<WarId>(leftScenario?.war ?? 'ukraine-russia')
-  const [leftCat, setLeftCat] = useState<CategoryId>(leftScenario?.category ?? 'bread')
-  const [rightWar, setRightWar] = useState<WarId>(rightScenario?.war ?? 'gaza-2023')
-  const [rightCat, setRightCat] = useState<CategoryId>(rightScenario?.category ?? 'bread')
+  const [leftWar, setLeftWar] = useState<WarId>((leftParts[0] as WarId) || 'ukraine-russia')
+  const [leftCat, setLeftCat] = useState<CategoryId>((leftParts[1] as CategoryId) || 'bread')
+  const [leftPt, setLeftPt] = useState(Number(searchParams.get('lpt')) || 100)
+  const [leftLag, setLeftLag] = useState<LagPeriod>((searchParams.get('llag') as LagPeriod) || '6m')
+  const [rightWar, setRightWar] = useState<WarId>((rightParts[0] as WarId) || 'gaza-2023')
+  const [rightCat, setRightCat] = useState<CategoryId>((rightParts[1] as CategoryId) || 'bread')
+  const [rightPt, setRightPt] = useState(Number(searchParams.get('rpt')) || 100)
+  const [rightLag, setRightLag] = useState<LagPeriod>((searchParams.get('rlag') as LagPeriod) || '6m')
   const [sortKey, setSortKey] = useState<SortKey>('delta')
   const [sortDir, setSortDir] = useState<SortDir>('desc')
   const [mobileView, setMobileView] = useState<'left' | 'right'>('left')
 
-  useEffect(() => {
-    analytics.compareView()
-  }, [])
+  useEffect(() => { analytics.compareView() }, [])
 
-  // Update URL when selections change
   const updateUrl = useCallback(
-    (lw: WarId, lc: CategoryId, rw: WarId, rc: CategoryId) => {
+    (lw: WarId, lc: CategoryId, lp: number, ll: LagPeriod, rw: WarId, rc: CategoryId, rp: number, rl: LagPeriod) => {
       const params = new URLSearchParams()
       params.set('left', `${lw}:${lc}`)
       params.set('right', `${rw}:${rc}`)
+      params.set('lpt', String(lp))
+      params.set('llag', ll)
+      params.set('rpt', String(rp))
+      params.set('rlag', rl)
       router.replace(`/compare?${params.toString()}`, { scroll: false })
     },
     [router]
   )
 
-  const handleLeftWar = (v: WarId) => {
-    setLeftWar(v)
-    updateUrl(v, leftCat, rightWar, rightCat)
-  }
-  const handleLeftCat = (v: CategoryId) => {
-    setLeftCat(v)
-    updateUrl(leftWar, v, rightWar, rightCat)
-  }
-  const handleRightWar = (v: WarId) => {
-    setRightWar(v)
-    updateUrl(leftWar, leftCat, v, rightCat)
-  }
-  const handleRightCat = (v: CategoryId) => {
-    setRightCat(v)
-    updateUrl(leftWar, leftCat, rightWar, v)
-  }
+  const sync = useCallback(() => {
+    updateUrl(leftWar, leftCat, leftPt, leftLag, rightWar, rightCat, rightPt, rightLag)
+  }, [updateUrl, leftWar, leftCat, leftPt, leftLag, rightWar, rightCat, rightPt, rightLag])
 
-  // Build comparison rows
+  useEffect(() => { sync() }, [sync])
+
+  // Build comparison rows with lag and passthrough applied
   const rows = useMemo<ComparisonRow[]>(() => {
     const leftRanking = WARS[leftWar]?.rankings[leftCat]
     const rightRanking = WARS[rightWar]?.rankings[rightCat]
@@ -96,52 +87,37 @@ function CompareInner() {
 
     const leftEntries = [...leftRanking.top5, ...leftRanking.bot5]
     const rightEntries = [...rightRanking.top5, ...rightRanking.bot5]
-
     const leftMap = getAllCountries(leftEntries)
     const rightMap = getAllCountries(rightEntries)
 
-    // Union of all countries
+    const leftMult = LAG_MULTIPLIERS[leftLag] * (leftPt / 100)
+    const rightMult = LAG_MULTIPLIERS[rightLag] * (rightPt / 100)
+
     const allCountries = new Set([...leftMap.keys(), ...rightMap.keys()])
     const result: ComparisonRow[] = []
 
     for (const country of allCountries) {
       const left = leftMap.get(country)
       const right = rightMap.get(country)
-      const leftPct = left?.pct ?? null
-      const rightPct = right?.pct ?? null
-      const delta =
-        leftPct !== null && rightPct !== null ? rightPct - leftPct : null
+      const leftPct = left ? roundValue(left.pct * leftMult, 'display') : null
+      const rightPct = right ? roundValue(right.pct * rightMult, 'display') : null
+      const delta = leftPct !== null && rightPct !== null ? roundValue(rightPct - leftPct, 'display') : null
+      const coverage = COUNTRY_MAP[country]?.coverage ?? 'unavailable'
 
-      result.push({
-        flag: left?.flag ?? right?.flag ?? '',
-        country,
-        leftPct,
-        rightPct,
-        delta,
-      })
+      result.push({ flag: left?.flag ?? right?.flag ?? '', country, coverage, leftPct, rightPct, delta })
     }
-
     return result
-  }, [leftWar, leftCat, rightWar, rightCat])
+  }, [leftWar, leftCat, leftPt, leftLag, rightWar, rightCat, rightPt, rightLag])
 
-  // Sort rows
   const sortedRows = useMemo(() => {
     const sorted = [...rows]
     sorted.sort((a, b) => {
       let cmp = 0
       switch (sortKey) {
-        case 'country':
-          cmp = a.country.localeCompare(b.country)
-          break
-        case 'left':
-          cmp = (a.leftPct ?? 0) - (b.leftPct ?? 0)
-          break
-        case 'right':
-          cmp = (a.rightPct ?? 0) - (b.rightPct ?? 0)
-          break
-        case 'delta':
-          cmp = (a.delta ?? 0) - (b.delta ?? 0)
-          break
+        case 'country': cmp = a.country.localeCompare(b.country); break
+        case 'left': cmp = (a.leftPct ?? 0) - (b.leftPct ?? 0); break
+        case 'right': cmp = (a.rightPct ?? 0) - (b.rightPct ?? 0); break
+        case 'delta': cmp = (a.delta ?? 0) - (b.delta ?? 0); break
       }
       return sortDir === 'asc' ? cmp : -cmp
     })
@@ -149,12 +125,8 @@ function CompareInner() {
   }, [rows, sortKey, sortDir])
 
   const handleSort = (key: SortKey) => {
-    if (sortKey === key) {
-      setSortDir((d) => (d === 'asc' ? 'desc' : 'asc'))
-    } else {
-      setSortKey(key)
-      setSortDir('desc')
-    }
+    if (sortKey === key) setSortDir((d) => (d === 'asc' ? 'desc' : 'asc'))
+    else { setSortKey(key); setSortDir('desc') }
   }
 
   const sortIndicator = (key: SortKey) =>
@@ -171,12 +143,7 @@ function CompareInner() {
       <section className="bg-gradient-to-br from-[#1a1a1a] via-[#2d2420] to-[#3a2216] text-white py-16 px-8 md:py-20">
         <div className="max-w-[1140px] mx-auto">
           <nav className="font-sans text-[0.75rem] text-white/40 mb-6">
-            <Link
-              href="/"
-              className="text-white/40 no-underline hover:text-white/70 transition-colors"
-            >
-              Home
-            </Link>
+            <Link href="/" className="text-white/40 no-underline hover:text-white/70 transition-colors">Home</Link>
             <span className="mx-2">/</span>
             <span className="text-white/70">Compare</span>
           </nav>
@@ -184,8 +151,7 @@ function CompareInner() {
             Compare Scenarios
           </h1>
           <p className="text-[1.05rem] text-white/65 max-w-[600px] leading-relaxed font-serif">
-            Select two war/shock scenarios and a consumer category for each,
-            then compare country-level impact side by side.
+            Select two war/shock scenarios with different assumptions and compare country-level impact side by side.
           </p>
         </div>
       </section>
@@ -195,111 +161,44 @@ function CompareInner() {
         <section className="mb-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {/* Left scenario */}
-            <div className="bg-bg-card border border-border rounded-[10px] p-6 shadow-card">
-              <h3 className="font-sans text-[0.72rem] font-bold tracking-[0.13em] uppercase text-accent mb-3">
-                Scenario A (Left)
-              </h3>
-              <div className="space-y-3">
-                <div>
-                  <label className="font-sans text-[0.78rem] text-ink-muted block mb-1">
-                    War / Shock
-                  </label>
-                  <select
-                    value={leftWar}
-                    onChange={(e) => handleLeftWar(e.target.value as WarId)}
-                    className="w-full bg-bg-card border border-border rounded-md px-3 py-2 font-sans text-[0.85rem] text-ink focus:outline-none focus:ring-2 focus:ring-accent/40"
-                  >
-                    {WAR_LIST.map((w) => (
-                      <option key={w.id} value={w.id}>
-                        {w.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="font-sans text-[0.78rem] text-ink-muted block mb-1">
-                    Category
-                  </label>
-                  <select
-                    value={leftCat}
-                    onChange={(e) => handleLeftCat(e.target.value as CategoryId)}
-                    className="w-full bg-bg-card border border-border rounded-md px-3 py-2 font-sans text-[0.85rem] text-ink focus:outline-none focus:ring-2 focus:ring-accent/40"
-                  >
-                    {CATEGORIES.map((c) => (
-                      <option key={c.id} value={c.id}>
-                        {c.icon} {c.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-            </div>
-
+            <ScenarioSelector
+              label="Scenario A (Left)"
+              war={leftWar} onWarChange={setLeftWar}
+              cat={leftCat} onCatChange={setLeftCat}
+              pt={leftPt} onPtChange={setLeftPt}
+              lag={leftLag} onLagChange={setLeftLag}
+            />
             {/* Right scenario */}
-            <div className="bg-bg-card border border-border rounded-[10px] p-6 shadow-card">
-              <h3 className="font-sans text-[0.72rem] font-bold tracking-[0.13em] uppercase text-accent mb-3">
-                Scenario B (Right)
-              </h3>
-              <div className="space-y-3">
-                <div>
-                  <label className="font-sans text-[0.78rem] text-ink-muted block mb-1">
-                    War / Shock
-                  </label>
-                  <select
-                    value={rightWar}
-                    onChange={(e) => handleRightWar(e.target.value as WarId)}
-                    className="w-full bg-bg-card border border-border rounded-md px-3 py-2 font-sans text-[0.85rem] text-ink focus:outline-none focus:ring-2 focus:ring-accent/40"
-                  >
-                    {WAR_LIST.map((w) => (
-                      <option key={w.id} value={w.id}>
-                        {w.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="font-sans text-[0.78rem] text-ink-muted block mb-1">
-                    Category
-                  </label>
-                  <select
-                    value={rightCat}
-                    onChange={(e) => handleRightCat(e.target.value as CategoryId)}
-                    className="w-full bg-bg-card border border-border rounded-md px-3 py-2 font-sans text-[0.85rem] text-ink focus:outline-none focus:ring-2 focus:ring-accent/40"
-                  >
-                    {CATEGORIES.map((c) => (
-                      <option key={c.id} value={c.id}>
-                        {c.icon} {c.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-            </div>
+            <ScenarioSelector
+              label="Scenario B (Right)"
+              war={rightWar} onWarChange={setRightWar}
+              cat={rightCat} onCatChange={setRightCat}
+              pt={rightPt} onPtChange={setRightPt}
+              lag={rightLag} onLagChange={setRightLag}
+            />
           </div>
         </section>
+
+        {/* Assumption strip */}
+        <div className="bg-bg-alt border border-border rounded-lg px-4 py-2.5 mb-5 flex flex-wrap gap-x-5 gap-y-1 font-sans text-[0.72rem] text-ink-muted">
+          <span>A: <strong className="text-ink">{leftPt}% PT · {LAG_LABELS[leftLag]} lag</strong></span>
+          <span>B: <strong className="text-ink">{rightPt}% PT · {LAG_LABELS[rightLag]} lag</strong></span>
+        </div>
 
         {/* Mobile toggle */}
         <div className="md:hidden mb-4 flex gap-2">
           <button
             onClick={() => setMobileView('left')}
             className={`flex-1 font-sans text-[0.82rem] font-semibold px-4 py-2 rounded-md transition-colors ${
-              mobileView === 'left'
-                ? 'bg-accent text-white'
-                : 'bg-bg-card border border-border text-ink-soft'
+              mobileView === 'left' ? 'bg-accent text-white' : 'bg-bg-card border border-border text-ink-soft'
             }`}
-          >
-            Scenario A
-          </button>
+          >Scenario A</button>
           <button
             onClick={() => setMobileView('right')}
             className={`flex-1 font-sans text-[0.82rem] font-semibold px-4 py-2 rounded-md transition-colors ${
-              mobileView === 'right'
-                ? 'bg-accent text-white'
-                : 'bg-bg-card border border-border text-ink-soft'
+              mobileView === 'right' ? 'bg-accent text-white' : 'bg-bg-card border border-border text-ink-soft'
             }`}
-          >
-            Scenario B
-          </button>
+          >Scenario B</button>
         </div>
 
         {/* Comparison table */}
@@ -311,93 +210,49 @@ function CompareInner() {
             <table className="w-full text-left text-[0.84rem] font-sans">
               <thead>
                 <tr className="border-b border-border">
-                  <th
-                    className="px-4 py-3 font-semibold text-ink cursor-pointer hover:text-accent transition-colors select-none"
-                    onClick={() => handleSort('country')}
-                  >
+                  <th className="px-4 py-3 font-semibold text-ink cursor-pointer hover:text-accent transition-colors select-none" onClick={() => handleSort('country')}>
                     Country{sortIndicator('country')}
                   </th>
-                  <th
-                    className={`px-4 py-3 font-semibold text-ink cursor-pointer hover:text-accent transition-colors text-right select-none ${
-                      mobileView === 'right' ? 'hidden md:table-cell' : ''
-                    }`}
-                    onClick={() => handleSort('left')}
-                  >
-                    <span className="block text-[0.7rem] text-ink-muted font-normal truncate max-w-[180px]">
-                      {leftWarName}
-                    </span>
-                    <span className="text-[0.72rem] text-ink-muted font-normal">
-                      {leftCatLabel}
-                    </span>
+                  <th className={`px-4 py-3 font-semibold text-ink cursor-pointer hover:text-accent transition-colors text-right select-none ${mobileView === 'right' ? 'hidden md:table-cell' : ''}`} onClick={() => handleSort('left')}>
+                    <span className="block text-[0.7rem] text-ink-muted font-normal truncate max-w-[180px]">{leftWarName}</span>
+                    <span className="text-[0.72rem] text-ink-muted font-normal">{leftCatLabel}</span>
                     {sortIndicator('left')}
                   </th>
-                  <th
-                    className={`px-4 py-3 font-semibold text-ink cursor-pointer hover:text-accent transition-colors text-right select-none ${
-                      mobileView === 'left' ? 'hidden md:table-cell' : ''
-                    }`}
-                    onClick={() => handleSort('right')}
-                  >
-                    <span className="block text-[0.7rem] text-ink-muted font-normal truncate max-w-[180px]">
-                      {rightWarName}
-                    </span>
-                    <span className="text-[0.72rem] text-ink-muted font-normal">
-                      {rightCatLabel}
-                    </span>
+                  <th className={`px-4 py-3 font-semibold text-ink cursor-pointer hover:text-accent transition-colors text-right select-none ${mobileView === 'left' ? 'hidden md:table-cell' : ''}`} onClick={() => handleSort('right')}>
+                    <span className="block text-[0.7rem] text-ink-muted font-normal truncate max-w-[180px]">{rightWarName}</span>
+                    <span className="text-[0.72rem] text-ink-muted font-normal">{rightCatLabel}</span>
                     {sortIndicator('right')}
                   </th>
-                  <th
-                    className="px-4 py-3 font-semibold text-ink cursor-pointer hover:text-accent transition-colors text-right hidden md:table-cell select-none"
-                    onClick={() => handleSort('delta')}
-                  >
+                  <th className="px-4 py-3 font-semibold text-ink cursor-pointer hover:text-accent transition-colors text-right hidden md:table-cell select-none" onClick={() => handleSort('delta')}>
                     Delta{sortIndicator('delta')}
                   </th>
                 </tr>
               </thead>
               <tbody>
                 {sortedRows.map((row) => {
-                  const deltaColor =
-                    row.delta === null
-                      ? 'text-ink-muted'
-                      : row.delta > 0
-                        ? 'text-red-500'
-                        : row.delta < 0
-                          ? 'text-green-500'
-                          : 'text-ink-muted'
-                  const deltaStr =
-                    row.delta === null
-                      ? '\u2014'
-                      : row.delta > 0
-                        ? `+${row.delta.toFixed(1)}%`
-                        : `${row.delta.toFixed(1)}%`
+                  const deltaColor = row.delta === null ? 'text-ink-muted' : row.delta > 0 ? 'text-red-500' : row.delta < 0 ? 'text-green-500' : 'text-ink-muted'
+                  const deltaStr = row.delta === null ? '\u2014' : row.delta > 0 ? `+${row.delta}%` : `${row.delta}%`
 
                   return (
-                    <tr
-                      key={row.country}
-                      className="border-b border-border/50 hover:bg-border/20 transition-colors"
-                    >
+                    <tr key={row.country} className="border-b border-border/50 hover:bg-border/20 transition-colors">
                       <td className="px-4 py-3 text-ink whitespace-nowrap">
                         <span className="mr-2">{row.flag}</span>
                         {row.country}
+                        {row.coverage !== 'full' && (
+                          <span className={`ml-1.5 font-sans text-[0.55rem] font-semibold px-1 py-0.5 rounded ${
+                            row.coverage === 'partial' ? 'bg-amber-light text-amber' :
+                            row.coverage === 'experimental' ? 'bg-blue-light text-blue' :
+                            'bg-bg-alt text-ink-muted'
+                          }`}>{row.coverage}</span>
+                        )}
                       </td>
-                      <td
-                        className={`px-4 py-3 text-right font-mono text-[0.82rem] text-ink ${
-                          mobileView === 'right' ? 'hidden md:table-cell' : ''
-                        }`}
-                      >
-                        {row.leftPct !== null ? `${row.leftPct.toFixed(1)}%` : '\u2014'}
+                      <td className={`px-4 py-3 text-right font-mono text-[0.82rem] text-ink ${mobileView === 'right' ? 'hidden md:table-cell' : ''}`}>
+                        {row.leftPct !== null ? `+${row.leftPct}%` : '\u2014'}
                       </td>
-                      <td
-                        className={`px-4 py-3 text-right font-mono text-[0.82rem] text-ink ${
-                          mobileView === 'left' ? 'hidden md:table-cell' : ''
-                        }`}
-                      >
-                        {row.rightPct !== null
-                          ? `${row.rightPct.toFixed(1)}%`
-                          : '\u2014'}
+                      <td className={`px-4 py-3 text-right font-mono text-[0.82rem] text-ink ${mobileView === 'left' ? 'hidden md:table-cell' : ''}`}>
+                        {row.rightPct !== null ? `+${row.rightPct}%` : '\u2014'}
                       </td>
-                      <td
-                        className={`px-4 py-3 text-right font-mono text-[0.82rem] font-semibold hidden md:table-cell ${deltaColor}`}
-                      >
+                      <td className={`px-4 py-3 text-right font-mono text-[0.82rem] font-semibold hidden md:table-cell ${deltaColor}`}>
                         {deltaStr}
                       </td>
                     </tr>
@@ -405,10 +260,7 @@ function CompareInner() {
                 })}
                 {sortedRows.length === 0 && (
                   <tr>
-                    <td
-                      colSpan={4}
-                      className="px-4 py-8 text-center text-ink-muted"
-                    >
+                    <td colSpan={4} className="px-4 py-8 text-center text-ink-muted">
                       No data available for the selected scenarios.
                     </td>
                   </tr>
@@ -419,6 +271,84 @@ function CompareInner() {
         </section>
       </div>
     </>
+  )
+}
+
+/* ── Scenario selector sub-component ─────────────────────────── */
+
+function ScenarioSelector({
+  label,
+  war, onWarChange,
+  cat, onCatChange,
+  pt, onPtChange,
+  lag, onLagChange,
+}: {
+  label: string
+  war: WarId; onWarChange: (v: WarId) => void
+  cat: CategoryId; onCatChange: (v: CategoryId) => void
+  pt: number; onPtChange: (v: number) => void
+  lag: LagPeriod; onLagChange: (v: LagPeriod) => void
+}) {
+  return (
+    <div className="bg-bg-card border border-border rounded-[10px] p-6 shadow-card">
+      <h3 className="font-sans text-[0.72rem] font-bold tracking-[0.13em] uppercase text-accent mb-3">
+        {label}
+      </h3>
+      <div className="space-y-3">
+        <div>
+          <label className="font-sans text-[0.78rem] text-ink-muted block mb-1">War / Shock</label>
+          <select
+            value={war}
+            onChange={(e) => onWarChange(e.target.value as WarId)}
+            className="w-full bg-bg-card border border-border rounded-md px-3 py-2 font-sans text-[0.85rem] text-ink focus:outline-none focus:ring-2 focus:ring-accent/40"
+          >
+            {WAR_LIST.map((w) => (
+              <option key={w.id} value={w.id}>{w.name}</option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label className="font-sans text-[0.78rem] text-ink-muted block mb-1">Category</label>
+          <select
+            value={cat}
+            onChange={(e) => onCatChange(e.target.value as CategoryId)}
+            className="w-full bg-bg-card border border-border rounded-md px-3 py-2 font-sans text-[0.85rem] text-ink focus:outline-none focus:ring-2 focus:ring-accent/40"
+          >
+            {CATEGORIES.map((c) => (
+              <option key={c.id} value={c.id}>{c.icon} {c.label}</option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label className="font-sans text-[0.78rem] text-ink-muted block mb-1">Pass-through</label>
+          <div className="flex gap-1.5">
+            {PASS_OPTIONS.map((p) => (
+              <button
+                key={p}
+                onClick={() => onPtChange(p)}
+                className={`flex-1 font-sans text-[0.72rem] font-semibold py-1.5 rounded-md border transition-all cursor-pointer ${
+                  pt === p ? 'border-accent bg-accent text-white' : 'border-border bg-bg-card text-ink-soft hover:border-accent-warm'
+                }`}
+              >{p}%</button>
+            ))}
+          </div>
+        </div>
+        <div>
+          <label className="font-sans text-[0.78rem] text-ink-muted block mb-1">Lag</label>
+          <div className="flex gap-1.5">
+            {LAG_OPTIONS.map((l) => (
+              <button
+                key={l}
+                onClick={() => onLagChange(l)}
+                className={`flex-1 font-sans text-[0.68rem] font-semibold py-1.5 rounded-md border transition-all cursor-pointer ${
+                  lag === l ? 'border-accent bg-accent text-white' : 'border-border bg-bg-card text-ink-soft hover:border-accent-warm'
+                }`}
+              >{LAG_LABELS[l]}</button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 

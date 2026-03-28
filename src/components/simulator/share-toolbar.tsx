@@ -2,7 +2,26 @@
 
 import { useCallback, useEffect, useState } from 'react'
 
-export function ShareToolbar() {
+interface ShareToolbarProps {
+  /** Model version to encode in shared URL (e.g. "1.0.0") */
+  modelVersion?: string
+  /** Snapshot date ISO string to encode in shared URL */
+  snapshotDate?: string
+}
+
+/**
+ * Build a share URL that includes model version and snapshot date
+ * alongside the existing URL params (war, category, country, pt, lag).
+ */
+function buildShareUrl(modelVersion?: string, snapshotDate?: string): string {
+  if (typeof window === 'undefined') return ''
+  const url = new URL(window.location.href)
+  if (modelVersion) url.searchParams.set('mv', modelVersion)
+  if (snapshotDate) url.searchParams.set('sd', snapshotDate)
+  return url.toString()
+}
+
+export function ShareToolbar({ modelVersion, snapshotDate }: ShareToolbarProps) {
   const [copied, setCopied] = useState(false)
   const [canShare, setCanShare] = useState(false)
 
@@ -10,15 +29,20 @@ export function ShareToolbar() {
     setCanShare(typeof navigator !== 'undefined' && !!navigator.share)
   }, [])
 
+  const getUrl = useCallback(
+    () => buildShareUrl(modelVersion, snapshotDate),
+    [modelVersion, snapshotDate],
+  )
+
   const handleCopy = useCallback(async () => {
+    const url = getUrl()
     try {
-      await navigator.clipboard.writeText(window.location.href)
+      await navigator.clipboard.writeText(url)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     } catch {
-      // Fallback for older browsers
       const input = document.createElement('input')
-      input.value = window.location.href
+      input.value = url
       document.body.appendChild(input)
       input.select()
       document.execCommand('copy')
@@ -26,18 +50,18 @@ export function ShareToolbar() {
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     }
-  }, [])
+  }, [getUrl])
 
   const handleShare = useCallback(async () => {
     try {
       await navigator.share({
         title: document.title,
-        url: window.location.href,
+        url: getUrl(),
       })
     } catch {
       // User cancelled or share failed silently
     }
-  }, [])
+  }, [getUrl])
 
   const handlePrint = useCallback(() => {
     window.print()
@@ -67,7 +91,7 @@ export function ShareToolbar() {
         {copied ? 'Copied!' : 'Copy link'}
       </button>
 
-      {/* Native share (only visible when Web Share API is available) */}
+      {/* Native share */}
       {canShare && (
         <button
           onClick={handleShare}
