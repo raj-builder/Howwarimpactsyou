@@ -73,6 +73,27 @@ nav.sticky {
   animation: fadeIn 0.3s ease-out forwards;
 }
 
+/* Stagger reveal for lists */
+@keyframes staggerFadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.stagger-fade-in > * {
+  animation: staggerFadeIn 0.35s ease-out forwards;
+  opacity: 0;
+}
+.stagger-fade-in > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-fade-in > *:nth-child(2) { animation-delay: 50ms; }
+.stagger-fade-in > *:nth-child(3) { animation-delay: 100ms; }
+.stagger-fade-in > *:nth-child(4) { animation-delay: 150ms; }
+.stagger-fade-in > *:nth-child(5) { animation-delay: 200ms; }
+.stagger-fade-in > *:nth-child(6) { animation-delay: 250ms; }
+.stagger-fade-in > *:nth-child(7) { animation-delay: 300ms; }
+.stagger-fade-in > *:nth-child(8) { animation-delay: 350ms; }
+.stagger-fade-in > *:nth-child(9) { animation-delay: 400ms; }
+.stagger-fade-in > *:nth-child(10) { animation-delay: 450ms; }
+
 /* Utility for max-width container */
 .container-page {
   max-width: 1140px;
@@ -93,8 +114,10 @@ canvas {
     scroll-behavior: auto;
   }
   .animate-pulse,
-  .animate-fade-in {
+  .animate-fade-in,
+  .stagger-fade-in > * {
     animation: none;
+    opacity: 1;
   }
 }
 

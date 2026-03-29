@@ -3,6 +3,7 @@
     "home": "Home",
     "simulator": "Simulator",
     "basket": "Basket",
+    "countrySimulator": "Country Simulator",
     "compare": "Compare",
     "saved": "Saved",
     "methodology": "Methodology",
@@ -72,7 +73,11 @@
     "refineData": "Refine data",
     "depreciated": "The {currency} depreciated {pct}% against USD during {window}, making imports more expensive and amplifying upstream commodity price shocks.",
     "appreciated": "The {currency} appreciated {pct}% against USD during {window}, partially offsetting upstream commodity price shocks.",
-    "stable": "The {currency} remained stable against USD during {window}."
+    "stable": "The {currency} remained stable against USD during {window}.",
+    "belligerentsTitle": "Directly Involved in War",
+    "belligerentsSubtitle": "These nations drive the commodity shocks that affect consumer prices worldwide.",
+    "exploreCountry": "Explore impact",
+    "dataSources": "Data sources: GDP from World Bank (2023). Oil production from EIA/OPEC. Gas production from IEA."
   },
   "impact": {
     "ceiling": "Ceiling",
@@ -81,6 +86,14 @@
     "ceilingExplainer": "The ceiling assumes full pass-through of upstream commodity shocks to consumer prices",
     "lagAdjusted": ", adjusted for a {lag} lag (multiplier: {mult}x)",
     "rangeExplainer": ". Historically, realized inflation has been 55–75% of the ceiling due to government subsidies, price controls, currency hedging, and supply chain buffers. The typical range reflects this adjustment."
+  },
+  "countrySimulator": {
+    "eyebrow": "Deep Dive",
+    "title": "Individual Country Simulator",
+    "subtitle": "Explore how conflict shocks affect a single country across all consumer categories. Toggle items, adjust assumptions, and see the full breakdown.",
+    "categoryDetail": "Category Detail",
+    "basketOverview": "Basket Overview",
+    "selectCategory": "Select a category"
   },
   "basket": {
     "eyebrow": "Basket View",

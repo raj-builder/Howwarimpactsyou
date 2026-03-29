@@ -8,16 +8,21 @@ Translates upstream commodity and currency shocks (oil, war, grain prices, FX) i
 
 ---
 
+## What Changed in v2.4 (2026-03-29)
+
+- **Simulator decluttered** — single-column dashboard with horizontal war strip, side-by-side rankings, and integrated belligerent countries section. Removed 2-column sidebar with 7 control sections.
+- **Country Simulator** — basket page renamed and enriched to `/country-simulator`. Now includes single-category detail panel (ImpactDisplay, StatCards, factor breakdown, purchasing power) alongside the basket toggle view.
+- **Countries integrated** — standalone `/countries` page absorbed into simulator; `/countries` redirects
+- **Navigation simplified** — "Basket" → "Country Simulator"; "Countries" tab removed
+- **Rankings navigate** — clicking a country in the simulator rankings goes to `/country-simulator` for deep-dive
+- **Visual polish** — stagger reveal animations, generous spacing, serif section titles
+
 ## What Changed in v2.3 (2026-03-28)
 
 - **Default conflict: Iran–Israel–US** — simulator and basket now default to the Strait of Hormuz scenario
-- **"So What" summary card** — right panel leads with a personal impact insight (hero number + 3-category breakdown + share button) instead of duplicating the war data table
-- **Country detail promoted** — selected country appears at top of results, not buried below rankings
-- **Basket page controls** — interactive war/country/passthrough/lag selectors (previously URL-only)
-- **Methodology & Validation merged** — single page at `/methodology` with validation section; `/validation` redirects
-- **Countries page** — new `/countries` tab profiling belligerent nations (USA, Israel, Iran, Russia, Ukraine, Saudi Arabia)
+- **"So What" summary card** — right panel leads with a personal impact insight
+- **Methodology & Validation merged** — single page at `/methodology`
 - **Homepage updated** — example cards now feature Iran–Israel–US conflict scenarios
-- **Quick scenarios redesigned** — repositioned inside right panel with dynamic impact computation and clear CTAs
 
 ---
 

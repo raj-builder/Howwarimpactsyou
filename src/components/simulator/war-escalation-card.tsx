@@ -22,6 +22,8 @@ interface WarEscalationCardProps {
   onClick: () => void
   /** Use compact padding when rendered in the left sidebar */
   compact?: boolean
+  /** Render as a narrower horizontal card for the war strip */
+  horizontal?: boolean
 }
 
 function ChangeBadge({ pct }: { pct: number | null | undefined }) {
@@ -66,6 +68,7 @@ export function WarEscalationCard({
   isSelected,
   onClick,
   compact,
+  horizontal,
 }: WarEscalationCardProps) {
   const t = useT()
   const anchors = useMemo(() => getWarAnchors(warId), [warId])
@@ -89,7 +92,9 @@ export function WarEscalationCard({
   return (
     <button
       onClick={onClick}
-      className={`w-full text-left rounded-[10px] transition-all cursor-pointer ${
+      className={`text-left rounded-[10px] transition-all cursor-pointer ${
+        horizontal ? 'w-[220px]' : 'w-full'
+      } ${
         isSelected
           ? 'ring-2 ring-accent shadow-md'
           : 'hover:shadow-md'
@@ -107,12 +112,14 @@ export function WarEscalationCard({
           )}
         </div>
         <p className="font-sans text-[0.68rem] text-white/50 mb-0.5">{warDates}</p>
-        <p className="font-sans text-[0.68rem] text-white/40 mb-3 leading-snug">
-          {pivotalEvent}
-        </p>
+        {!horizontal && (
+          <p className="font-sans text-[0.68rem] text-white/40 mb-3 leading-snug">
+            {pivotalEvent}
+          </p>
+        )}
 
-        {/* Pre vs Post grid */}
-        {isSelected && (
+        {/* Pre vs Post grid — skip in horizontal mode */}
+        {isSelected && !horizontal && (
           <div className="animate-fade-in">
             <div className="grid grid-cols-[1fr_auto_auto_auto] gap-x-3 gap-y-1.5 items-center mb-3">
               {/* Header row */}
@@ -183,8 +190,8 @@ export function WarEscalationCard({
           </div>
         )}
 
-        {/* Collapsed preview — show top 3 shocks as chips */}
-        {!isSelected && (
+        {/* Collapsed preview — show top shocks as chips (always in horizontal mode) */}
+        {(!isSelected || horizontal) && (
           <div className="flex flex-wrap gap-1.5">
             {topCommodities.slice(0, 3).map((item) => (
               <span

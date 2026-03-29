@@ -1,3 +1,39 @@
+## [2026-03-29] — Declutter: simulator dashboard, Country Simulator, page consolidation
+
+### What changed
+- **Simulator simplified to single-column dashboard** — removed 2-column sidebar layout with 7 control sections. Now shows: horizontal war strip → So What card → side-by-side rankings (top 5 / bottom 5) → quick scenarios → belligerent countries
+- **Rankings use "basket" (household basics) category** by default at 100% passthrough / immediate lag — no category selector on this page
+- **Clicking a country in rankings navigates to Country Simulator** — replaced inline expansion with Link-based navigation to `/country-simulator?war={warId}&country={countryName}`
+- **Basket page renamed to "Country Simulator"** at `/country-simulator` — enriched with single-category detail panel (ImpactDisplay, StatCards, FactorBreakdown, PurchasingPower) above the existing basket summary
+- **Countries page absorbed into simulator** — belligerent country cards (USA, Israel, Iran, Russia, Ukraine, Saudi Arabia) now render as a section within the simulator page; `/countries` redirects to `/simulator`
+- **Navigation updated** — "Basket" tab → "Country Simulator"; "Countries" tab removed
+- **Extracted reusable components** — StatCard, FactorBreakdown, PurchasingPower moved from inline functions in simulator-client to standalone files
+- **Horizontal war card variant** — new `horizontal` prop on WarEscalationCard for the scrollable war strip (220px width, no commodity table, always shows shock chips)
+- **PresetCards switched to Link navigation** — no longer uses callback; navigates directly to `/country-simulator`
+- **Stagger reveal animations** — ranking rows and belligerent cards fade in with staggered delays; respects prefers-reduced-motion
+- **Visual polish** — generous negative space (py-12, mb-10), serif section titles, larger ranking impact text, right-arrow navigation indicator on ranking rows
+
+### Why
+The simulator page was too cluttered with 12 right-panel sections and 7 left-panel control sections, requiring extensive scrolling. The basket page already had a cleaner toggling interface that works better for detailed single-country analysis. This restructure separates overview (simulator) from deep-dive (country simulator), matching user mental models. The standalone countries page didn't add value as a separate tab — integrating it into the simulator provides context alongside the rankings.
+
+### Data & calculation notes
+None. All calculations unchanged. Rankings on the simulator now always use 'basket' category at 100%/immediate (overview numbers). The Country Simulator runs the full computation pipeline with user-adjustable parameters.
+
+### Upgrade notes for the next engineer or AI session
+- `/basket` now redirects to `/country-simulator` — update any external links
+- `/countries` now redirects to `/simulator` — update any external links
+- `PresetCards` no longer accepts `onSelect`/`activeWar`/`activeCategory`/`activeCountry` props — uses Link navigation
+- `simulator-client.tsx` reduced from ~798 lines to ~243 lines
+- New components: `stat-card.tsx`, `factor-breakdown.tsx`, `purchasing-power.tsx`, `belligerent-countries.tsx`
+- New data file: `src/data/belligerent-countries.ts`
+- New route: `src/app/country-simulator/page.tsx` with `CountrySimulatorClient`
+- Compare page and saved scenarios page still need updates (see MEMORY.md open questions)
+
+### Credits & third-party use
+None new. Belligerent countries data (GDP, oil, gas) already attributed to World Bank, EIA/OPEC, IEA in previous changelog entry.
+
+---
+
 ## [2026-03-28] — Simulator UI overhaul, basket controls, page restructure
 
 ### What changed
