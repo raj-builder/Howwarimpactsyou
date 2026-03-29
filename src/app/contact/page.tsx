@@ -84,10 +84,27 @@ export default function ContactPage() {
             </div>
           </section>
 
-          <p className="font-sans text-[0.82rem] text-ink-muted leading-relaxed">
-            Reach out via the project&apos;s GitHub repository for the fastest
-            response. Issues and pull requests are monitored regularly.
-          </p>
+          <div className="bg-bg-alt border border-border rounded-lg p-4 mt-6">
+            <p className="font-sans text-[0.82rem] text-ink leading-relaxed mb-3">
+              <strong>Reach us directly:</strong>
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <a
+                href="https://github.com/raj-builder/Howwarimpactsyou/issues"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 font-sans text-[0.82rem] text-accent no-underline hover:underline"
+              >
+                GitHub Issues &rarr;
+              </a>
+              <a
+                href="mailto:the.builder.mode.on@gmail.com"
+                className="inline-flex items-center gap-2 font-sans text-[0.82rem] text-accent no-underline hover:underline"
+              >
+                Email &rarr;
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </>

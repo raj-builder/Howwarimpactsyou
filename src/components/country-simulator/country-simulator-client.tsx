@@ -158,7 +158,7 @@ export function CountrySimulatorClient() {
       </div>
 
       {/* Controls bar */}
-      <div className="bg-bg-card border border-border rounded-[10px] p-4 mb-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+      <div className="bg-bg-card border border-border rounded-[10px] p-4 mb-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
         {/* War selector */}
         <fieldset>
           <legend className="font-sans text-[0.72rem] font-bold text-ink-muted uppercase tracking-[0.06em] mb-1.5">
@@ -279,15 +279,17 @@ export function CountrySimulatorClient() {
             >
               <div className="flex items-center gap-3">
                 <button
+                  role="switch"
+                  aria-checked={item.enabled}
                   onClick={() => toggleItem(item.categoryId)}
-                  className={`w-9 h-5 rounded-full relative transition-colors cursor-pointer shrink-0 ${
+                  className={`w-11 h-6 rounded-full relative transition-colors cursor-pointer shrink-0 ${
                     item.enabled ? 'bg-accent' : 'bg-border'
                   }`}
                   aria-label={`Toggle ${item.label}`}
                 >
                   <span
-                    className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow-sm transition-transform ${
-                      item.enabled ? 'left-[18px]' : 'left-0.5'
+                    className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow-sm transition-transform ${
+                      item.enabled ? 'left-[22px]' : 'left-0.5'
                     }`}
                   />
                 </button>
@@ -363,12 +365,27 @@ export function CountrySimulatorClient() {
                 <StatCard label={t('simulator.lagMultiplier')} value={`${lagMultiplier}x`} />
               </div>
 
-              <FactorBreakdown
-                factors={scenarioResult.factors}
-                lagAdjustedCeiling={scenarioResult.lagAdjustedCeiling}
-              />
+              <details className="group">
+                <summary className="font-sans text-[0.78rem] font-bold text-ink mb-2 cursor-pointer list-none flex items-center gap-1.5 hover:text-accent transition-colors">
+                  <span className="text-ink-muted group-open:rotate-90 transition-transform text-[0.7rem]">&#9654;</span>
+                  {t('simulator.factorBreakdown')}
+                </summary>
+                <FactorBreakdown
+                  factors={scenarioResult.factors}
+                  lagAdjustedCeiling={scenarioResult.lagAdjustedCeiling}
+                  hideTitle
+                />
+              </details>
 
-              {currencyData && <PurchasingPower currencyData={currencyData} />}
+              {currencyData && (
+                <details className="group">
+                  <summary className="font-sans text-[0.78rem] font-bold text-ink mb-2 cursor-pointer list-none flex items-center gap-1.5 hover:text-accent transition-colors">
+                    <span className="text-ink-muted group-open:rotate-90 transition-transform text-[0.7rem]">&#9654;</span>
+                    {t('simulator.purchasingPower')}
+                  </summary>
+                  <PurchasingPower currencyData={currencyData} />
+                </details>
+              )}
 
               <div className="border-t border-border my-5" />
             </div>

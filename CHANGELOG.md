@@ -1,3 +1,34 @@
+## [2026-03-29] — UI polish: mobile nav, accessibility, homepage hierarchy, page fixes
+
+### What changed
+- **Mobile navigation** — hamburger menu with slide-out drawer on screens below lg breakpoint. Primary nav links + secondary links (About, Press, Changelog, Contact) + CTA button. Closes on route change, prevents body scroll when open.
+- **Toggle accessibility** — country simulator toggles now use `role="switch"` + `aria-checked`. Touch target increased from 36x20px to 44x24px.
+- **War strip scroll indicator** — gradient fade on right edge signals horizontal scrollability.
+- **Controls bar responsive** — country simulator controls grid now uses `md:grid-cols-3` intermediate breakpoint instead of jumping from 1 to 5 columns.
+- **Homepage redesign** — hero card (Egypt +28.4%) promoted to full-width dark card with large impact number. Remaining 3 examples as compact rows. Duplicate disclaimer removed from hero. Mission section replaced with 3-step "How it works" strip.
+- **Contact page** — added GitHub Issues link and email address as actual contact mechanisms.
+- **Press page** — removed placeholder "Screenshots & assets" section.
+- **Country Simulator sidebar** — factor breakdown and purchasing power sections now collapsible via `<details>` with triangle indicators.
+- **About timeline** — added vertical line with dot markers for visual timeline progression.
+- **Footer** — version label opacity increased from 30% to 50% for readability. Footer links wrapped in semantic `<nav>`.
+
+### Why
+Full UI audit identified P0 (mobile nav missing, toggle accessibility), P1 (scroll indicator, homepage hierarchy, mobile controls), P2 (contact mechanism, press placeholder, sidebar density), and P3 (timeline visual, footer readability) issues. All resolved.
+
+### Data & calculation notes
+None.
+
+### Upgrade notes for the next engineer or AI session
+- Nav component now uses `useState` for mobile drawer state
+- FactorBreakdown component has new optional `hideTitle` prop
+- Homepage example cards restructured: 1 HERO_CARD + 3 SECONDARY_CARDS (was 4 equal EXAMPLE_CARDS)
+- All homepage card links now point to `/country-simulator` instead of `/simulator`
+
+### Credits & third-party use
+None.
+
+---
+
 ## [2026-03-29] — Declutter: simulator dashboard, Country Simulator, page consolidation
 
 ### What changed

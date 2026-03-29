@@ -62,7 +62,8 @@ export function SimulatorClient() {
       </div>
 
       {/* War selection — horizontal scrollable strip */}
-      <div className="flex gap-3 overflow-x-auto pb-4 mb-10 -mx-2 px-2" style={{ scrollSnapType: 'x mandatory' }}>
+      <div className="relative mb-10">
+        <div className="flex gap-3 overflow-x-auto pb-4 -mx-2 px-2" style={{ scrollSnapType: 'x mandatory' }}>
         {WAR_ESCALATION_ORDER.map((wId) => {
           const w = WARS[wId]
           if (!w) return null
@@ -90,6 +91,9 @@ export function SimulatorClient() {
             </div>
           )
         })}
+        </div>
+        {/* Scroll fade indicator */}
+        <div className="absolute top-0 right-0 bottom-4 w-12 bg-gradient-to-l from-bg to-transparent pointer-events-none" aria-hidden="true" />
       </div>
 
       {/* WarSummaryCard — full width, overview mode (no country) */}

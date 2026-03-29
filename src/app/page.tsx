@@ -9,66 +9,43 @@ export const metadata: Metadata = {
   alternates: { canonical: 'https://howwarimpactsyou.com' },
 }
 
-const EXAMPLE_CARDS = [
-  {
-    flag: '🇪🇬',
-    war: 'Iran–Israel–US Conflict',
-    title: 'Egypt · Household Fuel',
-    drivers: 'Brent +18% · Shipping +45% · EGP –38%',
-    impact: '+28.4%',
-    barWidth: 88,
-    explainer:
-      'Fuel prices could rise up to 28.4% as Strait of Hormuz tensions drive crude oil and shipping costs higher, amplified by a depreciating Egyptian Pound. Ceiling at 100% pass-through, immediate lag.',
-    badges: [
-      { label: 'Full Coverage', color: 'green' },
-      { label: 'Very High Pressure', color: 'red' },
-    ],
-    href: '/simulator?war=iran-israel-us&category=fuel&country=Egypt&pt=100&lag=immediate',
-  },
+const HERO_CARD = {
+  flag: '🇪🇬',
+  war: 'Iran–Israel–US Conflict',
+  title: 'Egypt · Household Fuel',
+  drivers: 'Brent +18% · Shipping +45% · EGP –38%',
+  impact: '+28.4%',
+  barWidth: 88,
+  explainer:
+    'Fuel prices could rise up to 28.4% as Strait of Hormuz tensions drive crude oil and shipping costs higher, amplified by a depreciating Egyptian Pound.',
+  badges: [
+    { label: 'Full Coverage', color: 'green' },
+    { label: 'Very High Pressure', color: 'red' },
+  ],
+  href: '/country-simulator?war=iran-israel-us&category=fuel&country=Egypt',
+}
+
+const SECONDARY_CARDS = [
   {
     flag: '🇵🇰',
-    war: 'Iran–Israel–US Conflict',
-    title: 'Pakistan · Bread & Cereals',
-    drivers: 'Brent +18% · Shipping +45% · PKR –22%',
+    title: 'Pakistan · Bread',
     impact: '+18.4%',
-    barWidth: 72,
-    explainer:
-      'Bread prices could rise up to 18.4% as energy and shipping cost spikes combine with a weakening Pakistani Rupee. Pakistan imports significant wheat and is heavily exposed to oil-linked transport costs.',
-    badges: [
-      { label: 'Full Coverage', color: 'green' },
-      { label: 'High Confidence', color: 'blue' },
-    ],
-    href: '/simulator?war=iran-israel-us&category=bread&country=Pakistan&pt=100&lag=immediate',
+    drivers: 'Brent +18% · PKR –22%',
+    href: '/country-simulator?war=iran-israel-us&category=bread&country=Pakistan',
   },
   {
     flag: '🇵🇭',
-    war: 'Iran–Israel–US Conflict',
     title: 'Philippines · Fuel',
-    drivers: 'Brent +18% · Shipping +45% · PHP –10%',
     impact: '+15.3%',
-    barWidth: 56,
-    explainer:
-      'Fuel costs could rise up to 15.3% as Middle East tensions push crude oil higher and shipping routes become more expensive. The Philippines imports nearly all its petroleum.',
-    badges: [
-      { label: 'Full Coverage', color: 'green' },
-      { label: 'High Confidence', color: 'blue' },
-    ],
-    href: '/simulator?war=iran-israel-us&category=fuel&country=Philippines&pt=100&lag=immediate',
+    drivers: 'Brent +18% · PHP –10%',
+    href: '/country-simulator?war=iran-israel-us&category=fuel&country=Philippines',
   },
   {
     flag: '🇮🇳',
-    war: 'Iran–Israel–US Conflict',
     title: 'India · Cooking Oil',
-    drivers: 'Brent +18% · Shipping +45% · INR –4%',
     impact: '+7.8%',
-    barWidth: 35,
-    explainer:
-      'Cooking oil prices could increase up to 7.8% as energy and shipping costs rise. India imports a majority of its edible oils and is sensitive to tanker route disruptions.',
-    badges: [
-      { label: 'Full Coverage', color: 'green' },
-      { label: 'Moderate Pressure', color: 'amber' },
-    ],
-    href: '/simulator?war=iran-israel-us&category=oil&country=India&pt=100&lag=immediate',
+    drivers: 'Shipping +45% · INR –4%',
+    href: '/country-simulator?war=iran-israel-us&category=oil&country=India',
   },
 ]
 
@@ -84,24 +61,19 @@ export default function HomePage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-[#1a1a1a] via-[#2d2420] to-[#3a2216] text-white py-20 px-8 md:py-24">
-        <div className="max-w-[820px] mx-auto">
-          <p className="font-sans text-[0.72rem] font-bold tracking-[0.14em] uppercase text-accent-warm mb-5">
+      <section className="bg-gradient-to-br from-[#1a1a1a] via-[#2d2420] to-[#3a2216] text-white py-16 px-8 md:py-20">
+        <div className="max-w-[960px] mx-auto">
+          <p className="font-sans text-[0.72rem] font-bold tracking-[0.14em] uppercase text-accent-warm mb-4">
             {m.home.eyebrow}
           </p>
-          <h1 className="text-[clamp(2rem,4.5vw,3.2rem)] font-normal leading-[1.2] mb-5 tracking-tight font-serif">
+          <h1 className="text-[clamp(2rem,4.5vw,3.2rem)] font-normal leading-[1.2] mb-4 tracking-tight font-serif">
             How could <span className="text-accent-warm">oil, war, and currency</span>
             <br />
             affect what you pay?
           </h1>
-          <p className="text-[1.1rem] text-white/70 max-w-[620px] mb-8 leading-relaxed font-serif">
+          <p className="text-[1.05rem] text-white/70 max-w-[580px] mb-8 leading-relaxed font-serif">
             {m.home.subtitle}
           </p>
-          <div className="inline-block bg-accent/20 border border-accent/35 rounded-md px-4 py-2.5 font-sans text-[0.79rem] text-white/80 mb-10 max-w-[600px]">
-            <strong className="text-accent-warm">Important:</strong> This tool
-            estimates a scenario ceiling under 100% pass-through. It is not a price
-            forecast, not a shelf-price tracker, and does not claim direct causation.
-          </div>
           <div className="flex gap-4 flex-wrap">
             <Link
               href="/simulator"
@@ -113,7 +85,7 @@ export default function HomePage() {
               href="/methodology"
               className="bg-transparent text-white/80 font-sans text-[0.9rem] px-7 py-3 rounded-lg border border-white/25 no-underline hover:border-white/50 hover:text-white transition-colors"
             >
-              How it works
+              {m.methodology.title}
             </Link>
           </div>
         </div>
@@ -122,121 +94,142 @@ export default function HomePage() {
       {/* Disclaimer strip */}
       <div className="bg-amber-light border-b border-[#e8c97a] py-3 px-8 text-center">
         <p className="font-sans text-[0.78rem] text-[#7a4f10] max-w-[900px] mx-auto">
-          <strong className="text-[#5a3408]">Scenario estimator only.</strong> All
-          outputs show an upper-bound ceiling assuming 100% pass-through of upstream
-          costs. Actual retail prices depend on competition, policy, logistics, and
-          market structure. This is not financial advice.
+          <strong className="text-[#5a3408]">{m.home.scenarioOnly}.</strong>{' '}
+          {m.home.disclaimer}
         </p>
       </div>
 
-      {/* Example impact cards */}
+      {/* Impact examples — hierarchy: 1 hero card + 3 compact rows */}
       <section className="container-page py-14">
         <p className="font-sans text-[0.72rem] font-bold tracking-[0.13em] uppercase text-accent mb-2">
           {m.home.examplesTitle}
         </p>
-        <h2 className="text-[clamp(1.4rem,2.5vw,1.9rem)] font-normal tracking-tight mb-3 text-ink font-serif">
+        <h2 className="text-[clamp(1.4rem,2.5vw,1.9rem)] font-normal tracking-tight mb-2 text-ink font-serif">
           {m.home.examplesSubtitle}
         </h2>
-        <p className="font-sans text-[0.88rem] text-ink-soft max-w-[640px] leading-relaxed">
-          Each card below shows a sample scenario. Click any card to open the full
-          simulator with that selection pre-loaded.
+        <p className="font-sans text-[0.82rem] text-ink-muted mb-8 max-w-[580px]">
+          {m.home.ceilingNote}
         </p>
 
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-5 mt-8">
-          {EXAMPLE_CARDS.map((card) => (
-            <Link
-              key={card.title}
-              href={card.href}
-              className="bg-bg-card border border-border rounded-[10px] p-5 shadow-card hover:shadow-lg hover:border-accent-warm transition-all no-underline block"
-            >
-              <span className="text-2xl mb-2 block">{card.flag}</span>
-              <span className="inline-block font-sans text-[0.67rem] font-bold tracking-[0.04em] uppercase bg-[#1a1a1a] text-accent-warm px-2 py-0.5 rounded mb-2">
-                {card.war}
+        {/* Hero card — Egypt fuel, the most dramatic impact */}
+        <Link
+          href={HERO_CARD.href}
+          className="block bg-gradient-to-br from-[#1a1a1a] via-[#2d2420] to-[#3a2216] text-white rounded-[10px] p-6 md:p-8 mb-6 no-underline hover:shadow-lg transition-shadow group"
+        >
+          <div className="flex flex-col md:flex-row md:items-center gap-6">
+            <div className="flex-1">
+              <span className="inline-block font-sans text-[0.65rem] font-bold tracking-[0.04em] uppercase bg-accent text-white px-2 py-0.5 rounded mb-3">
+                {HERO_CARD.war}
               </span>
-              <div className="font-sans font-bold text-[0.88rem] text-ink mb-1">
-                {card.title}
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-2xl">{HERO_CARD.flag}</span>
+                <span className="font-sans text-[1rem] font-bold">{HERO_CARD.title}</span>
               </div>
-              <div className="font-sans text-[0.75rem] text-ink-muted mb-3.5 tracking-wide">
-                {card.drivers}
-              </div>
-              <div className="flex items-baseline gap-2 mb-1">
-                <span className="text-[1.9rem] font-light text-accent tracking-tight">
-                  {card.impact}
-                </span>
-                <span className="font-sans text-[0.73rem] text-ink-muted leading-tight">
-                  maximum estimated
-                  <br />
-                  price increase
-                </span>
-              </div>
-              <p className="font-sans text-[0.74rem] text-ink-soft leading-relaxed mb-2.5">
-                {card.explainer}
+              <p className="font-sans text-[0.82rem] text-white/60 mb-3 leading-relaxed max-w-[480px]">
+                {HERO_CARD.explainer}
               </p>
-              <div className="h-[5px] bg-bg-alt rounded-sm overflow-hidden mb-3">
-                <div
-                  className="h-full rounded-sm bg-gradient-to-r from-accent-warm to-accent"
-                  style={{ width: `${card.barWidth}%` }}
-                />
+              <div className="font-sans text-[0.75rem] text-white/40 tracking-wide">
+                {HERO_CARD.drivers}
               </div>
-              <div className="flex gap-1.5 flex-wrap">
-                {card.badges.map((badge) => (
+            </div>
+            <div className="text-center md:text-right shrink-0">
+              <div className="text-[3.2rem] md:text-[4rem] font-light text-accent-warm tracking-tight leading-none">
+                {HERO_CARD.impact}
+              </div>
+              <div className="font-sans text-[0.72rem] text-white/50 mt-1">
+                {m.common.priceCeiling}
+              </div>
+              <div className="flex gap-1.5 mt-3 justify-center md:justify-end">
+                {HERO_CARD.badges.map((badge) => (
                   <span
                     key={badge.label}
-                    className={`font-sans text-[0.67rem] font-semibold px-2 py-0.5 rounded tracking-[0.04em] uppercase ${BADGE_STYLES[badge.color]}`}
+                    className={`font-sans text-[0.62rem] font-semibold px-2 py-0.5 rounded tracking-[0.04em] uppercase ${BADGE_STYLES[badge.color]}`}
                   >
                     {badge.label}
                   </span>
                 ))}
               </div>
+            </div>
+          </div>
+          <div className="h-[4px] bg-white/10 rounded-sm overflow-hidden mt-5">
+            <div
+              className="h-full rounded-sm bg-gradient-to-r from-accent-warm to-accent"
+              style={{ width: `${HERO_CARD.barWidth}%` }}
+            />
+          </div>
+          <div className="mt-3 font-sans text-[0.72rem] text-accent-warm font-semibold group-hover:text-white transition-colors">
+            {m.simulator.exploreCountry} &rarr;
+          </div>
+        </Link>
+
+        {/* Secondary impact rows */}
+        <div className="space-y-2 mb-10">
+          {SECONDARY_CARDS.map((card) => (
+            <Link
+              key={card.title}
+              href={card.href}
+              className="flex items-center gap-4 border border-border bg-bg-card rounded-lg px-5 py-4 no-underline hover:border-accent-warm hover:shadow-sm transition-all group"
+            >
+              <span className="text-xl shrink-0">{card.flag}</span>
+              <div className="flex-1 min-w-0">
+                <div className="font-sans text-[0.88rem] font-semibold text-ink group-hover:text-accent transition-colors">
+                  {card.title}
+                </div>
+                <div className="font-sans text-[0.72rem] text-ink-muted">
+                  {card.drivers}
+                </div>
+              </div>
+              <span className="font-sans text-[1.1rem] font-bold text-accent shrink-0">
+                {card.impact}
+              </span>
+              <span className="text-ink-muted group-hover:text-accent transition-colors shrink-0" aria-hidden="true">
+                &rarr;
+              </span>
             </Link>
           ))}
         </div>
-
-        {/* How to read */}
-        <div className="bg-blue-light border border-[#ccdff0] rounded-[10px] p-6 grid grid-cols-[auto_1fr] gap-4 items-start mt-12">
-          <span className="text-3xl">📖</span>
-          <div>
-            <h3 className="font-sans text-[0.9rem] font-bold text-blue mb-1.5">
-              How to read these numbers
-            </h3>
-            <p className="font-sans text-[0.82rem] text-[#2a4a6a] leading-relaxed">
-              Each figure is a <strong>scenario ceiling</strong> — the maximum
-              estimated price impact if 100% of upstream cost changes flow through to
-              consumers. In practice, governments subsidize, retailers absorb margins,
-              and supply chains adjust. The realized impact is typically 55–75% of the
-              ceiling.
-            </p>
-          </div>
-        </div>
       </section>
 
-      {/* Mission section */}
+      {/* How it works — 3-step strip */}
       <section className="bg-bg-card border-y border-border py-14 px-8">
-        <div className="max-w-[820px] mx-auto text-center">
-          <h2 className="text-[clamp(1.4rem,2.5vw,1.9rem)] font-normal tracking-tight mb-4 font-serif">
+        <div className="max-w-[960px] mx-auto">
+          <h2 className="text-[1.1rem] font-serif font-normal tracking-tight text-ink mb-8 text-center">
             {m.home.tagline}
           </h2>
-          <p className="font-sans text-[0.88rem] text-ink-soft leading-relaxed mb-8 max-w-[600px] mx-auto">
-            Most people hear about oil spikes or currency crashes but can&apos;t connect
-            those to what they pay at the store. This tool builds that bridge,
-            transparently, with every assumption visible.
-          </p>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {[
-              { num: '12+', label: m.home.statsCountries },
-              { num: '10', label: m.home.statsCategories },
-              { num: '6', label: m.home.statsFactors },
-              { num: '100%', label: m.home.statsTransparency },
-            ].map((stat) => (
-              <div key={stat.label}>
-                <div className="text-[2rem] font-light text-accent tracking-tight">
-                  {stat.num}
-                </div>
-                <div className="font-sans text-[0.78rem] text-ink-muted">
-                  {stat.label}
-                </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="w-10 h-10 rounded-full bg-accent-light text-accent font-sans text-[1rem] font-bold flex items-center justify-center mx-auto mb-3">
+                1
               </div>
-            ))}
+              <h3 className="font-sans text-[0.88rem] font-semibold text-ink mb-1">
+                {m.simulator.conflict}
+              </h3>
+              <p className="font-sans text-[0.78rem] text-ink-muted leading-relaxed">
+                {m.home.examplesSubtitle}
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="w-10 h-10 rounded-full bg-accent-light text-accent font-sans text-[1rem] font-bold flex items-center justify-center mx-auto mb-3">
+                2
+              </div>
+              <h3 className="font-sans text-[0.88rem] font-semibold text-ink mb-1">
+                {m.simulator.country}
+              </h3>
+              <p className="font-sans text-[0.78rem] text-ink-muted leading-relaxed">
+                {m.home.statsCountries}: 20+ {m.home.statsCategories.toLowerCase()}: 10
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="w-10 h-10 rounded-full bg-accent-light text-accent font-sans text-[1rem] font-bold flex items-center justify-center mx-auto mb-3">
+                3
+              </div>
+              <h3 className="font-sans text-[0.88rem] font-semibold text-ink mb-1">
+                {m.impact.ceiling}
+              </h3>
+              <p className="font-sans text-[0.78rem] text-ink-muted leading-relaxed">
+                {m.home.ceilingNote}
+              </p>
+            </div>
           </div>
         </div>
       </section>

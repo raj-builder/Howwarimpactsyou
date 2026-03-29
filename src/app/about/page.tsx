@@ -128,36 +128,34 @@ export default function AboutPage() {
             Project timeline
           </h2>
           <div className="bg-bg-card border border-border rounded-[10px] p-6 md:p-8 shadow-card max-w-[780px]">
-            <div className="space-y-5">
-              <div className="flex gap-4">
-                <div className="font-sans text-[0.82rem] font-semibold text-ink-muted w-28 shrink-0">
+            <div className="relative pl-6 border-l-2 border-accent/20 space-y-8">
+              <div className="relative">
+                <div className="absolute -left-[25px] top-1 w-3 h-3 rounded-full bg-accent border-2 border-bg-card" />
+                <div className="font-sans text-[0.72rem] font-bold text-accent uppercase tracking-wide mb-1">
                   Mar 2025
                 </div>
-                <div>
-                  <div className="font-sans text-[0.88rem] font-semibold text-ink mb-0.5">
-                    v1.0 Launch
-                  </div>
-                  <p className="font-sans text-[0.84rem] text-ink-soft leading-relaxed">
-                    Initial release with 5 war/shock scenarios, 10 consumer
-                    categories, 10 core countries, and validation against
-                    realized CPI data.
-                  </p>
+                <div className="font-sans text-[0.88rem] font-semibold text-ink mb-0.5">
+                  v1.0 Launch
                 </div>
+                <p className="font-sans text-[0.84rem] text-ink-soft leading-relaxed">
+                  Initial release with 5 war/shock scenarios, 10 consumer
+                  categories, 10 core countries, and validation against
+                  realized CPI data.
+                </p>
               </div>
-              <div className="flex gap-4">
-                <div className="font-sans text-[0.82rem] font-semibold text-ink-muted w-28 shrink-0">
+              <div className="relative">
+                <div className="absolute -left-[25px] top-1 w-3 h-3 rounded-full bg-accent-warm border-2 border-bg-card" />
+                <div className="font-sans text-[0.72rem] font-bold text-accent-warm uppercase tracking-wide mb-1">
                   Ongoing
                 </div>
-                <div>
-                  <div className="font-sans text-[0.88rem] font-semibold text-ink mb-0.5">
-                    Data updates
-                  </div>
-                  <p className="font-sans text-[0.84rem] text-ink-soft leading-relaxed">
-                    Commodity prices and exchange rates are refreshed regularly
-                    from World Bank, IMF, and EIA feeds. Validation data is
-                    updated as national CPI agencies publish new figures.
-                  </p>
+                <div className="font-sans text-[0.88rem] font-semibold text-ink mb-0.5">
+                  Data updates
                 </div>
+                <p className="font-sans text-[0.84rem] text-ink-soft leading-relaxed">
+                  Commodity prices and exchange rates are refreshed regularly
+                  from World Bank, IMF, and EIA feeds. Validation data is
+                  updated as national CPI agencies publish new figures.
+                </p>
               </div>
             </div>
           </div>

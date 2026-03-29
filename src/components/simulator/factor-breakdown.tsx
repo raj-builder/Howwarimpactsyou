@@ -6,16 +6,20 @@ import type { FactorContribution } from '@/types/scenario'
 interface FactorBreakdownProps {
   factors: FactorContribution[]
   lagAdjustedCeiling: number
+  /** Hide the built-in heading (when used inside a collapsible wrapper) */
+  hideTitle?: boolean
 }
 
-export function FactorBreakdown({ factors, lagAdjustedCeiling }: FactorBreakdownProps) {
+export function FactorBreakdown({ factors, lagAdjustedCeiling, hideTitle }: FactorBreakdownProps) {
   const t = useT()
 
   return (
     <div className="mb-6">
-      <h4 className="font-sans text-[0.78rem] font-bold text-ink mb-3 tracking-wide">
-        {t('simulator.factorBreakdown')}
-      </h4>
+      {!hideTitle && (
+        <h4 className="font-sans text-[0.78rem] font-bold text-ink mb-3 tracking-wide">
+          {t('simulator.factorBreakdown')}
+        </h4>
+      )}
       <div className="space-y-2">
         {factors.map((f) => (
           <div key={f.label} className="flex items-center gap-3">

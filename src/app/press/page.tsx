@@ -158,20 +158,10 @@ export default function PressPage() {
           </div>
         </section>
 
-        {/* Screenshots */}
-        <section>
-          <h2 className="font-sans text-[0.72rem] font-bold tracking-[0.13em] uppercase text-accent mb-3">
-            Screenshots &amp; assets
-          </h2>
-          <div className="bg-bg-card border border-border rounded-[10px] p-6 md:p-8 shadow-card max-w-[780px]">
-            <p className="font-sans text-[0.88rem] text-ink-soft leading-relaxed">
-              High-resolution screenshots of the simulator, basket view, and
-              scenario landing pages will be available here soon. In the
-              meantime, feel free to capture screenshots directly from the live
-              site for editorial use with attribution.
-            </p>
-          </div>
-        </section>
+        {/* Screenshots note */}
+        <p className="font-sans text-[0.78rem] text-ink-muted mt-8">
+          Screenshots may be captured directly from the live site for editorial use with attribution.
+        </p>
       </div>
     </>
   )
