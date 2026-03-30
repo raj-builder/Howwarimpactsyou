@@ -58,9 +58,12 @@ export function ShareToolbar({ modelVersion, snapshotDate, variant = 'light' }: 
 
   const handleShare = useCallback(async () => {
     try {
+      const title = document.title
+      const url = getUrl()
       await navigator.share({
-        title: document.title,
-        url: getUrl(),
+        title,
+        text: `${title}\n\nSee how war affects your daily costs — scenario ceiling at 100% pass-through.\n\n`,
+        url,
       })
     } catch {
       // User cancelled or share failed silently

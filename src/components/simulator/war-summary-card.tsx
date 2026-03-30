@@ -5,6 +5,7 @@ import { WARS } from '@/data/wars'
 import { findCountryEntry, computeBasket, getProvenance } from '@/lib/calculations'
 import { ShareToolbar } from '@/components/simulator/share-toolbar'
 import { getWarAnchors } from '@/data/pre-escalation-prices'
+import { BELLIGERENT_COUNTRIES } from '@/data/belligerent-countries'
 import { useT } from '@/lib/use-t'
 import type { WarId, CategoryId } from '@/types'
 import type { LagPeriod, ProvenanceMetadata, BasketResult } from '@/types/scenario'
@@ -195,6 +196,37 @@ export function WarSummaryCard({
               </span>
             ))}
           </div>
+          {/* Belligerent countries involved */}
+          {(() => {
+            const involved = BELLIGERENT_COUNTRIES.filter((b) => b.wars.includes(warId))
+            if (involved.length === 0) return null
+            return (
+              <div className="mb-4">
+                <p className="font-sans text-[0.65rem] text-white/40 uppercase tracking-wider mb-2">
+                  Directly involved
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {involved.map((b) => {
+                    const dir = b.warImpact?.[warId] ?? 'neutral'
+                    return (
+                      <span
+                        key={b.name}
+                        className="inline-flex items-center gap-1.5 bg-white/10 rounded-md px-2.5 py-1 font-sans text-[0.7rem] text-white/80"
+                      >
+                        <span>{b.flag}</span>
+                        <span>{b.name}</span>
+                        <span className={`text-[0.6rem] font-bold ${
+                          dir === 'positive' ? 'text-green' : dir === 'negative' ? 'text-accent' : 'text-white/40'
+                        }`}>
+                          {dir === 'positive' ? '▲' : dir === 'negative' ? '▼' : '—'}
+                        </span>
+                      </span>
+                    )
+                  })}
+                </div>
+              </div>
+            )
+          })()}
           <p className="font-sans text-[0.78rem] text-accent-warm font-semibold">
             {t('simulator.exploreCountry')} &darr;
           </p>

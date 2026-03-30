@@ -20,6 +20,8 @@ export interface BelligerentCountry {
   gasBcm: number
   keyExports: string
   impact: string
+  /** Per-war impact direction: positive (benefits), negative (suffers), or neutral */
+  warImpact?: Record<string, 'positive' | 'negative' | 'neutral'>
 }
 
 export const BELLIGERENT_COUNTRIES: BelligerentCountry[] = [
@@ -27,7 +29,8 @@ export const BELLIGERENT_COUNTRIES: BelligerentCountry[] = [
     name: 'United States',
     flag: '🇺🇸',
     role: 'Military actor, sanctions enforcer, global reserve currency issuer',
-    wars: ['iran-israel-us', 'gulf-2003'],
+    wars: ['hormuz-2026', 'iran-israel-us', 'gulf-2003'],
+    warImpact: { 'hormuz-2026': 'positive', 'iran-israel-us': 'positive', 'gulf-2003': 'positive' },
     gdpBn: 25460,
     oilMbpd: 12.9,
     gasBcm: 1035,
@@ -38,7 +41,8 @@ export const BELLIGERENT_COUNTRIES: BelligerentCountry[] = [
     name: 'Israel',
     flag: '🇮🇱',
     role: 'Direct combatant, regional military operations',
-    wars: ['iran-israel-us', 'gaza-2023'],
+    wars: ['hormuz-2026', 'iran-israel-us', 'gaza-2023'],
+    warImpact: { 'hormuz-2026': 'negative', 'iran-israel-us': 'negative', 'gaza-2023': 'negative' },
     gdpBn: 525,
     oilMbpd: 0,
     gasBcm: 22,
@@ -49,7 +53,8 @@ export const BELLIGERENT_COUNTRIES: BelligerentCountry[] = [
     name: 'Iran',
     flag: '🇮🇷',
     role: 'OPEC member, Strait of Hormuz gatekeeper, regional proxy sponsor',
-    wars: ['iran-israel-us'],
+    wars: ['hormuz-2026', 'iran-israel-us'],
+    warImpact: { 'hormuz-2026': 'negative', 'iran-israel-us': 'negative' },
     gdpBn: 401,
     oilMbpd: 3.2,
     gasBcm: 259,
@@ -61,6 +66,7 @@ export const BELLIGERENT_COUNTRIES: BelligerentCountry[] = [
     flag: '🇷🇺',
     role: 'Major oil/gas exporter, grain exporter, direct combatant',
     wars: ['ukraine-russia'],
+    warImpact: { 'ukraine-russia': 'negative' },
     gdpBn: 1862,
     oilMbpd: 10.8,
     gasBcm: 638,
@@ -72,6 +78,7 @@ export const BELLIGERENT_COUNTRIES: BelligerentCountry[] = [
     flag: '🇺🇦',
     role: 'Major grain exporter, direct combatant, transit corridor',
     wars: ['ukraine-russia'],
+    warImpact: { 'ukraine-russia': 'negative' },
     gdpBn: 160,
     oilMbpd: 0,
     gasBcm: 18,
@@ -82,7 +89,8 @@ export const BELLIGERENT_COUNTRIES: BelligerentCountry[] = [
     name: 'Saudi Arabia',
     flag: '🇸🇦',
     role: 'OPEC+ swing producer, regional power',
-    wars: ['iran-israel-us'],
+    wars: ['hormuz-2026', 'iran-israel-us'],
+    warImpact: { 'hormuz-2026': 'negative', 'iran-israel-us': 'neutral' },
     gdpBn: 1069,
     oilMbpd: 10.4,
     gasBcm: 117,

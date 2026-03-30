@@ -11,7 +11,6 @@ import { SoftGate } from '@/components/simulator/soft-gate'
 import { WarEscalationCard } from '@/components/simulator/war-escalation-card'
 import { WarSummaryCard } from '@/components/simulator/war-summary-card'
 import { PresetCards } from '@/components/simulator/preset-cards'
-import { BelligerentCountries } from '@/components/simulator/belligerent-countries'
 import { PRE_ESCALATION_PRICES } from '@/data/pre-escalation-prices'
 import { usePricesFreshness } from '@/lib/use-prices-freshness'
 import { useT } from '@/lib/use-t'
@@ -196,9 +195,6 @@ export function SimulatorClient() {
 
       {/* Quick Scenarios */}
       <PresetCards />
-
-      {/* Belligerent Countries */}
-      <BelligerentCountries warId={warId} />
 
       {/* Provenance + SoftGate */}
       <div className="mt-10 bg-bg-alt border border-border rounded-lg px-4 py-2.5 mb-5 flex flex-wrap gap-x-5 gap-y-1 font-sans text-[0.72rem] text-ink-muted">

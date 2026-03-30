@@ -56,7 +56,7 @@ export function ConsumerGoods({ warId }: ConsumerGoodsProps) {
         })}
       </div>
       <p className="font-sans text-[0.62rem] text-ink-muted mt-2">
-        Reference prices only. Not included in basket calculations. Source: {anchors.consumerGoods[0]?.exchange ?? 'Various'}.
+        Reference MSRP prices only. Not affected by pass-through or lag settings. Not included in basket calculations.
       </p>
     </div>
   )
