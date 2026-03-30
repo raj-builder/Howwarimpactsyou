@@ -19,7 +19,7 @@ import type { WarId, RankingEntry, CoverageStatus } from '@/types'
 
 /** Escalation priority order (highest-tension first) */
 const WAR_ESCALATION_ORDER: WarId[] = [
-  'iran-israel-us', 'ukraine-russia', 'gaza-2023', 'covid', 'gulf-2003',
+  'hormuz-2026', 'iran-israel-us', 'ukraine-russia', 'gaza-2023', 'covid', 'gulf-2003',
 ]
 
 /* ---------- component ---------- */
@@ -29,13 +29,13 @@ export function SimulatorClient() {
 
   /* --- only war selection state on this page --- */
   const [warId, setWarId] = useState<WarId>(
-    (searchParams.get('war') as WarId) || 'iran-israel-us',
+    (searchParams.get('war') as WarId) || 'hormuz-2026',
   )
 
   /* Rankings always use 'basket' category at 100% passthrough / immediate lag */
   const categoryId = 'basket' as const
 
-  const war = WARS[warId] ?? WARS['iran-israel-us']
+  const war = WARS[warId] ?? WARS['hormuz-2026']
   const ranking = war.rankings[categoryId] ?? war.rankings['bread']
 
   const countryReason = useMemo(() => {

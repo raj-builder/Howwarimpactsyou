@@ -47,7 +47,7 @@ export function CountrySimulatorClient() {
 
   /* --- interactive state (initialized from URL) --- */
   const [warId, setWarId] = useState<WarId>(
-    (searchParams.get('war') as WarId) || 'iran-israel-us',
+    (searchParams.get('war') as WarId) || 'hormuz-2026',
   )
   const [country, setCountry] = useState(
     searchParams.get('country') || 'Philippines',

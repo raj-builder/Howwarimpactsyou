@@ -29,6 +29,7 @@ export type CategoryId =
 export type WarId =
   | 'ukraine-russia'
   | 'iran-israel-us'
+  | 'hormuz-2026'
   | 'gaza-2023'
   | 'covid'
   | 'gulf-2003'

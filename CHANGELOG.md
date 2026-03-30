@@ -1,3 +1,45 @@
+## [2026-03-30] — Strait of Hormuz 2026 scenario (deep research)
+
+### What changed
+- **New war scenario: Strait of Hormuz Escalation** (`hormuz-2026`) — Feb 2026 to Present, based on the US-Israeli strikes on Iran (28 Feb 2026) and the effective closure of the Strait of Hormuz to commercial shipping
+- **Researched commodity prices:** Brent Crude ($70→$107.81, +54%), shipping containers ($2000→$5000, +150%), urea ($452→$674, +49%), Natural Gas EU TTF (+21%), aluminium ($3031→$3300, +9%), gold ($4680→$4434, –5%)
+- **Researched FX rates:** 10 countries with Feb 1 vs Mar 27 2026 exchange rates. Key moves: Egypt EGP –10%, Türkiye TRY –17%, India INR –4%, Philippines PHP –4%
+- **Rankings for all 10 categories** — basket top impact: Egypt +32.4%, Pakistan +27.1%, Nigeria +23.6%. Fuel top impact: Egypt +48.2%, Pakistan +41.6%
+- **Consumer goods:** iPhone, economy flights, electricity bill price comparisons for the Hormuz scenario
+- **Default war changed** from iran-israel-us to hormuz-2026 across simulator, country simulator, and useSimulatorState
+- **Country reasons** added for all 10 countries explaining why they are affected by the Hormuz closure
+
+### Why
+The Strait of Hormuz escalation (starting Feb 28, 2026) is the most acute current geopolitical event affecting global commodity prices. Brent crude surged 54% in under 2 months. Container shipping rates jumped 150%. This is now the most relevant default scenario for users.
+
+### Data & calculation notes
+- Pre-condition date: Feb 1, 2026. Post-condition: Mar 27, 2026
+- Brent $70→$107.81 (EIA, Fortune, Trading Economics)
+- EU TTF gas ~$46→$55.7 EUR/MWh (EIA STEO)
+- Urea $452→$674/mt (DTN, World Bank)
+- Container freight SCFI ~$2000→$5000/TEU (Maersk, CNBC, SCFI)
+- Gold $4680→$4434/oz (goldprice.org, CBS News)
+- Aluminium $3031→$3300/mt (LME, Trading Economics)
+- FX rates from Trading Economics, Xe, exchange-rates.org, central bank data
+
+### Upgrade notes for the next engineer or AI session
+- New WarId `'hormuz-2026'` added to `src/types/index.ts`
+- War entry with full rankings in `src/data/wars.ts`
+- Pre-escalation prices in `src/data/pre-escalation-prices.ts`
+- FX data in `src/data/currencies.ts`
+- Country reasons in `src/data/reasons.ts`
+- WAR_ESCALATION_ORDER updated (hormuz-2026 is first)
+- Default war changed in simulator, country-simulator, and useSimulatorState
+- Phase C remaining: T5 (50+ countries), T7 (FX window update for all wars), T9 (articles), T11 (model optimization)
+
+### Credits & third-party use
+- Commodity prices: EIA Short-Term Energy Outlook (March 2026), Fortune, Trading Economics, COMEX, ICE London, LME, World Bank Pink Sheet, DTN fertilizer report
+- FX rates: Trading Economics, Xe.com, exchange-rates.org, central bank websites (CBE, BSP, RBI)
+- Shipping data: Maersk emergency freight notice, CNBC, Shanghai Containerized Freight Index
+- Conflict timeline: Wikipedia (2026 Strait of Hormuz crisis)
+
+---
+
 ## [2026-03-30] — Phase A+B: war card sizing, consumer goods, OG image, changelog fix
 
 ### What changed

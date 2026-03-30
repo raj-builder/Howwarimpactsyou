@@ -25,6 +25,18 @@ export const COUNTRY_REASONS: Record<WarId, Record<string, string>> = {
     'Ukraine':     'Ongoing war economy, limited additional exposure from Iran-Israel tensions',
     'Morocco':     'Moderate energy import dependence, trade routes less affected, MAD stable',
   },
+  'hormuz-2026': {
+    'Egypt':       'Suez Canal trade disruption, EGP fell 10% in one month, fuel and food import costs surged with Brent +54%',
+    'Pakistan':    'Energy import-dependent, exposed to oil +54% and shipping +150%, already fragile fiscal position',
+    'Nigeria':     'Imports all refined fuel despite oil production, shipping cost surge amplifies every imported good',
+    'Türkiye':     'TRY hit record lows (–17% in 2 months), heavy energy import dependence, Middle East trade disruption',
+    'Philippines': 'Imports 100% of petroleum, PHP fell to record low vs USD, declared national energy emergency',
+    'India':       'Third-largest oil importer, $11B foreign portfolio outflow in March, INR hit record low at 94.4',
+    'Brazil':      'Major commodity exporter, partially insulated by domestic oil production, BRL relatively stable',
+    'Indonesia':   'Subsidized fuel prices buffer consumer impact, IDR declined modestly (–1%)',
+    'Morocco':     'Diversified energy sources, MAD weakened 3% but government subsidies active',
+    'Ukraine':     'Already in wartime economy, Hormuz disruption adds energy cost pressure via global benchmarks',
+  },
   'gaza-2023': {
     'Egypt':       'Direct neighbor, Suez Canal traffic disruption, EGP floated in Mar 2024 (–38%)',
     'Nigeria':     'Naira collapsed after June 2023 peg removal (–49%), amplified all import costs',

@@ -25,6 +25,18 @@ export const CURRENCIES: Record<WarId, Record<string, CurrencyEntry>> = {
     'Ukraine': { name: 'Ukrainian Hryvnia', code: 'UAH', preRate: 38.5, postRate: 41.5, depPct: -7, window: 'Apr 2024 – Present' },
     'Morocco': { name: 'Moroccan Dirham', code: 'MAD', preRate: 10.0, postRate: 10.1, depPct: -1, window: 'Apr 2024 – Present' },
   },
+  'hormuz-2026': {
+    'Philippines': { name: 'Philippine Peso', code: 'PHP', preRate: 58.5, postRate: 60.8, depPct: -4, window: 'Feb 2026 – Mar 2026' },
+    'Egypt': { name: 'Egyptian Pound', code: 'EGP', preRate: 48.5, postRate: 53.5, depPct: -10, window: 'Feb 2026 – Mar 2026' },
+    'India': { name: 'Indian Rupee', code: 'INR', preRate: 89.9, postRate: 93.5, depPct: -4, window: 'Feb 2026 – Mar 2026' },
+    'Brazil': { name: 'Brazilian Real', code: 'BRL', preRate: 5.15, postRate: 5.24, depPct: -2, window: 'Feb 2026 – Mar 2026' },
+    'Nigeria': { name: 'Nigerian Naira', code: 'NGN', preRate: 1446, postRate: 1384, depPct: 4, window: 'Feb 2026 – Mar 2026' },
+    'Pakistan': { name: 'Pakistani Rupee', code: 'PKR', preRate: 282, postRate: 279, depPct: 1, window: 'Feb 2026 – Mar 2026' },
+    'Indonesia': { name: 'Indonesian Rupiah', code: 'IDR', preRate: 16750, postRate: 16978, depPct: -1, window: 'Feb 2026 – Mar 2026' },
+    'Türkiye': { name: 'Turkish Lira', code: 'TRY', preRate: 38.0, postRate: 44.4, depPct: -17, window: 'Feb 2026 – Mar 2026' },
+    'Ukraine': { name: 'Ukrainian Hryvnia', code: 'UAH', preRate: 42.5, postRate: 43.8, depPct: -3, window: 'Feb 2026 – Mar 2026' },
+    'Morocco': { name: 'Moroccan Dirham', code: 'MAD', preRate: 9.04, postRate: 9.34, depPct: -3, window: 'Feb 2026 – Mar 2026' },
+  },
   'gaza-2023': {
     'Philippines': { name: 'Philippine Peso', code: 'PHP', preRate: 56.4, postRate: 56.8, depPct: -1, window: 'Oct 2023 – Present' },
     'Egypt': { name: 'Egyptian Pound', code: 'EGP', preRate: 30.9, postRate: 50.1, depPct: -38, window: 'Oct 2023 – Present' },
