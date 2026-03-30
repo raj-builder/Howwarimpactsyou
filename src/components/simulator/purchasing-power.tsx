@@ -5,9 +5,11 @@ import type { CurrencyEntry } from '@/types'
 
 interface PurchasingPowerProps {
   currencyData: CurrencyEntry
+  /** Max depreciation % across all countries in the war (for bar scaling) */
+  maxDepPct?: number
 }
 
-export function PurchasingPower({ currencyData }: PurchasingPowerProps) {
+export function PurchasingPower({ currencyData, maxDepPct }: PurchasingPowerProps) {
   const t = useT()
 
   return (
@@ -30,7 +32,7 @@ export function PurchasingPower({ currencyData }: PurchasingPowerProps) {
             currencyData.depPct < 0 ? 'bg-accent' : 'bg-green'
           }`}
           style={{
-            width: `${Math.min(Math.abs(currencyData.depPct), 100)}%`,
+            width: `${Math.min((Math.abs(currencyData.depPct) / (maxDepPct || 50)) * 100, 100)}%`,
           }}
         />
       </div>

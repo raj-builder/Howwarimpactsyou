@@ -129,6 +129,13 @@ export function CountrySimulatorClient() {
     return warCurrencies[country] ?? null
   }, [warId, country])
 
+  /* --- max depreciation across all countries for bar scaling --- */
+  const maxDepPct = useMemo(() => {
+    const warCurrencies = CURRENCIES[warId]
+    if (!warCurrencies) return 50
+    return Math.max(...Object.values(warCurrencies).map((c) => Math.abs(c.depPct)), 10)
+  }, [warId])
+
   /* --- UI data --- */
   const war = WARS[warId]
   const items = basketResult?.items ?? []
@@ -391,7 +398,7 @@ export function CountrySimulatorClient() {
                     <span className="text-ink-muted group-open:rotate-90 transition-transform text-[0.7rem]">&#9654;</span>
                     {t('simulator.purchasingPower')}
                   </summary>
-                  <PurchasingPower currencyData={currencyData} />
+                  <PurchasingPower currencyData={currencyData} maxDepPct={maxDepPct} />
                 </details>
               )}
 
