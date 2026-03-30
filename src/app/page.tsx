@@ -67,9 +67,7 @@ export default function HomePage() {
             {m.home.eyebrow}
           </p>
           <h1 className="text-[clamp(2rem,4.5vw,3.2rem)] font-normal leading-[1.2] mb-4 tracking-tight font-serif">
-            How could <span className="text-accent-warm">oil, war, and currency</span>
-            <br />
-            affect what you pay?
+            {m.home.headline}
           </h1>
           <p className="text-[1.05rem] text-white/70 max-w-[580px] mb-8 leading-relaxed font-serif">
             {m.home.subtitle}
