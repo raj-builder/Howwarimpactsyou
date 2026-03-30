@@ -20,6 +20,7 @@ import { StatCard } from '@/components/simulator/stat-card'
 import { FactorBreakdown } from '@/components/simulator/factor-breakdown'
 import { PurchasingPower } from '@/components/simulator/purchasing-power'
 import { ConsumerGoods } from '@/components/country-simulator/consumer-goods'
+import { LivePrices } from '@/components/country-simulator/live-prices'
 import { useT } from '@/lib/use-t'
 import type { WarId, CategoryId } from '@/types'
 import type { LagPeriod } from '@/types/scenario'
@@ -329,6 +330,9 @@ export function CountrySimulatorClient() {
 
           {/* Consumer goods reference (iPhone, BMW, etc.) */}
           <ConsumerGoods warId={warId} />
+
+          {/* Live commodity prices */}
+          <LivePrices />
         </div>
 
         {/* ====== RIGHT: Detail + Basket Summary ====== */}

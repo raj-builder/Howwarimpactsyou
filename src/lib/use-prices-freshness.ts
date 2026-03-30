@@ -2,6 +2,15 @@
 
 import { useState, useEffect } from 'react'
 
+interface PriceEntry {
+  price: number | null
+  pct: number | null
+  label: string
+  unit: string
+  exchange: string
+  asOf?: string
+}
+
 interface PricesFreshness {
   /** ISO timestamp of last SerpAPI fetch */
   fetchedAt: string | null
@@ -13,6 +22,8 @@ interface PricesFreshness {
   source: string
   /** Whether the hook is still loading */
   loading: boolean
+  /** Actual commodity price data (if available) */
+  prices: Record<string, PriceEntry> | null
 }
 
 const CACHE_KEY = 'hwiy_prices_freshness'
@@ -56,6 +67,7 @@ function readSessionCache(): PricesFreshness | null {
       serpApiOk: parsed.serpApiOk,
       source: parsed.source,
       loading: false,
+      prices: (parsed as unknown as { prices?: Record<string, PriceEntry> | null }).prices ?? null,
     }
   } catch {
     return null
@@ -100,6 +112,7 @@ export function usePricesFreshness(): PricesFreshness {
       serpApiOk: false,
       source: '',
       loading: true,
+      prices: null,
     }
   })
 
@@ -122,6 +135,7 @@ export function usePricesFreshness(): PricesFreshness {
             serpApiOk: data.serp_api_ok ?? false,
             source: data.meta?.source ?? '',
             loading: false,
+            prices: data.prices ?? null,
           }
           moduleCache = result
           writeSessionCache(result)
@@ -134,6 +148,7 @@ export function usePricesFreshness(): PricesFreshness {
             serpApiOk: false,
             source: '',
             loading: false,
+            prices: null,
           }
           moduleCache = fallback
           return fallback

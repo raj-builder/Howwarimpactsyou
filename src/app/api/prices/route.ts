@@ -5,12 +5,12 @@ const SERP_BASE = 'https://serpapi.com/search.json'
 const WB_API_BASE = 'https://api.worldbank.org/v2/en/indicator'
 
 const FALLBACK = {
-  brent: { price: 91.5, pct: null, label: 'Crude Oil', unit: 'USD/bbl', exchange: 'NYMEX', asOf: '24 Mar 2025' },
-  natgas: { price: 3.85, pct: null, label: 'Natural Gas', unit: 'USD/mmbtu', exchange: 'NYMEX', asOf: '24 Mar 2025' },
-  gold: { price: 4448, pct: null, label: 'Gold', unit: 'USD/oz', exchange: 'COMEX', asOf: '24 Mar 2025' },
-  copper: { price: 5.42, pct: null, label: 'Copper', unit: 'USD/lb', exchange: 'COMEX', asOf: '24 Mar 2025' },
-  alum: { price: 1.18, pct: null, label: 'Aluminium', unit: 'USD/lb', exchange: 'COMEX', asOf: '24 Mar 2025' },
-  urea: { price: 310.5, pct: null, label: 'Urea (Fert.)', unit: 'USD/mt', exchange: 'OTC·WB', asOf: 'Feb 2025' },
+  brent: { price: 107.81, pct: null, label: 'Crude Oil', unit: 'USD/bbl', exchange: 'NYMEX', asOf: '27 Mar 2026' },
+  natgas: { price: 3.05, pct: null, label: 'Natural Gas', unit: 'USD/mmbtu', exchange: 'NYMEX', asOf: '27 Mar 2026' },
+  gold: { price: 4434, pct: null, label: 'Gold', unit: 'USD/oz', exchange: 'COMEX', asOf: '27 Mar 2026' },
+  copper: { price: 5.50, pct: null, label: 'Copper', unit: 'USD/lb', exchange: 'COMEX', asOf: '27 Mar 2026' },
+  alum: { price: 1.50, pct: null, label: 'Aluminium', unit: 'USD/lb', exchange: 'COMEX', asOf: '27 Mar 2026' },
+  urea: { price: 674, pct: null, label: 'Urea (Fert.)', unit: 'USD/mt', exchange: 'OTC·WB', asOf: 'Mar 2026' },
 } as const
 
 function pct(current: number | null, previous: number | null): number | null {

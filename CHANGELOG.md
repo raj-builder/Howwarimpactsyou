@@ -1,3 +1,36 @@
+## [2026-03-30] — Phase C: 55 countries, FX updates, live prices, model optimization
+
+### What changed
+- **55 countries** — expanded from 24 to 55 countries. Added Japan, South Korea, Taiwan, China, Thailand, Vietnam, Malaysia, Singapore, Germany, UK, France, Italy, Spain, Poland, Greece, Mexico, Colombia, Peru, Chile, Iraq, Lebanon, Jordan, Yemen, Tunisia, Nepal, Afghanistan, Myanmar, Cambodia, Tanzania, Uganda, Mozambique, Sudan, Senegal, Algeria, Libya, Somalia, Venezuela
+- **All 55 countries have basket rankings** for Hormuz 2026 scenario with researched impact percentages based on energy import dependency, trade exposure, and FX vulnerability
+- **FX window dates updated** — ukraine-russia extended to Mar 2026 (EGP –71%, TRY –69%), iran-israel-us updated to Mar 2026 (EGP –42%, TRY –27%)
+- **Fallback commodity prices updated** — Brent $107.81, gold $4434, urea $674, aluminium $1.50/lb (all March 2026 actuals)
+- **Live commodity prices component** — new `LivePrices` component in country simulator shows current SerpAPI values with freshness date
+- **usePricesFreshness hook** extended to expose actual price data (not just metadata)
+
+### Why
+Phase C of the 11-ticket plan. Countries were expanded to cover Hormuz-dependent economies (Japan 93% oil via Hormuz, South Korea 68%, Taiwan/China). FX rates were stale (ending at 2023 dates for a live war). Fallback prices were from March 2025. Live prices display helps users trust the data.
+
+### Data & calculation notes
+- Hormuz 2026 basket rankings: impact percentages derived from energy import dependency (EIA, IEA), trade exposure (UN Comtrade), FX vulnerability (central bank data)
+- Japan 8.2% basket impact reflects diversified economy + strong reserves despite 93% oil Hormuz dependency
+- Egypt 32.4% basket reflects cumulative EGP depreciation (–71% since 2022) + energy import costs
+- FX rates from Trading Economics, Xe.com, central bank data (March 2026)
+
+### Upgrade notes for the next engineer or AI session
+- `usePricesFreshness` now returns `prices` field with commodity data
+- `LivePrices` component added to country simulator left column
+- Countries list is in `src/data/countries.ts` (55 entries)
+- Rankings for new countries only exist in `hormuz-2026.basket` — other war/category combos will return 0%
+- T9 (article rewrites with citations) still deferred
+
+### Credits & third-party use
+- Country risk rankings: Zero Carbon Analytics (Hormuz vulnerability scores), CNBC, Visual Capitalist
+- FX rates: Trading Economics, Xe.com, central bank websites
+- Commodity prices: EIA, Fortune, COMEX, LME, World Bank
+
+---
+
 ## [2026-03-30] — Strait of Hormuz 2026 scenario (deep research)
 
 ### What changed
