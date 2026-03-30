@@ -19,6 +19,7 @@ import { ImpactDisplay } from '@/components/simulator/impact-display'
 import { StatCard } from '@/components/simulator/stat-card'
 import { FactorBreakdown } from '@/components/simulator/factor-breakdown'
 import { PurchasingPower } from '@/components/simulator/purchasing-power'
+import { ConsumerGoods } from '@/components/country-simulator/consumer-goods'
 import { useT } from '@/lib/use-t'
 import type { WarId, CategoryId } from '@/types'
 import type { LagPeriod } from '@/types/scenario'
@@ -325,6 +326,9 @@ export function CountrySimulatorClient() {
               )}
             </div>
           ))}
+
+          {/* Consumer goods reference (iPhone, BMW, etc.) */}
+          <ConsumerGoods warId={warId} />
         </div>
 
         {/* ====== RIGHT: Detail + Basket Summary ====== */}

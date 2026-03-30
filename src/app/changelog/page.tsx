@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 const VERSIONS = [
   {
     version: 'v2.2',
-    date: 'March 2025',
+    date: 'March 2026',
     title: 'Pre-escalation anchors, user refinements, i18n, surface fixes',
     changes: [
       'Pre-escalation price anchors: researched Before/After commodity prices for all 5 wars with war-escalation cards replacing the old war selector',
@@ -32,7 +32,7 @@ const VERSIONS = [
   },
   {
     version: 'v2.1',
-    date: 'March 2025',
+    date: 'March 2026',
     title: 'Scenario Builder Refactoring',
     changes: [
       'Centralized all calculation logic into a shared engine \u2014 no more inline math in components',
@@ -53,7 +53,7 @@ const VERSIONS = [
   },
   {
     version: 'v1.0',
-    date: 'March 2025',
+    date: 'March 2026',
     title: 'Initial release',
     changes: [
       '5 war/shock scenarios: Russia-Ukraine, Iran-Israel-US, Gaza 2023, COVID-19, Gulf War 2003',

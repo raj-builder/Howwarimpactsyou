@@ -82,11 +82,20 @@ export function WarSummaryCard({
     return result?.weightedAverage ?? null
   }, [warId, country, passthrough, lag, serpApiFetchedAt])
 
-  /* Top commodity shocks for prompt state (no country selected) */
+  /* Top commodity shocks for overview state (no country selected) */
   const topShocks = useMemo(() => {
     const war = WARS[warId]
     if (!war) return []
     return war.shocks.slice(0, 3)
+  }, [warId])
+
+  /* Top impacted country for overview state */
+  const topCountry = useMemo(() => {
+    const war = WARS[warId]
+    if (!war) return null
+    const basketRanking = war.rankings['basket'] ?? war.rankings['bread']
+    if (!basketRanking?.top5?.[0]) return null
+    return basketRanking.top5[0]
   }, [warId])
 
   const escalationDate = anchors?.escalationDate ?? ''
@@ -159,11 +168,23 @@ export function WarSummaryCard({
         </>
       ) : (
         <>
-          {/* No country selected — prompt + top shocks */}
-          <p className="font-sans text-[0.85rem] text-white/60 mb-3">
-            {t('soWhat.noCountry')}
-          </p>
-          <div className="flex flex-wrap gap-1.5">
+          {/* No country selected — show top impacted country + shocks */}
+          {topCountry && (
+            <div className="mb-4">
+              <div className="flex items-baseline gap-2 mb-1">
+                <span className="text-[2rem] font-light text-accent-warm tracking-tight">
+                  +{topCountry.p}%
+                </span>
+                <span className="font-sans text-[0.82rem] text-white/60">
+                  {topCountry.f} {topCountry.c}
+                </span>
+              </div>
+              <p className="font-sans text-[0.72rem] text-white/40">
+                {t('soWhat.topShocks')}
+              </p>
+            </div>
+          )}
+          <div className="flex flex-wrap gap-1.5 mb-4">
             {topShocks.map((shock) => (
               <span
                 key={shock.factor}
@@ -174,6 +195,9 @@ export function WarSummaryCard({
               </span>
             ))}
           </div>
+          <p className="font-sans text-[0.78rem] text-accent-warm font-semibold">
+            {t('simulator.exploreCountry')} &darr;
+          </p>
         </>
       )}
 

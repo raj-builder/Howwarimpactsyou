@@ -100,7 +100,7 @@ export function WarEscalationCard({
           : 'hover:shadow-md'
       }`}
     >
-      <div className={`bg-gradient-to-br from-[#1a1a1a] via-[#2d2420] to-[#3a2216] text-white rounded-[10px] ${compact ? 'p-3' : 'p-4 md:p-5'}`}>
+      <div className={`bg-gradient-to-br from-[#1a1a1a] via-[#2d2420] to-[#3a2216] text-white rounded-[10px] ${compact ? 'p-3' : 'p-4 md:p-5'} ${horizontal ? 'min-h-[160px] flex flex-col' : ''}`}>
         {/* Header */}
         <div className="flex items-center gap-2 mb-1.5">
           <span className="font-sans text-[0.9rem] font-bold">{warName}</span>
@@ -192,7 +192,7 @@ export function WarEscalationCard({
 
         {/* Collapsed preview — show top shocks as chips (always in horizontal mode) */}
         {(!isSelected || horizontal) && (
-          <div className="flex flex-wrap gap-1.5">
+          <div className={`flex flex-wrap gap-1.5 ${horizontal ? 'mt-auto' : ''}`}>
             {topCommodities.slice(0, 3).map((item) => (
               <span
                 key={item.id}

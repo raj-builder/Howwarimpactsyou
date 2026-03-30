@@ -1,3 +1,29 @@
+## [2026-03-30] — Phase A+B: war card sizing, consumer goods, OG image, changelog fix
+
+### What changed
+- **War card sizing** — horizontal strip cards now have `min-h-[160px]` with chips pushed to bottom via `mt-auto`, ensuring consistent heights across all 5 conflict cards
+- **WarSummaryCard no-country state** — replaced empty "Select a country" prompt with the top impacted country name/percentage from rankings data, plus a "Explore impact" CTA with downward arrow
+- **Consumer goods in Country Simulator** — new `ConsumerGoods` component shows iPhone, BMW X1, flight, electricity price changes below the basket category toggles. Data from existing `consumerGoods` arrays in `pre-escalation-prices.ts`
+- **Changelog year fix** — all version dates corrected from "March 2025" to "March 2026"
+- **OG image for Country Simulator** — new `opengraph-image.tsx` generates 1200x630 social share cards with dark gradient background, country flag + name, impact percentage, war name, shock chips, and disclaimer. Automatically used when sharing `/country-simulator` URLs on social media
+
+### Why
+Phase A+B of the 11-ticket plan. These are the tickets that don't require deep research — code-only fixes for UI consistency, missing features, and social sharing.
+
+### Data & calculation notes
+None. Consumer goods prices are reference-only (not included in basket calculations).
+
+### Upgrade notes for the next engineer or AI session
+- `ConsumerGoods` component imported in `country-simulator-client.tsx`
+- `FactorBreakdown` component has `hideTitle` prop (added in previous session)
+- OG image route at `/country-simulator/opengraph-image.tsx` accepts `war`, `country`, `category` search params
+- Phase C tickets (Hormuz 2026, 50+ countries, FX dates, articles, model optimization) still need deep research prompts
+
+### Credits & third-party use
+None.
+
+---
+
 ## [2026-03-29] — UI polish: mobile nav, accessibility, homepage hierarchy, page fixes
 
 ### What changed
