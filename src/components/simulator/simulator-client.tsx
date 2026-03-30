@@ -15,11 +15,21 @@ import { BelligerentCountries } from '@/components/simulator/belligerent-countri
 import { PRE_ESCALATION_PRICES } from '@/data/pre-escalation-prices'
 import { usePricesFreshness } from '@/lib/use-prices-freshness'
 import { useT } from '@/lib/use-t'
-import type { WarId, RankingEntry, CoverageStatus } from '@/types'
+import type { WarId, RankingEntry, CoverageStatus, Region } from '@/types'
 
 /** Escalation priority order (highest-tension first) */
 const WAR_ESCALATION_ORDER: WarId[] = [
   'hormuz-2026', 'iran-israel-us', 'ukraine-russia', 'gaza-2023', 'covid', 'gulf-2003',
+]
+
+const REGION_ORDER: Region[] = [
+  'Middle East & North Africa',
+  'South Asia',
+  'Sub-Saharan Africa',
+  'Southeast Asia',
+  'East Asia',
+  'Europe',
+  'Americas',
 ]
 
 /* ---------- component ---------- */
@@ -27,12 +37,10 @@ export function SimulatorClient() {
   const searchParams = useSearchParams()
   const t = useT()
 
-  /* --- only war selection state on this page --- */
   const [warId, setWarId] = useState<WarId>(
     (searchParams.get('war') as WarId) || 'hormuz-2026',
   )
 
-  /* Rankings always use 'basket' category at 100% passthrough / immediate lag */
   const categoryId = 'basket' as const
 
   const war = WARS[warId] ?? WARS['hormuz-2026']
@@ -45,6 +53,31 @@ export function SimulatorClient() {
 
   const freshness = usePricesFreshness()
   const provenance = useMemo(() => getProvenance(freshness.fetchedAt), [freshness.fetchedAt])
+
+  /* Merge top5 + bot5 into one sorted array, then group by region */
+  const allEntries = useMemo(() => {
+    const merged = [...ranking.top5, ...ranking.bot5]
+    return merged.sort((a, b) => b.p - a.p)
+  }, [ranking])
+
+  const globalTop5 = allEntries.slice(0, 5)
+
+  const regionalGroups = useMemo(() => {
+    const groups: Record<string, { entries: (RankingEntry & { globalRank: number })[]; avgImpact: number }> = {}
+    allEntries.forEach((entry, idx) => {
+      const countryData = COUNTRY_MAP[entry.c]
+      const region = countryData?.region ?? 'Other'
+      if (!groups[region]) groups[region] = { entries: [], avgImpact: 0 }
+      groups[region].entries.push({ ...entry, globalRank: idx + 1 })
+    })
+    for (const region of Object.keys(groups)) {
+      const g = groups[region]
+      g.avgImpact = Math.round((g.entries.reduce((s, e) => s + e.p, 0) / g.entries.length) * 10) / 10
+    }
+    return groups
+  }, [allEntries])
+
+  const sortedRegions = REGION_ORDER.filter((r) => regionalGroups[r])
 
   return (
     <div className="container-page py-12">
@@ -92,11 +125,10 @@ export function SimulatorClient() {
           )
         })}
         </div>
-        {/* Scroll fade indicator */}
         <div className="absolute top-0 right-0 bottom-4 w-12 bg-gradient-to-l from-bg to-transparent pointer-events-none" aria-hidden="true" />
       </div>
 
-      {/* WarSummaryCard — full width, overview mode (no country) */}
+      {/* WarSummaryCard */}
       <WarSummaryCard
         warId={warId}
         warName={war.name}
@@ -114,22 +146,51 @@ export function SimulatorClient() {
         serpApiFetchedAt={freshness.fetchedAt}
       />
 
-      {/* Rankings — side by side on desktop */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
-        <RankingSection
-          title={t('simulator.topImpacted')}
-          entries={ranking.top5}
-          startRank={1}
-          reasons={countryReason}
-          warId={warId}
-        />
-        <RankingSection
-          title={t('simulator.bottomImpacted')}
-          entries={ranking.bot5}
-          startRank={6}
-          reasons={countryReason}
-          warId={warId}
-        />
+      {/* Global Top 5 */}
+      <div className="mb-10">
+        <h2 className="text-[1.1rem] font-serif font-normal tracking-tight text-ink mb-4">
+          Most impacted countries
+        </h2>
+        <div className="space-y-2 stagger-fade-in">
+          {globalTop5.map((entry, i) => (
+            <CountryRow key={entry.c} entry={entry} rank={i + 1} warId={warId} reasons={countryReason} maxPct={allEntries[0]?.p ?? 55} />
+          ))}
+        </div>
+      </div>
+
+      {/* Regional breakdown */}
+      <div className="mb-10">
+        <h2 className="text-[1.1rem] font-serif font-normal tracking-tight text-ink mb-4">
+          Impact by region
+        </h2>
+        <div className="space-y-3">
+          {sortedRegions.map((region) => {
+            const group = regionalGroups[region]
+            if (!group) return null
+            return (
+              <details key={region} className="group border border-border rounded-[10px] bg-bg-card overflow-hidden">
+                <summary className="flex items-center justify-between px-5 py-3.5 cursor-pointer list-none hover:bg-bg-alt transition-colors">
+                  <div className="flex items-center gap-3">
+                    <span className="text-ink-muted group-open:rotate-90 transition-transform text-[0.7rem]">&#9654;</span>
+                    <span className="font-sans text-[0.9rem] font-semibold text-ink">{region}</span>
+                    <span className="font-sans text-[0.68rem] text-ink-muted">
+                      {group.entries.length} countries
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="font-sans text-[0.72rem] text-ink-muted">avg</span>
+                    <span className="font-sans text-[0.9rem] font-bold text-accent">+{group.avgImpact}%</span>
+                  </div>
+                </summary>
+                <div className="px-3 pb-3 space-y-1.5">
+                  {group.entries.map((entry) => (
+                    <CountryRow key={entry.c} entry={entry} rank={entry.globalRank} warId={warId} reasons={countryReason} maxPct={allEntries[0]?.p ?? 55} />
+                  ))}
+                </div>
+              </details>
+            )
+          })}
+        </div>
       </div>
 
       {/* Quick Scenarios */}
@@ -140,15 +201,9 @@ export function SimulatorClient() {
 
       {/* Provenance + SoftGate */}
       <div className="mt-10 bg-bg-alt border border-border rounded-lg px-4 py-2.5 mb-5 flex flex-wrap gap-x-5 gap-y-1 font-sans text-[0.72rem] text-ink-muted">
-        <span>
-          Model: <strong className="text-ink">v{provenance.modelVersion}</strong>
-        </span>
-        <span>
-          Data as of: <strong className="text-ink">{provenance.dataAsOf}</strong>
-        </span>
-        <span>
-          {t('simulator.rankingNote', { pt: '100', lag: 'Immediate' })}
-        </span>
+        <span>Model: <strong className="text-ink">v{provenance.modelVersion}</strong></span>
+        <span>Data as of: <strong className="text-ink">{provenance.dataAsOf}</strong></span>
+        <span>{t('simulator.rankingNote', { pt: '100', lag: 'Immediate' })}</span>
       </div>
 
       <SoftGate war={warId} category={categoryId} />
@@ -158,90 +213,53 @@ export function SimulatorClient() {
 
 /* ---------- sub-components ---------- */
 
-function RankingSection({
-  title,
-  entries,
-  startRank,
-  reasons,
+function CountryRow({
+  entry,
+  rank,
   warId,
+  reasons,
+  maxPct,
 }: {
-  title: string
-  entries: RankingEntry[]
-  startRank: number
-  reasons: Record<string, string> | null
+  entry: RankingEntry
+  rank: number
   warId: WarId
+  reasons: Record<string, string> | null
+  maxPct: number
 }) {
-  const t = useT()
+  const adjustedPct = roundValue(entry.p, 'display')
+  const barWidth = Math.min((adjustedPct / maxPct) * 100, 100)
+  const countryData = COUNTRY_MAP[entry.c]
+  const coverage: CoverageStatus = countryData?.coverage ?? 'unavailable'
 
   return (
-    <div>
-      <h3 className="text-[1.1rem] font-serif font-normal tracking-tight text-ink mb-4">
-        {title}
-      </h3>
-      <div className="space-y-2 stagger-fade-in">
-        {entries.map((entry, i) => {
-          const rank = startRank + i
-          const adjustedPct = roundValue(entry.p, 'display')
-          const maxPct = 55
-          const barWidth = Math.min((adjustedPct / maxPct) * 100, 100)
-          const countryData = COUNTRY_MAP[entry.c]
-          const coverage: CoverageStatus = countryData?.coverage ?? 'unavailable'
-
-          return (
-            <Link
-              key={entry.c}
-              href={`/country-simulator?war=${warId}&country=${entry.c}`}
-              className="no-underline block w-full text-left border rounded-lg px-4 py-4 transition-all border-border bg-bg-card hover:border-accent-warm hover:shadow-sm group"
-            >
-              <div className="flex items-center gap-3">
-                {/* Rank */}
-                <span className="font-sans text-[0.78rem] font-bold text-ink-muted w-5 text-center shrink-0">
-                  {rank}
-                </span>
-                {/* Flag */}
-                <span className="text-xl shrink-0">{entry.f}</span>
-                {/* Name + reason */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-1.5">
-                    <span className="font-sans text-[0.88rem] font-semibold text-ink group-hover:text-accent transition-colors">
-                      {entry.c}
-                    </span>
-                    {coverage !== 'full' && (
-                      <span className={`font-sans text-[0.58rem] font-semibold px-1.5 py-0.5 rounded tracking-[0.04em] uppercase ${
-                        coverage === 'partial'
-                          ? 'bg-amber-light text-amber'
-                          : 'bg-blue-light text-blue'
-                      }`}>
-                        {coverage}
-                      </span>
-                    )}
-                  </div>
-                  {reasons?.[entry.c] && (
-                    <div className="font-sans text-[0.7rem] text-ink-muted leading-snug mt-0.5 truncate">
-                      {reasons[entry.c]}
-                    </div>
-                  )}
-                </div>
-                {/* Impact bar + pct + arrow */}
-                <div className="flex items-center gap-2 shrink-0">
-                  <div className="w-20 h-2 bg-bg-alt rounded-sm overflow-hidden hidden sm:block">
-                    <div
-                      className="h-full rounded-sm bg-gradient-to-r from-accent-warm to-accent transition-all"
-                      style={{ width: `${barWidth}%` }}
-                    />
-                  </div>
-                  <span className="font-sans text-[1rem] font-bold text-accent w-14 text-right">
-                    +{adjustedPct}%
-                  </span>
-                  <span className="text-ink-muted group-hover:text-accent transition-colors" aria-hidden="true">
-                    &rarr;
-                  </span>
-                </div>
-              </div>
-            </Link>
-          )
-        })}
+    <Link
+      href={`/country-simulator?war=${warId}&country=${entry.c}`}
+      className="no-underline block w-full text-left border rounded-lg px-4 py-3.5 transition-all border-border bg-bg-card hover:border-accent-warm hover:shadow-sm group"
+    >
+      <div className="flex items-center gap-3">
+        <span className="font-sans text-[0.72rem] font-bold text-ink-muted w-5 text-center shrink-0">{rank}</span>
+        <span className="text-xl shrink-0">{entry.f}</span>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-1.5">
+            <span className="font-sans text-[0.85rem] font-semibold text-ink group-hover:text-accent transition-colors">{entry.c}</span>
+            {coverage !== 'full' && (
+              <span className={`font-sans text-[0.55rem] font-semibold px-1.5 py-0.5 rounded tracking-[0.04em] uppercase ${
+                coverage === 'partial' ? 'bg-amber-light text-amber' : 'bg-blue-light text-blue'
+              }`}>{coverage}</span>
+            )}
+          </div>
+          {reasons?.[entry.c] && (
+            <div className="font-sans text-[0.68rem] text-ink-muted leading-snug mt-0.5 truncate">{reasons[entry.c]}</div>
+          )}
+        </div>
+        <div className="flex items-center gap-2 shrink-0">
+          <div className="w-16 h-2 bg-bg-alt rounded-sm overflow-hidden hidden sm:block">
+            <div className="h-full rounded-sm bg-gradient-to-r from-accent-warm to-accent transition-all" style={{ width: `${barWidth}%` }} />
+          </div>
+          <span className="font-sans text-[0.95rem] font-bold text-accent w-14 text-right">+{adjustedPct}%</span>
+          <span className="text-ink-muted group-hover:text-accent transition-colors" aria-hidden="true">&rarr;</span>
+        </div>
       </div>
-    </div>
+    </Link>
   )
 }

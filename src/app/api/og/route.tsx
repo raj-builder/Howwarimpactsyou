@@ -1,26 +1,22 @@
 import { ImageResponse } from 'next/og'
+import { type NextRequest } from 'next/server'
 import { WARS } from '@/data/wars'
 import { COUNTRIES } from '@/data/countries'
 import type { WarId, CategoryId } from '@/types'
 
 export const runtime = 'edge'
-export const alt = 'Country Impact Simulator'
-export const size = { width: 1200, height: 630 }
-export const contentType = 'image/png'
 
-export default async function Image({
-  searchParams,
-}: {
-  searchParams: { war?: string; country?: string; category?: string }
-}) {
-  const warId = (searchParams?.war as WarId) || 'iran-israel-us'
-  const countryName = searchParams?.country || ''
-  const categoryId = (searchParams?.category as CategoryId) || 'basket'
+const SIZE = { width: 1200, height: 630 }
+
+export async function GET(request: NextRequest) {
+  const { searchParams } = request.nextUrl
+  const warId = (searchParams.get('war') as WarId) || 'hormuz-2026'
+  const countryName = searchParams.get('country') || ''
+  const categoryId = (searchParams.get('category') as CategoryId) || 'basket'
 
   const warData = WARS[warId]
   const countryData = COUNTRIES.find((c) => c.id === countryName)
 
-  /* Find impact for this country in rankings */
   let impactPct = 0
   if (warData) {
     const ranking = warData.rankings[categoryId] ?? warData.rankings['basket']
@@ -43,7 +39,7 @@ export default async function Image({
           color: '#ffffff',
         }}
       >
-        {/* Top: branding + war */}
+        {/* Top: branding */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ fontSize: 22, fontWeight: 700, letterSpacing: '-0.02em', display: 'flex' }}>
             <span style={{ color: '#ffffff' }}>howwar</span>
@@ -109,6 +105,6 @@ export default async function Image({
         </div>
       </div>
     ),
-    { ...size },
+    { ...SIZE },
   )
 }

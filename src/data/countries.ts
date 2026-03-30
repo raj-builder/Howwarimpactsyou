@@ -1,78 +1,77 @@
 import type { Country } from '@/types'
 
 export const COUNTRIES: Country[] = [
-  // Full coverage (10 core countries — complete rankings + FX data for all wars)
-  { id: 'Philippines', name: 'Philippines', flag: '🇵🇭', coverage: 'full' },
-  { id: 'Egypt', name: 'Egypt', flag: '🇪🇬', coverage: 'full' },
-  { id: 'India', name: 'India', flag: '🇮🇳', coverage: 'full' },
-  { id: 'Brazil', name: 'Brazil', flag: '🇧🇷', coverage: 'full' },
-  { id: 'Nigeria', name: 'Nigeria', flag: '🇳🇬', coverage: 'full' },
-  { id: 'Pakistan', name: 'Pakistan', flag: '🇵🇰', coverage: 'full' },
-  { id: 'Indonesia', name: 'Indonesia', flag: '🇮🇩', coverage: 'full' },
-  { id: 'Türkiye', name: 'Türkiye', flag: '🇹🇷', coverage: 'full' },
-  { id: 'Ukraine', name: 'Ukraine', flag: '🇺🇦', coverage: 'full' },
-  { id: 'Morocco', name: 'Morocco', flag: '🇲🇦', coverage: 'full' },
+  // Full coverage (10 core countries)
+  { id: 'Philippines', name: 'Philippines', flag: '🇵🇭', coverage: 'full', region: 'Southeast Asia' },
+  { id: 'Egypt', name: 'Egypt', flag: '🇪🇬', coverage: 'full', region: 'Middle East & North Africa' },
+  { id: 'India', name: 'India', flag: '🇮🇳', coverage: 'full', region: 'South Asia' },
+  { id: 'Brazil', name: 'Brazil', flag: '🇧🇷', coverage: 'full', region: 'Americas' },
+  { id: 'Nigeria', name: 'Nigeria', flag: '🇳🇬', coverage: 'full', region: 'Sub-Saharan Africa' },
+  { id: 'Pakistan', name: 'Pakistan', flag: '🇵🇰', coverage: 'full', region: 'South Asia' },
+  { id: 'Indonesia', name: 'Indonesia', flag: '🇮🇩', coverage: 'full', region: 'Southeast Asia' },
+  { id: 'Türkiye', name: 'Türkiye', flag: '🇹🇷', coverage: 'full', region: 'Middle East & North Africa' },
+  { id: 'Ukraine', name: 'Ukraine', flag: '🇺🇦', coverage: 'full', region: 'Europe' },
+  { id: 'Morocco', name: 'Morocco', flag: '🇲🇦', coverage: 'full', region: 'Middle East & North Africa' },
 
-  // Partial coverage — Hormuz-dependent & major economies
-  // East Asia (highest Hormuz dependency)
-  { id: 'Japan', name: 'Japan', flag: '🇯🇵', coverage: 'partial' },
-  { id: 'South Korea', name: 'South Korea', flag: '🇰🇷', coverage: 'partial' },
-  { id: 'Taiwan', name: 'Taiwan', flag: '🇹🇼', coverage: 'partial' },
-  { id: 'China', name: 'China', flag: '🇨🇳', coverage: 'partial' },
+  // East Asia
+  { id: 'Japan', name: 'Japan', flag: '🇯🇵', coverage: 'partial', region: 'East Asia' },
+  { id: 'South Korea', name: 'South Korea', flag: '🇰🇷', coverage: 'partial', region: 'East Asia' },
+  { id: 'Taiwan', name: 'Taiwan', flag: '🇹🇼', coverage: 'partial', region: 'East Asia' },
+  { id: 'China', name: 'China', flag: '🇨🇳', coverage: 'partial', region: 'East Asia' },
 
   // Southeast Asia
-  { id: 'Thailand', name: 'Thailand', flag: '🇹🇭', coverage: 'partial' },
-  { id: 'Vietnam', name: 'Vietnam', flag: '🇻🇳', coverage: 'partial' },
-  { id: 'Malaysia', name: 'Malaysia', flag: '🇲🇾', coverage: 'partial' },
-  { id: 'Singapore', name: 'Singapore', flag: '🇸🇬', coverage: 'partial' },
-  { id: 'Myanmar', name: 'Myanmar', flag: '🇲🇲', coverage: 'partial' },
-  { id: 'Cambodia', name: 'Cambodia', flag: '🇰🇭', coverage: 'partial' },
+  { id: 'Thailand', name: 'Thailand', flag: '🇹🇭', coverage: 'partial', region: 'Southeast Asia' },
+  { id: 'Vietnam', name: 'Vietnam', flag: '🇻🇳', coverage: 'partial', region: 'Southeast Asia' },
+  { id: 'Malaysia', name: 'Malaysia', flag: '🇲🇾', coverage: 'partial', region: 'Southeast Asia' },
+  { id: 'Singapore', name: 'Singapore', flag: '🇸🇬', coverage: 'partial', region: 'Southeast Asia' },
+  { id: 'Myanmar', name: 'Myanmar', flag: '🇲🇲', coverage: 'partial', region: 'Southeast Asia' },
+  { id: 'Cambodia', name: 'Cambodia', flag: '🇰🇭', coverage: 'partial', region: 'Southeast Asia' },
 
   // South Asia
-  { id: 'Bangladesh', name: 'Bangladesh', flag: '🇧🇩', coverage: 'partial' },
-  { id: 'Sri Lanka', name: 'Sri Lanka', flag: '🇱🇰', coverage: 'partial' },
-  { id: 'Nepal', name: 'Nepal', flag: '🇳🇵', coverage: 'partial' },
-  { id: 'Afghanistan', name: 'Afghanistan', flag: '🇦🇫', coverage: 'partial' },
+  { id: 'Bangladesh', name: 'Bangladesh', flag: '🇧🇩', coverage: 'partial', region: 'South Asia' },
+  { id: 'Sri Lanka', name: 'Sri Lanka', flag: '🇱🇰', coverage: 'partial', region: 'South Asia' },
+  { id: 'Nepal', name: 'Nepal', flag: '🇳🇵', coverage: 'partial', region: 'South Asia' },
+  { id: 'Afghanistan', name: 'Afghanistan', flag: '🇦🇫', coverage: 'partial', region: 'South Asia' },
 
-  // Middle East & Gulf (directly affected)
-  { id: 'Iraq', name: 'Iraq', flag: '🇮🇶', coverage: 'partial' },
-  { id: 'Lebanon', name: 'Lebanon', flag: '🇱🇧', coverage: 'partial' },
-  { id: 'Jordan', name: 'Jordan', flag: '🇯🇴', coverage: 'partial' },
-  { id: 'Yemen', name: 'Yemen', flag: '🇾🇪', coverage: 'partial' },
-  { id: 'Tunisia', name: 'Tunisia', flag: '🇹🇳', coverage: 'partial' },
+  // Middle East & North Africa
+  { id: 'Iraq', name: 'Iraq', flag: '🇮🇶', coverage: 'partial', region: 'Middle East & North Africa' },
+  { id: 'Lebanon', name: 'Lebanon', flag: '🇱🇧', coverage: 'partial', region: 'Middle East & North Africa' },
+  { id: 'Jordan', name: 'Jordan', flag: '🇯🇴', coverage: 'partial', region: 'Middle East & North Africa' },
+  { id: 'Yemen', name: 'Yemen', flag: '🇾🇪', coverage: 'partial', region: 'Middle East & North Africa' },
+  { id: 'Tunisia', name: 'Tunisia', flag: '🇹🇳', coverage: 'partial', region: 'Middle East & North Africa' },
 
-  // Africa
-  { id: 'Kenya', name: 'Kenya', flag: '🇰🇪', coverage: 'partial' },
-  { id: 'South Africa', name: 'South Africa', flag: '🇿🇦', coverage: 'partial' },
-  { id: 'Ghana', name: 'Ghana', flag: '🇬🇭', coverage: 'partial' },
-  { id: 'Tanzania', name: 'Tanzania', flag: '🇹🇿', coverage: 'partial' },
-  { id: 'Uganda', name: 'Uganda', flag: '🇺🇬', coverage: 'partial' },
-  { id: 'Mozambique', name: 'Mozambique', flag: '🇲🇿', coverage: 'partial' },
-  { id: 'Sudan', name: 'Sudan', flag: '🇸🇩', coverage: 'partial' },
-  { id: 'Senegal', name: 'Senegal', flag: '🇸🇳', coverage: 'partial' },
-  { id: 'Ethiopia', name: 'Ethiopia', flag: '🇪🇹', coverage: 'partial' },
+  // Sub-Saharan Africa
+  { id: 'Kenya', name: 'Kenya', flag: '🇰🇪', coverage: 'partial', region: 'Sub-Saharan Africa' },
+  { id: 'South Africa', name: 'South Africa', flag: '🇿🇦', coverage: 'partial', region: 'Sub-Saharan Africa' },
+  { id: 'Ghana', name: 'Ghana', flag: '🇬🇭', coverage: 'partial', region: 'Sub-Saharan Africa' },
+  { id: 'Tanzania', name: 'Tanzania', flag: '🇹🇿', coverage: 'partial', region: 'Sub-Saharan Africa' },
+  { id: 'Uganda', name: 'Uganda', flag: '🇺🇬', coverage: 'partial', region: 'Sub-Saharan Africa' },
+  { id: 'Mozambique', name: 'Mozambique', flag: '🇲🇿', coverage: 'partial', region: 'Sub-Saharan Africa' },
+  { id: 'Sudan', name: 'Sudan', flag: '🇸🇩', coverage: 'partial', region: 'Sub-Saharan Africa' },
+  { id: 'Senegal', name: 'Senegal', flag: '🇸🇳', coverage: 'partial', region: 'Sub-Saharan Africa' },
+  { id: 'Ethiopia', name: 'Ethiopia', flag: '🇪🇹', coverage: 'partial', region: 'Sub-Saharan Africa' },
 
-  // Europe (energy import dependent)
-  { id: 'Germany', name: 'Germany', flag: '🇩🇪', coverage: 'partial' },
-  { id: 'United Kingdom', name: 'United Kingdom', flag: '🇬🇧', coverage: 'partial' },
-  { id: 'France', name: 'France', flag: '🇫🇷', coverage: 'partial' },
-  { id: 'Italy', name: 'Italy', flag: '🇮🇹', coverage: 'partial' },
-  { id: 'Spain', name: 'Spain', flag: '🇪🇸', coverage: 'partial' },
-  { id: 'Poland', name: 'Poland', flag: '🇵🇱', coverage: 'partial' },
-  { id: 'Greece', name: 'Greece', flag: '🇬🇷', coverage: 'partial' },
+  // Europe
+  { id: 'Germany', name: 'Germany', flag: '🇩🇪', coverage: 'partial', region: 'Europe' },
+  { id: 'United Kingdom', name: 'United Kingdom', flag: '🇬🇧', coverage: 'partial', region: 'Europe' },
+  { id: 'France', name: 'France', flag: '🇫🇷', coverage: 'partial', region: 'Europe' },
+  { id: 'Italy', name: 'Italy', flag: '🇮🇹', coverage: 'partial', region: 'Europe' },
+  { id: 'Spain', name: 'Spain', flag: '🇪🇸', coverage: 'partial', region: 'Europe' },
+  { id: 'Poland', name: 'Poland', flag: '🇵🇱', coverage: 'partial', region: 'Europe' },
+  { id: 'Greece', name: 'Greece', flag: '🇬🇷', coverage: 'partial', region: 'Europe' },
 
   // Americas
-  { id: 'Mexico', name: 'Mexico', flag: '🇲🇽', coverage: 'partial' },
-  { id: 'Colombia', name: 'Colombia', flag: '🇨🇴', coverage: 'partial' },
-  { id: 'Peru', name: 'Peru', flag: '🇵🇪', coverage: 'partial' },
-  { id: 'Chile', name: 'Chile', flag: '🇨🇱', coverage: 'partial' },
+  { id: 'Mexico', name: 'Mexico', flag: '🇲🇽', coverage: 'partial', region: 'Americas' },
+  { id: 'Colombia', name: 'Colombia', flag: '🇨🇴', coverage: 'partial', region: 'Americas' },
+  { id: 'Peru', name: 'Peru', flag: '🇵🇪', coverage: 'partial', region: 'Americas' },
+  { id: 'Chile', name: 'Chile', flag: '🇨🇱', coverage: 'partial', region: 'Americas' },
 
   // Experimental
-  { id: 'Argentina', name: 'Argentina', flag: '🇦🇷', coverage: 'experimental' },
-  { id: 'Algeria', name: 'Algeria', flag: '🇩🇿', coverage: 'experimental' },
-  { id: 'Libya', name: 'Libya', flag: '🇱🇾', coverage: 'experimental' },
-  { id: 'Somalia', name: 'Somalia', flag: '🇸🇴', coverage: 'experimental' },
-  { id: 'Venezuela', name: 'Venezuela', flag: '🇻🇪', coverage: 'experimental' },
+  { id: 'Argentina', name: 'Argentina', flag: '🇦🇷', coverage: 'experimental', region: 'Americas' },
+  { id: 'Algeria', name: 'Algeria', flag: '🇩🇿', coverage: 'experimental', region: 'Middle East & North Africa' },
+  { id: 'Libya', name: 'Libya', flag: '🇱🇾', coverage: 'experimental', region: 'Middle East & North Africa' },
+  { id: 'Somalia', name: 'Somalia', flag: '🇸🇴', coverage: 'experimental', region: 'Sub-Saharan Africa' },
+  { id: 'Venezuela', name: 'Venezuela', flag: '🇻🇪', coverage: 'experimental', region: 'Americas' },
 ]
 
 export const COUNTRY_MAP = Object.fromEntries(
