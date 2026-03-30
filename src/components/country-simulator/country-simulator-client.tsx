@@ -339,7 +339,7 @@ export function CountrySimulatorClient() {
           ))}
 
           {/* Consumer goods reference (iPhone, BMW, etc.) */}
-          <ConsumerGoods warId={warId} />
+          <ConsumerGoods warId={warId} country={country} />
 
           {/* Live commodity prices */}
           <LivePrices />
@@ -357,7 +357,7 @@ export function CountrySimulatorClient() {
                   <p className="font-sans text-[0.68rem] text-ink-muted">Consumer Goods Reference</p>
                 </div>
               </div>
-              <ConsumerGoods warId={warId} />
+              <ConsumerGoods warId={warId} country={country} />
               <div className="border-t border-border my-5" />
             </div>
           )}
