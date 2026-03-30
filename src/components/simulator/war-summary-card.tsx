@@ -168,69 +168,72 @@ export function WarSummaryCard({
           />
         </>
       ) : (
-        <>
-          {/* No country selected — show top impacted country + shocks */}
-          {topCountry && (
-            <div className="mb-4">
-              <div className="flex items-baseline gap-2 mb-1">
-                <span className="text-[2rem] font-light text-accent-warm tracking-tight">
-                  +{topCountry.p}%
-                </span>
-                <span className="font-sans text-[0.82rem] text-white/60">
-                  {topCountry.f} {topCountry.c}
-                </span>
+        <div className="flex flex-col md:flex-row gap-6">
+          {/* Left: impact + shocks + CTA */}
+          <div className="flex-1">
+            {topCountry && (
+              <div className="mb-4">
+                <div className="flex items-baseline gap-2 mb-1">
+                  <span className="text-[2rem] font-light text-accent-warm tracking-tight">
+                    +{topCountry.p}%
+                  </span>
+                  <span className="font-sans text-[0.82rem] text-white/60">
+                    {topCountry.f} {topCountry.c}
+                  </span>
+                </div>
+                <p className="font-sans text-[0.72rem] text-white/40">
+                  {t('soWhat.topShocks')}
+                </p>
               </div>
-              <p className="font-sans text-[0.72rem] text-white/40">
-                {t('soWhat.topShocks')}
-              </p>
+            )}
+            <div className="flex flex-wrap gap-1.5 mb-4">
+              {topShocks.map((shock) => (
+                <span
+                  key={shock.factor}
+                  className="font-sans text-[0.65rem] bg-white/10 text-white/70 px-2.5 py-1 rounded-md"
+                >
+                  {shock.factor}{' '}
+                  <strong className="text-accent-warm">{shock.val}</strong>
+                </span>
+              ))}
             </div>
-          )}
-          <div className="flex flex-wrap gap-1.5 mb-4">
-            {topShocks.map((shock) => (
-              <span
-                key={shock.factor}
-                className="font-sans text-[0.65rem] bg-white/10 text-white/70 px-2.5 py-1 rounded-md"
-              >
-                {shock.factor}{' '}
-                <strong className="text-accent-warm">{shock.val}</strong>
-              </span>
-            ))}
+            <p className="font-sans text-[0.78rem] text-accent-warm font-semibold">
+              {t('simulator.exploreCountry')} &darr;
+            </p>
           </div>
-          {/* Belligerent countries involved */}
+
+          {/* Right: belligerent countries */}
           {(() => {
             const involved = BELLIGERENT_COUNTRIES.filter((b) => b.wars.includes(warId))
             if (involved.length === 0) return null
             return (
-              <div className="mb-4">
-                <p className="font-sans text-[0.65rem] text-white/40 uppercase tracking-wider mb-2">
+              <div className="md:w-[240px] shrink-0 md:border-l md:border-white/10 md:pl-6">
+                <p className="font-sans text-[0.62rem] text-white/40 uppercase tracking-wider mb-2.5">
                   Directly involved
                 </p>
-                <div className="flex flex-wrap gap-2">
+                <div className="space-y-2">
                   {involved.map((b) => {
                     const dir = b.warImpact?.[warId] ?? 'neutral'
                     return (
-                      <span
-                        key={b.name}
-                        className="inline-flex items-center gap-1.5 bg-white/10 rounded-md px-2.5 py-1 font-sans text-[0.7rem] text-white/80"
-                      >
-                        <span>{b.flag}</span>
-                        <span>{b.name}</span>
-                        <span className={`text-[0.6rem] font-bold ${
+                      <div key={b.name} className="flex items-center gap-2">
+                        <span className="text-lg shrink-0">{b.flag}</span>
+                        <div className="flex-1 min-w-0">
+                          <div className="font-sans text-[0.75rem] text-white/85 font-semibold">{b.name}</div>
+                          <div className="font-sans text-[0.6rem] text-white/40 truncate">{b.role.split(',')[0]}</div>
+                        </div>
+                        <span className={`font-sans text-[0.65rem] font-bold shrink-0 ${
                           dir === 'positive' ? 'text-green' : dir === 'negative' ? 'text-accent' : 'text-white/40'
                         }`}>
-                          {dir === 'positive' ? '▲' : dir === 'negative' ? '▼' : '—'}
+                          {dir === 'positive' ? '▲ Gains' : dir === 'negative' ? '▼ Costs' : '— Neutral'}
                         </span>
-                      </span>
+                      </div>
                     )
                   })}
                 </div>
               </div>
             )
           })()}
-          <p className="font-sans text-[0.78rem] text-accent-warm font-semibold">
-            {t('simulator.exploreCountry')} &darr;
-          </p>
-        </>
+        </div>
       )}
 
       {/* Provenance footer */}
