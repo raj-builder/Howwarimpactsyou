@@ -207,21 +207,21 @@ export function WarSummaryCard({
             const involved = BELLIGERENT_COUNTRIES.filter((b) => b.wars.includes(warId))
             if (involved.length === 0) return null
             return (
-              <div className="md:w-[240px] shrink-0 md:border-l md:border-white/10 md:pl-6">
-                <p className="font-sans text-[0.62rem] text-white/40 uppercase tracking-wider mb-2.5">
+              <div className="md:flex-1 md:border-l md:border-white/10 md:pl-8">
+                <p className="font-sans text-[0.72rem] text-white/40 uppercase tracking-wider mb-3">
                   Directly involved
                 </p>
-                <div className="space-y-2">
+                <div className="space-y-3">
                   {involved.map((b) => {
                     const dir = b.warImpact?.[warId] ?? 'neutral'
                     return (
-                      <div key={b.name} className="flex items-center gap-2">
-                        <span className="text-lg shrink-0">{b.flag}</span>
+                      <div key={b.name} className="flex items-center gap-3">
+                        <span className="text-2xl shrink-0">{b.flag}</span>
                         <div className="flex-1 min-w-0">
-                          <div className="font-sans text-[0.75rem] text-white/85 font-semibold">{b.name}</div>
-                          <div className="font-sans text-[0.6rem] text-white/40 truncate">{b.role.split(',')[0]}</div>
+                          <div className="font-sans text-[0.92rem] text-white/90 font-semibold">{b.name}</div>
+                          <div className="font-sans text-[0.72rem] text-white/45">{b.role.split(',')[0]}</div>
                         </div>
-                        <span className={`font-sans text-[0.65rem] font-bold shrink-0 ${
+                        <span className={`font-sans text-[0.78rem] font-bold shrink-0 ${
                           dir === 'positive' ? 'text-green' : dir === 'negative' ? 'text-accent' : 'text-white/40'
                         }`}>
                           {dir === 'positive' ? '▲ Gains' : dir === 'negative' ? '▼ Costs' : '— Neutral'}
