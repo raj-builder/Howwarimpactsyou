@@ -560,7 +560,7 @@ export const WARS: Record<WarId, War> = {
           { f: '\uD83C\uDDF8\uD83C\uDDE9', c: 'Sudan', p: 15.2 },
           { f: '\uD83C\uDDF5\uD83C\uDDED', c: 'Philippines', p: 16.2 },
           { f: '\uD83C\uDDE6\uD83C\uDDEB', c: 'Afghanistan', p: 16.8 },
-          { f: '\uD83C\uDDE6\uD83C\uDDFF', c: 'Algeria', p: 8.1 },
+          { f: '\uD83C\uDDE9\uD83C\uDDFF', c: 'Algeria', p: 8.1 },
           { f: '\uD83C\uDDF1\uD83C\uDDFE', c: 'Libya', p: 7.2 },
           { f: '\uD83C\uDDF8\uD83C\uDDF4', c: 'Somalia', p: 18.2 },
           { f: '\uD83C\uDDFB\uD83C\uDDEA', c: 'Venezuela', p: 12.8 },
