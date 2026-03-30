@@ -53,9 +53,11 @@ export function CountrySimulatorClient() {
   const [country, setCountry] = useState(
     searchParams.get('country') || 'Philippines',
   )
-  const [categoryId, setCategoryId] = useState<CategoryId>(
-    (searchParams.get('category') as CategoryId) || 'bread',
+  const [categoryOrGoods, setCategoryOrGoods] = useState<string>(
+    searchParams.get('category') || 'bread',
   )
+  const isConsumerGoods = categoryOrGoods === 'consumer-goods'
+  const categoryId = (isConsumerGoods ? 'basket' : categoryOrGoods) as CategoryId
   const [passthrough, setPassthrough] = useState(
     Number(searchParams.get('pt')) || 100,
   )
@@ -68,11 +70,11 @@ export function CountrySimulatorClient() {
     const params = new URLSearchParams()
     params.set('war', warId)
     params.set('country', country)
-    params.set('category', categoryId)
+    params.set('category', categoryOrGoods)
     params.set('pt', String(passthrough))
     params.set('lag', lag)
     router.replace(`/country-simulator?${params.toString()}`, { scroll: false })
-  }, [warId, country, categoryId, passthrough, lag, router])
+  }, [warId, country, categoryOrGoods, passthrough, lag, router])
 
   useEffect(() => {
     updateUrl()
@@ -218,13 +220,14 @@ export function CountrySimulatorClient() {
             {t('countrySimulator.selectCategory')}
           </legend>
           <select
-            value={categoryId}
-            onChange={(e) => setCategoryId(e.target.value as CategoryId)}
+            value={categoryOrGoods}
+            onChange={(e) => setCategoryOrGoods(e.target.value)}
             className="w-full border border-border rounded-lg px-3 py-2 font-sans text-[0.82rem] text-ink bg-bg-card focus:outline-none focus:border-accent focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-1"
           >
             {CATEGORIES.map((cat) => (
               <option key={cat.id} value={cat.id}>{cat.icon} {cat.label}</option>
             ))}
+            <option value="consumer-goods">🏷️ Consumer Goods Reference</option>
           </select>
         </fieldset>
 
@@ -344,8 +347,23 @@ export function CountrySimulatorClient() {
 
         {/* ====== RIGHT: Detail + Basket Summary ====== */}
         <aside className="bg-bg-card border border-border rounded-[10px] p-5 shadow-card md:sticky md:top-[72px] order-1 md:order-2 space-y-5">
+          {/* --- Consumer goods detail (when selected) --- */}
+          {isConsumerGoods && (
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-xl">{COUNTRY_MAP[country]?.flag ?? ''}</span>
+                <div>
+                  <h3 className="font-sans text-[0.88rem] font-bold text-ink">{country}</h3>
+                  <p className="font-sans text-[0.68rem] text-ink-muted">Consumer Goods Reference</p>
+                </div>
+              </div>
+              <ConsumerGoods warId={warId} />
+              <div className="border-t border-border my-5" />
+            </div>
+          )}
+
           {/* --- Category detail panel --- */}
-          {scenarioResult && (
+          {!isConsumerGoods && scenarioResult && (
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <span className="text-xl">{COUNTRY_MAP[country]?.flag ?? ''}</span>

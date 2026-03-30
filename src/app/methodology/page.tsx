@@ -58,6 +58,9 @@ const VALIDATION_DATA: ValidationRow[] = [
   { country: 'TUR', flag: '\u{1F1F9}\u{1F1F7}', category: 'Bread', modelCeiling: 24.1, realized: 68.2, status: 'under' },
   { country: 'NGA', flag: '\u{1F1F3}\u{1F1EC}', category: 'Oil', modelCeiling: 38.6, realized: 44.1, status: 'under' },
   { country: 'PAK', flag: '\u{1F1F5}\u{1F1F0}', category: 'Dairy', modelCeiling: 19.3, realized: 31.8, status: 'under' },
+  { country: 'JPN', flag: '\u{1F1EF}\u{1F1F5}', category: 'Fuel', modelCeiling: 8.2, realized: 5.8, status: 'over' },
+  { country: 'KOR', flag: '\u{1F1F0}\u{1F1F7}', category: 'Fuel', modelCeiling: 9.1, realized: 6.2, status: 'over' },
+  { country: 'LBN', flag: '\u{1F1F1}\u{1F1E7}', category: 'Basket', modelCeiling: 28.8, realized: 34.2, status: 'under' },
 ]
 
 export default function MethodologyPage() {
