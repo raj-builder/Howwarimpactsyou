@@ -24,6 +24,8 @@ interface WarEscalationCardProps {
   compact?: boolean
   /** Render as a narrower horizontal card for the war strip */
   horizontal?: boolean
+  /** Wikipedia or source URL for this conflict */
+  sourceUrl?: string
 }
 
 function ChangeBadge({ pct }: { pct: number | null | undefined }) {
@@ -69,6 +71,7 @@ export function WarEscalationCard({
   onClick,
   compact,
   horizontal,
+  sourceUrl,
 }: WarEscalationCardProps) {
   const t = useT()
   const anchors = useMemo(() => getWarAnchors(warId), [warId])
@@ -111,7 +114,20 @@ export function WarEscalationCard({
             </span>
           )}
         </div>
-        <p className="font-sans text-[0.68rem] text-white/50 mb-0.5">{warDates}</p>
+        <div className="flex items-center gap-2 mb-0.5">
+          <p className="font-sans text-[0.68rem] text-white/50">{warDates}</p>
+          {sourceUrl && (
+            <a
+              href={sourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="font-sans text-[0.58rem] text-accent-warm/70 hover:text-accent-warm no-underline transition-colors"
+            >
+              Source
+            </a>
+          )}
+        </div>
         {!horizontal && (
           <p className="font-sans text-[0.68rem] text-white/40 mb-3 leading-snug">
             {pivotalEvent}

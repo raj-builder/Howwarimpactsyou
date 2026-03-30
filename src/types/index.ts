@@ -40,6 +40,8 @@ export interface War {
   live: boolean
   shocks: Shock[]
   rankings: Record<CategoryId, CategoryRanking>
+  /** Wikipedia or authoritative source URL for this conflict */
+  sourceUrl?: string
 }
 
 export interface CurrencyEntry {

@@ -5,6 +5,7 @@ export const WARS: Record<WarId, War> = {
     name: 'Russia\u2013Ukraine War',
     dates: 'Feb 2022 \u2013 Present (ongoing)',
     live: true,
+    sourceUrl: 'https://en.wikipedia.org/wiki/Russian_invasion_of_Ukraine',
     shocks: [
       { factor: '\uD83C\uDF3E Wheat', val: '+38%' },
       { factor: '\u26A1 Natural Gas', val: '+220%' },
@@ -179,6 +180,7 @@ export const WARS: Record<WarId, War> = {
     name: 'Iran\u2013Israel\u2013US Conflict',
     dates: 'Apr 2024 \u2013 Present (ongoing)',
     live: true,
+    sourceUrl: 'https://en.wikipedia.org/wiki/2026_Iran_war',
     shocks: [
       { factor: '\u26A1 Brent Crude', val: '+18%' },
       { factor: '\uD83D\uDEA2 Shipping', val: '+45%' },
@@ -352,6 +354,7 @@ export const WARS: Record<WarId, War> = {
     name: 'Strait of Hormuz Escalation',
     dates: 'Feb 2026 \u2013 Present*',
     live: true,
+    sourceUrl: 'https://en.wikipedia.org/wiki/2026_Strait_of_Hormuz_crisis',
     shocks: [
       { factor: '\u26A1 Brent Crude', val: '+54%' },
       { factor: '\uD83D\uDEA2 Shipping', val: '+150%' },
@@ -569,6 +572,7 @@ export const WARS: Record<WarId, War> = {
     name: 'Gaza War / Red Sea Crisis',
     dates: 'Oct 2023 \u2013 Present',
     live: false,
+    sourceUrl: 'https://en.wikipedia.org/wiki/Israel%E2%80%93Hamas_war',
     shocks: [
       { factor: '\uD83D\uDEA2 Shipping costs', val: '+340%' },
       { factor: '\u26A1 Brent', val: '+12%' },
@@ -741,6 +745,7 @@ export const WARS: Record<WarId, War> = {
     name: 'COVID-19 Supply Shock',
     dates: 'Jan 2020 \u2013 Dec 2021',
     live: false,
+    sourceUrl: 'https://en.wikipedia.org/wiki/Economic_impact_of_the_COVID-19_pandemic',
     shocks: [
       { factor: '\u26A1 Oil', val: '\u201340% then +90%' },
       { factor: '\uD83C\uDF3E Grains', val: '+25%' },
@@ -914,6 +919,7 @@ export const WARS: Record<WarId, War> = {
     name: 'Iraq War / Gulf Oil Shock',
     dates: 'Mar 2003 \u2013 Dec 2004',
     live: false,
+    sourceUrl: 'https://en.wikipedia.org/wiki/Iraq_War',
     shocks: [
       { factor: '\u26A1 Brent Crude', val: '+45%' },
       { factor: '\uD83E\uDE99 USD weakness', val: '\u201312%' },

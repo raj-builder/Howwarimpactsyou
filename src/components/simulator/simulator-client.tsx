@@ -120,6 +120,7 @@ export function SimulatorClient() {
                 onClick={() => setWarId(wId)}
                 compact
                 horizontal
+                sourceUrl={w.sourceUrl}
               />
             </div>
           )
