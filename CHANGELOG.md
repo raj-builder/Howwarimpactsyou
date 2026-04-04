@@ -1,3 +1,43 @@
+## [2026-04-05] — UI restructure, belligerent rankings, feedback, SerpAPI cache
+
+### What changed
+- Renamed "Simulator" → "Regional Impact", "Country Simulator" → "Country Impact"
+- All "Open Simulator" CTAs now point to /country-simulator as the main tool
+- Merged Methodology + Data Sources + Learn into single `/how-it-works` page with assumptions upfront
+- New `/feedback` page: form (name, email, X/LinkedIn, message, source URL) stored in Vercel KV
+- 8 belligerent countries (USA, Iran, Israel, Saudi Arabia, UAE, Kuwait, Qatar, Bahrain) with full Hormuz 2026 rankings across all 10 categories
+- Belligerent insight cards: replaced misleading "Gains/Costs" with actual basket impact % + plain-language explanations
+- Belligerent countries moved from dark war card to standalone clickable rows below
+- 4 category-specific impact cards (Cereal, Fuel, Oil, Dairy) on simulator showing top 3 countries each
+- Homepage "Most impacted by Hormuz" section with top 5 countries + CTA
+- SerpAPI server-side file cache with 48h TTL (~9 calls until Apr 22 vs unlimited before)
+- EIA bulk data pull script for 164 countries (`scripts/eia-bulk-pull.ts`)
+- Oil consumption data updated from EIA 2024 actuals for 14 fuel-alert countries
+- 65 countries total (added USA, Iran, Israel, Saudi Arabia, UAE, Kuwait, Qatar, Bahrain, Australia, New Zealand)
+- FX dates updated from Mar 2026 → Apr 2026 across all 30 currency entries
+- `.env.example` created with EIA_API_KEY placeholder
+
+### Why
+Users needed to see impact data for directly involved countries (previously showing +0%). The simulator page had too many nav tabs. Community feedback mechanism was missing. SerpAPI was burning through 250/month quota without server-side caching.
+
+### Data & calculation notes
+- Belligerent rankings calibrated against existing data: Iran (32.6% basket) matches Egypt as war-impacted economy. USA (6.8%) matches Brazil as food self-sufficient. Gulf states (12-16%) reflect 90% food import dependency offset by fuel subsidies and USD pegs.
+- SerpAPI cache: file-based in /tmp, 48h TTL. ~9 calls until Apr 22 renewal.
+- EIA data: 164 countries, petroleum consumption in TBPD + QBTU, dry natural gas in BCF. ProductId=5 for petroleum (consumption only), productId=26 for natural gas (all activities).
+
+### Upgrade notes for the next engineer or AI session
+- Flight Fuel Alert page built locally (12 files) but NOT deployed — needs UX redesign before launch
+- Partial/experimental countries (Peru, Chile, etc.) show +0% — need deep research for Hormuz 2026 rankings
+- EIA API key optional (`EIA_API_KEY` in `.env.local`) — app works without it
+- SerpAPI cache file at `/tmp/prices-cache.json` — persists across Vercel warm invocations
+
+### Credits & third-party use
+- U.S. Energy Information Administration (EIA) — oil consumption data (public domain)
+- GDELT Project — news monitoring API (free, commercial OK)
+- Vercel KV — feedback form storage
+
+---
+
 ## [2026-04-04] — Flight Fuel Alert feature + weekly news digest
 
 ### What changed
