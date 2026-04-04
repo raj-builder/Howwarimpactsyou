@@ -1,0 +1,1322 @@
+{
+  "generatedAt": "2026-04-04T18:29:06.411Z",
+  "source": "EIA International Energy Statistics (api.eia.gov/v2/international)",
+  "licence": "Public domain (U.S. Government)",
+  "period": "2024-2025 (latest available)",
+  "totalCountries": 164,
+  "totalApiCalls": 492,
+  "countries": [
+    {
+      "countryId": "Australia",
+      "eiaCode": "AUS",
+      "latestYear": "2025",
+      "oilConsumptionBpd": 1150942,
+      "petroleumQbtu": 2.37,
+      "natgasBcf": 1739
+    },
+    {
+      "countryId": "New Zealand",
+      "eiaCode": "NZL",
+      "latestYear": "2025",
+      "oilConsumptionBpd": 159392,
+      "petroleumQbtu": 0.32,
+      "natgasBcf": 116
+    },
+    {
+      "countryId": "Japan",
+      "eiaCode": "JPN",
+      "latestYear": "2025",
+      "oilConsumptionBpd": 3071770,
+      "petroleumQbtu": 6.15,
+      "natgasBcf": 3151
+    },
+    {
+      "countryId": "South Korea",
+      "eiaCode": "KOR",
+      "latestYear": "2025",
+      "oilConsumptionBpd": 2437060,
+      "petroleumQbtu": 4.94,
+      "natgasBcf": 2187
+    },
+    {
+      "countryId": "China",
+      "eiaCode": "CHN",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 16370536,
+      "petroleumQbtu": 32.22,
+      "natgasBcf": 15005
+    },
+    {
+      "countryId": "Taiwan",
+      "eiaCode": "TWN",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 871491,
+      "petroleumQbtu": 1.71,
+      "natgasBcf": 1021
+    },
+    {
+      "countryId": "Hong Kong",
+      "eiaCode": "HKG",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 278541,
+      "petroleumQbtu": 0.59,
+      "natgasBcf": 196
+    },
+    {
+      "countryId": "Indonesia",
+      "eiaCode": "IDN",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 1626878,
+      "petroleumQbtu": 3.16,
+      "natgasBcf": 1765
+    },
+    {
+      "countryId": "Philippines",
+      "eiaCode": "PHL",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 473464,
+      "petroleumQbtu": 0.94,
+      "natgasBcf": 116
+    },
+    {
+      "countryId": "Thailand",
+      "eiaCode": "THA",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 1372480,
+      "petroleumQbtu": 2.65,
+      "natgasBcf": 1602
+    },
+    {
+      "countryId": "Vietnam",
+      "eiaCode": "VNM",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 555218,
+      "petroleumQbtu": 1.1,
+      "natgasBcf": 239
+    },
+    {
+      "countryId": "Malaysia",
+      "eiaCode": "MYS",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 747112,
+      "petroleumQbtu": 1.46,
+      "natgasBcf": 1674
+    },
+    {
+      "countryId": "Singapore",
+      "eiaCode": "SGP",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 1482170,
+      "petroleumQbtu": 3.23,
+      "natgasBcf": 489
+    },
+    {
+      "countryId": "Myanmar",
+      "eiaCode": "MMR",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 125315,
+      "petroleumQbtu": 0.26,
+      "natgasBcf": 142
+    },
+    {
+      "countryId": "Cambodia",
+      "eiaCode": "KHM",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 73533,
+      "petroleumQbtu": 0.15,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Laos",
+      "eiaCode": "LAO",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 23517,
+      "petroleumQbtu": 0.05,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Brunei",
+      "eiaCode": "BRN",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 16338,
+      "petroleumQbtu": 0.03,
+      "natgasBcf": 138
+    },
+    {
+      "countryId": "India",
+      "eiaCode": "IND",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 5598890,
+      "petroleumQbtu": 10.66,
+      "natgasBcf": 2513
+    },
+    {
+      "countryId": "Pakistan",
+      "eiaCode": "PAK",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 479218,
+      "petroleumQbtu": 0.97,
+      "natgasBcf": 1217
+    },
+    {
+      "countryId": "Bangladesh",
+      "eiaCode": "BGD",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 287859,
+      "petroleumQbtu": 0.6,
+      "natgasBcf": 955
+    },
+    {
+      "countryId": "Sri Lanka",
+      "eiaCode": "LKA",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 91962,
+      "petroleumQbtu": 0.18,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Nepal",
+      "eiaCode": "NPL",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 60691,
+      "petroleumQbtu": 0.12,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Afghanistan",
+      "eiaCode": "AFG",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 57740,
+      "petroleumQbtu": 0.11,
+      "natgasBcf": null
+    },
+    {
+      "countryId": "Saudi Arabia",
+      "eiaCode": "SAU",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 3630712,
+      "petroleumQbtu": 7.15,
+      "natgasBcf": 4357
+    },
+    {
+      "countryId": "UAE",
+      "eiaCode": "ARE",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 877966,
+      "petroleumQbtu": 1.86,
+      "natgasBcf": 2535
+    },
+    {
+      "countryId": "Iran",
+      "eiaCode": "IRN",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 1970348,
+      "petroleumQbtu": 3.86,
+      "natgasBcf": 9316
+    },
+    {
+      "countryId": "Iraq",
+      "eiaCode": "IRQ",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 1060795,
+      "petroleumQbtu": 2.19,
+      "natgasBcf": 647
+    },
+    {
+      "countryId": "Kuwait",
+      "eiaCode": "KWT",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 419129,
+      "petroleumQbtu": 0.82,
+      "natgasBcf": 998
+    },
+    {
+      "countryId": "Qatar",
+      "eiaCode": "QAT",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 276281,
+      "petroleumQbtu": 0.49,
+      "natgasBcf": 1653
+    },
+    {
+      "countryId": "Bahrain",
+      "eiaCode": "BHR",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 70235,
+      "petroleumQbtu": 0.14,
+      "natgasBcf": 661
+    },
+    {
+      "countryId": "Oman",
+      "eiaCode": "OMN",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 230821,
+      "petroleumQbtu": 0.47,
+      "natgasBcf": 1050
+    },
+    {
+      "countryId": "Yemen",
+      "eiaCode": "YEM",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 100734,
+      "petroleumQbtu": 0.2,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Jordan",
+      "eiaCode": "JOR",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 100695,
+      "petroleumQbtu": 0.2,
+      "natgasBcf": 172
+    },
+    {
+      "countryId": "Lebanon",
+      "eiaCode": "LBN",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 114321,
+      "petroleumQbtu": 0.23,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Syria",
+      "eiaCode": "SYR",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 123817,
+      "petroleumQbtu": 0.26,
+      "natgasBcf": 132
+    },
+    {
+      "countryId": "Israel",
+      "eiaCode": "ISR",
+      "latestYear": "2025",
+      "oilConsumptionBpd": 220375,
+      "petroleumQbtu": 0.44,
+      "natgasBcf": 478
+    },
+    {
+      "countryId": "Palestine",
+      "eiaCode": "PSE",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 34405,
+      "petroleumQbtu": 0.07,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Egypt",
+      "eiaCode": "EGY",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 953191,
+      "petroleumQbtu": 1.92,
+      "natgasBcf": 2102
+    },
+    {
+      "countryId": "Libya",
+      "eiaCode": "LBY",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 217476,
+      "petroleumQbtu": 0.43,
+      "natgasBcf": 378
+    },
+    {
+      "countryId": "Tunisia",
+      "eiaCode": "TUN",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 102742,
+      "petroleumQbtu": 0.2,
+      "natgasBcf": 190
+    },
+    {
+      "countryId": "Algeria",
+      "eiaCode": "DZA",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 457331,
+      "petroleumQbtu": 0.89,
+      "natgasBcf": 1877
+    },
+    {
+      "countryId": "Morocco",
+      "eiaCode": "MAR",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 319401,
+      "petroleumQbtu": 0.62,
+      "natgasBcf": 33
+    },
+    {
+      "countryId": "Nigeria",
+      "eiaCode": "NGA",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 492939,
+      "petroleumQbtu": 0.96,
+      "natgasBcf": 709
+    },
+    {
+      "countryId": "South Africa",
+      "eiaCode": "ZAF",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 612110,
+      "petroleumQbtu": 1.27,
+      "natgasBcf": 138
+    },
+    {
+      "countryId": "Kenya",
+      "eiaCode": "KEN",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 116161,
+      "petroleumQbtu": 0.23,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Ghana",
+      "eiaCode": "GHA",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 102779,
+      "petroleumQbtu": 0.2,
+      "natgasBcf": 150
+    },
+    {
+      "countryId": "Tanzania",
+      "eiaCode": "TZA",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 83536,
+      "petroleumQbtu": 0.16,
+      "natgasBcf": 70
+    },
+    {
+      "countryId": "Uganda",
+      "eiaCode": "UGA",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 44015,
+      "petroleumQbtu": 0.09,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Ethiopia",
+      "eiaCode": "ETH",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 103689,
+      "petroleumQbtu": 0.22,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Senegal",
+      "eiaCode": "SEN",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 72917,
+      "petroleumQbtu": 0.15,
+      "natgasBcf": 1
+    },
+    {
+      "countryId": "Sudan",
+      "eiaCode": "SDN",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 86186,
+      "petroleumQbtu": 0.18,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Mozambique",
+      "eiaCode": "MOZ",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 42455,
+      "petroleumQbtu": 0.09,
+      "natgasBcf": 68
+    },
+    {
+      "countryId": "Angola",
+      "eiaCode": "AGO",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 122135,
+      "petroleumQbtu": 0.24,
+      "natgasBcf": 43
+    },
+    {
+      "countryId": "Cameroon",
+      "eiaCode": "CMR",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 39089,
+      "petroleumQbtu": 0.08,
+      "natgasBcf": 22
+    },
+    {
+      "countryId": "Cote d'Ivoire",
+      "eiaCode": "CIV",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 93431,
+      "petroleumQbtu": 0.18,
+      "natgasBcf": 96
+    },
+    {
+      "countryId": "DR Congo",
+      "eiaCode": "COD",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 25053,
+      "petroleumQbtu": 0.05,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Congo",
+      "eiaCode": "COG",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 14100,
+      "petroleumQbtu": 0.03,
+      "natgasBcf": 49
+    },
+    {
+      "countryId": "Gabon",
+      "eiaCode": "GAB",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 14511,
+      "petroleumQbtu": 0.03,
+      "natgasBcf": 17
+    },
+    {
+      "countryId": "Equatorial Guinea",
+      "eiaCode": "GNQ",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 6337,
+      "petroleumQbtu": 0.01,
+      "natgasBcf": 88
+    },
+    {
+      "countryId": "Chad",
+      "eiaCode": "TCD",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 13284,
+      "petroleumQbtu": 0.03,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Niger",
+      "eiaCode": "NER",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 20173,
+      "petroleumQbtu": 0.04,
+      "natgasBcf": 1
+    },
+    {
+      "countryId": "Mali",
+      "eiaCode": "MLI",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 46485,
+      "petroleumQbtu": 0.1,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Burkina Faso",
+      "eiaCode": "BFA",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 39399,
+      "petroleumQbtu": 0.08,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Malawi",
+      "eiaCode": "MWI",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 10525,
+      "petroleumQbtu": 0.02,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Zambia",
+      "eiaCode": "ZMB",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 37129,
+      "petroleumQbtu": 0.08,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Zimbabwe",
+      "eiaCode": "ZWE",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 37730,
+      "petroleumQbtu": 0.08,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Botswana",
+      "eiaCode": "BWA",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 22611,
+      "petroleumQbtu": 0.05,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Namibia",
+      "eiaCode": "NAM",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 24413,
+      "petroleumQbtu": 0.05,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Madagascar",
+      "eiaCode": "MDG",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 19465,
+      "petroleumQbtu": 0.04,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Rwanda",
+      "eiaCode": "RWA",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 9824,
+      "petroleumQbtu": 0.02,
+      "natgasBcf": 3
+    },
+    {
+      "countryId": "Somalia",
+      "eiaCode": "SOM",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 11150,
+      "petroleumQbtu": 0.02,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "South Sudan",
+      "eiaCode": "SSD",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 11890,
+      "petroleumQbtu": 0.02,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Eritrea",
+      "eiaCode": "ERI",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 4919,
+      "petroleumQbtu": 0.01,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Benin",
+      "eiaCode": "BEN",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 47217,
+      "petroleumQbtu": 0.09,
+      "natgasBcf": 5
+    },
+    {
+      "countryId": "Togo",
+      "eiaCode": "TGO",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 15690,
+      "petroleumQbtu": 0.03,
+      "natgasBcf": 5
+    },
+    {
+      "countryId": "Sierra Leone",
+      "eiaCode": "SLE",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 11142,
+      "petroleumQbtu": 0.02,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Liberia",
+      "eiaCode": "LBR",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 4853,
+      "petroleumQbtu": 0.01,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Mauritania",
+      "eiaCode": "MRT",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 30550,
+      "petroleumQbtu": 0.06,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Guinea",
+      "eiaCode": "GIN",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 31268,
+      "petroleumQbtu": 0.06,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Gambia",
+      "eiaCode": "GMB",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 3640,
+      "petroleumQbtu": 0.01,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Guinea-Bissau",
+      "eiaCode": "GNB",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 2443,
+      "petroleumQbtu": 0.01,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Cape Verde",
+      "eiaCode": "CPV",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 4791,
+      "petroleumQbtu": 0.01,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Eswatini",
+      "eiaCode": "SWZ",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 6255,
+      "petroleumQbtu": 0.01,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Lesotho",
+      "eiaCode": "LSO",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 5715,
+      "petroleumQbtu": 0.01,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Djibouti",
+      "eiaCode": "DJI",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 4775,
+      "petroleumQbtu": 0.01,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Comoros",
+      "eiaCode": "COM",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 2656,
+      "petroleumQbtu": 0.01,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Mauritius",
+      "eiaCode": "MUS",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 28460,
+      "petroleumQbtu": 0.06,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Seychelles",
+      "eiaCode": "SYC",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 6476,
+      "petroleumQbtu": 0.01,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Germany",
+      "eiaCode": "DEU",
+      "latestYear": "2025",
+      "oilConsumptionBpd": 2044090,
+      "petroleumQbtu": 4.18,
+      "natgasBcf": 2745
+    },
+    {
+      "countryId": "United Kingdom",
+      "eiaCode": "GBR",
+      "latestYear": "2025",
+      "oilConsumptionBpd": 1383995,
+      "petroleumQbtu": 2.82,
+      "natgasBcf": 2207
+    },
+    {
+      "countryId": "France",
+      "eiaCode": "FRA",
+      "latestYear": "2025",
+      "oilConsumptionBpd": 1499770,
+      "petroleumQbtu": 3.07,
+      "natgasBcf": 1090
+    },
+    {
+      "countryId": "Italy",
+      "eiaCode": "ITA",
+      "latestYear": "2025",
+      "oilConsumptionBpd": 1206521,
+      "petroleumQbtu": 2.45,
+      "natgasBcf": 2210
+    },
+    {
+      "countryId": "Spain",
+      "eiaCode": "ESP",
+      "latestYear": "2025",
+      "oilConsumptionBpd": 1334159,
+      "petroleumQbtu": 2.78,
+      "natgasBcf": 985
+    },
+    {
+      "countryId": "Poland",
+      "eiaCode": "POL",
+      "latestYear": "2025",
+      "oilConsumptionBpd": 739145,
+      "petroleumQbtu": 1.49,
+      "natgasBcf": 785
+    },
+    {
+      "countryId": "Netherlands",
+      "eiaCode": "NLD",
+      "latestYear": "2025",
+      "oilConsumptionBpd": 784863,
+      "petroleumQbtu": 1.6,
+      "natgasBcf": 1123
+    },
+    {
+      "countryId": "Belgium",
+      "eiaCode": "BEL",
+      "latestYear": "2025",
+      "oilConsumptionBpd": 599836,
+      "petroleumQbtu": 1.22,
+      "natgasBcf": 497
+    },
+    {
+      "countryId": "Sweden",
+      "eiaCode": "SWE",
+      "latestYear": "2025",
+      "oilConsumptionBpd": 270773,
+      "petroleumQbtu": 0.55,
+      "natgasBcf": 33
+    },
+    {
+      "countryId": "Norway",
+      "eiaCode": "NOR",
+      "latestYear": "2025",
+      "oilConsumptionBpd": 238992,
+      "petroleumQbtu": 0.49,
+      "natgasBcf": 167
+    },
+    {
+      "countryId": "Denmark",
+      "eiaCode": "DNK",
+      "latestYear": "2025",
+      "oilConsumptionBpd": 142436,
+      "petroleumQbtu": 0.3,
+      "natgasBcf": 81
+    },
+    {
+      "countryId": "Finland",
+      "eiaCode": "FIN",
+      "latestYear": "2025",
+      "oilConsumptionBpd": 172367,
+      "petroleumQbtu": 0.34,
+      "natgasBcf": 59
+    },
+    {
+      "countryId": "Austria",
+      "eiaCode": "AUT",
+      "latestYear": "2025",
+      "oilConsumptionBpd": 235478,
+      "petroleumQbtu": 0.49,
+      "natgasBcf": 245
+    },
+    {
+      "countryId": "Switzerland",
+      "eiaCode": "CHE",
+      "latestYear": "2025",
+      "oilConsumptionBpd": 195320,
+      "petroleumQbtu": 0.4,
+      "natgasBcf": 105
+    },
+    {
+      "countryId": "Ireland",
+      "eiaCode": "IRL",
+      "latestYear": "2025",
+      "oilConsumptionBpd": 157693,
+      "petroleumQbtu": 0.33,
+      "natgasBcf": 180
+    },
+    {
+      "countryId": "Portugal",
+      "eiaCode": "PRT",
+      "latestYear": "2025",
+      "oilConsumptionBpd": 218477,
+      "petroleumQbtu": 0.45,
+      "natgasBcf": 127
+    },
+    {
+      "countryId": "Greece",
+      "eiaCode": "GRC",
+      "latestYear": "2025",
+      "oilConsumptionBpd": 316071,
+      "petroleumQbtu": 0.65,
+      "natgasBcf": 214
+    },
+    {
+      "countryId": "Czech Republic",
+      "eiaCode": "CZE",
+      "latestYear": "2025",
+      "oilConsumptionBpd": 217211,
+      "petroleumQbtu": 0.44,
+      "natgasBcf": 236
+    },
+    {
+      "countryId": "Romania",
+      "eiaCode": "ROU",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 222627,
+      "petroleumQbtu": 0.46,
+      "natgasBcf": 326
+    },
+    {
+      "countryId": "Hungary",
+      "eiaCode": "HUN",
+      "latestYear": "2025",
+      "oilConsumptionBpd": 178537,
+      "petroleumQbtu": 0.37,
+      "natgasBcf": 301
+    },
+    {
+      "countryId": "Bulgaria",
+      "eiaCode": "BGR",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 108095,
+      "petroleumQbtu": 0.22,
+      "natgasBcf": 97
+    },
+    {
+      "countryId": "Croatia",
+      "eiaCode": "HRV",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 81914,
+      "petroleumQbtu": 0.17,
+      "natgasBcf": 82
+    },
+    {
+      "countryId": "Slovakia",
+      "eiaCode": "SVK",
+      "latestYear": "2025",
+      "oilConsumptionBpd": 93521,
+      "petroleumQbtu": 0.19,
+      "natgasBcf": 157
+    },
+    {
+      "countryId": "Slovenia",
+      "eiaCode": "SVN",
+      "latestYear": "2025",
+      "oilConsumptionBpd": 49654,
+      "petroleumQbtu": 0.1,
+      "natgasBcf": 32
+    },
+    {
+      "countryId": "Lithuania",
+      "eiaCode": "LTU",
+      "latestYear": "2025",
+      "oilConsumptionBpd": 64647,
+      "petroleumQbtu": 0.13,
+      "natgasBcf": 65
+    },
+    {
+      "countryId": "Latvia",
+      "eiaCode": "LVA",
+      "latestYear": "2025",
+      "oilConsumptionBpd": 33145,
+      "petroleumQbtu": 0.07,
+      "natgasBcf": 30
+    },
+    {
+      "countryId": "Estonia",
+      "eiaCode": "EST",
+      "latestYear": "2025",
+      "oilConsumptionBpd": 23614,
+      "petroleumQbtu": 0.05,
+      "natgasBcf": 12
+    },
+    {
+      "countryId": "Cyprus",
+      "eiaCode": "CYP",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 46382,
+      "petroleumQbtu": 0.1,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Malta",
+      "eiaCode": "MLT",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 46802,
+      "petroleumQbtu": 0.1,
+      "natgasBcf": 15
+    },
+    {
+      "countryId": "Luxembourg",
+      "eiaCode": "LUX",
+      "latestYear": "2025",
+      "oilConsumptionBpd": 48436,
+      "petroleumQbtu": 0.1,
+      "natgasBcf": 21
+    },
+    {
+      "countryId": "Iceland",
+      "eiaCode": "ISL",
+      "latestYear": "2025",
+      "oilConsumptionBpd": 21107,
+      "petroleumQbtu": 0.04,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Serbia",
+      "eiaCode": "SRB",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 87499,
+      "petroleumQbtu": 0.18,
+      "natgasBcf": 101
+    },
+    {
+      "countryId": "Bosnia",
+      "eiaCode": "BIH",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 37151,
+      "petroleumQbtu": 0.08,
+      "natgasBcf": 7
+    },
+    {
+      "countryId": "Albania",
+      "eiaCode": "ALB",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 24655,
+      "petroleumQbtu": 0.05,
+      "natgasBcf": 2
+    },
+    {
+      "countryId": "North Macedonia",
+      "eiaCode": "MKD",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 23522,
+      "petroleumQbtu": 0.05,
+      "natgasBcf": 12
+    },
+    {
+      "countryId": "Montenegro",
+      "eiaCode": "MNE",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 9287,
+      "petroleumQbtu": 0.02,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Ukraine",
+      "eiaCode": "UKR",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 205641,
+      "petroleumQbtu": 0.41,
+      "natgasBcf": 735
+    },
+    {
+      "countryId": "Belarus",
+      "eiaCode": "BLR",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 116200,
+      "petroleumQbtu": 0.24,
+      "natgasBcf": 545
+    },
+    {
+      "countryId": "Moldova",
+      "eiaCode": "MDA",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 23629,
+      "petroleumQbtu": 0.05,
+      "natgasBcf": 77
+    },
+    {
+      "countryId": "Georgia",
+      "eiaCode": "GEO",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 38674,
+      "petroleumQbtu": 0.08,
+      "natgasBcf": 115
+    },
+    {
+      "countryId": "Armenia",
+      "eiaCode": "ARM",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 18819,
+      "petroleumQbtu": 0.03,
+      "natgasBcf": 94
+    },
+    {
+      "countryId": "Azerbaijan",
+      "eiaCode": "AZE",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 111631,
+      "petroleumQbtu": 0.23,
+      "natgasBcf": 401
+    },
+    {
+      "countryId": "Russia",
+      "eiaCode": "RUS",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 3791146,
+      "petroleumQbtu": 7.46,
+      "natgasBcf": 17651
+    },
+    {
+      "countryId": "Turkiye",
+      "eiaCode": "TUR",
+      "latestYear": "2025",
+      "oilConsumptionBpd": 1151518,
+      "petroleumQbtu": 2.33,
+      "natgasBcf": 1880
+    },
+    {
+      "countryId": "United States",
+      "eiaCode": "USA",
+      "latestYear": "2025",
+      "oilConsumptionBpd": 20610329,
+      "petroleumQbtu": 37.04,
+      "natgasBcf": 33083
+    },
+    {
+      "countryId": "Canada",
+      "eiaCode": "CAN",
+      "latestYear": "2025",
+      "oilConsumptionBpd": 2470145,
+      "petroleumQbtu": 4.94,
+      "natgasBcf": 4881
+    },
+    {
+      "countryId": "Mexico",
+      "eiaCode": "MEX",
+      "latestYear": "2025",
+      "oilConsumptionBpd": 1830929,
+      "petroleumQbtu": 3.58,
+      "natgasBcf": 3454
+    },
+    {
+      "countryId": "Brazil",
+      "eiaCode": "BRA",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 3268781,
+      "petroleumQbtu": 6.31,
+      "natgasBcf": 1074
+    },
+    {
+      "countryId": "Argentina",
+      "eiaCode": "ARG",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 734573,
+      "petroleumQbtu": 1.46,
+      "natgasBcf": 1647
+    },
+    {
+      "countryId": "Colombia",
+      "eiaCode": "COL",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 371584,
+      "petroleumQbtu": 0.74,
+      "natgasBcf": 438
+    },
+    {
+      "countryId": "Chile",
+      "eiaCode": "CHL",
+      "latestYear": "2025",
+      "oilConsumptionBpd": 380592,
+      "petroleumQbtu": 0.76,
+      "natgasBcf": 222
+    },
+    {
+      "countryId": "Peru",
+      "eiaCode": "PER",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 264380,
+      "petroleumQbtu": 0.51,
+      "natgasBcf": 324
+    },
+    {
+      "countryId": "Venezuela",
+      "eiaCode": "VEN",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 234478,
+      "petroleumQbtu": 0.47,
+      "natgasBcf": 898
+    },
+    {
+      "countryId": "Ecuador",
+      "eiaCode": "ECU",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 287951,
+      "petroleumQbtu": 0.57,
+      "natgasBcf": 9
+    },
+    {
+      "countryId": "Bolivia",
+      "eiaCode": "BOL",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 103845,
+      "petroleumQbtu": 0.2,
+      "natgasBcf": 168
+    },
+    {
+      "countryId": "Paraguay",
+      "eiaCode": "PRY",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 52113,
+      "petroleumQbtu": 0.11,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Uruguay",
+      "eiaCode": "URY",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 53488,
+      "petroleumQbtu": 0.11,
+      "natgasBcf": 3
+    },
+    {
+      "countryId": "Guyana",
+      "eiaCode": "GUY",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 26760,
+      "petroleumQbtu": 0.06,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Suriname",
+      "eiaCode": "SUR",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 14772,
+      "petroleumQbtu": 0.03,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Cuba",
+      "eiaCode": "CUB",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 112423,
+      "petroleumQbtu": 0.24,
+      "natgasBcf": 34
+    },
+    {
+      "countryId": "Dominican Republic",
+      "eiaCode": "DOM",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 148388,
+      "petroleumQbtu": 0.29,
+      "natgasBcf": 93
+    },
+    {
+      "countryId": "Haiti",
+      "eiaCode": "HTI",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 11656,
+      "petroleumQbtu": 0.02,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Jamaica",
+      "eiaCode": "JAM",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 44142,
+      "petroleumQbtu": 0.09,
+      "natgasBcf": 26
+    },
+    {
+      "countryId": "Trinidad and Tobago",
+      "eiaCode": "TTO",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 27005,
+      "petroleumQbtu": 0.05,
+      "natgasBcf": 549
+    },
+    {
+      "countryId": "Panama",
+      "eiaCode": "PAN",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 135002,
+      "petroleumQbtu": 0.29,
+      "natgasBcf": 20
+    },
+    {
+      "countryId": "Costa Rica",
+      "eiaCode": "CRI",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 64988,
+      "petroleumQbtu": 0.13,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Guatemala",
+      "eiaCode": "GTM",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 124149,
+      "petroleumQbtu": 0.25,
+      "natgasBcf": 3
+    },
+    {
+      "countryId": "Honduras",
+      "eiaCode": "HND",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 80931,
+      "petroleumQbtu": 0.16,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "El Salvador",
+      "eiaCode": "SLV",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 60331,
+      "petroleumQbtu": 0.12,
+      "natgasBcf": 16
+    },
+    {
+      "countryId": "Nicaragua",
+      "eiaCode": "NIC",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 35626,
+      "petroleumQbtu": 0.07,
+      "natgasBcf": 0
+    },
+    {
+      "countryId": "Kazakhstan",
+      "eiaCode": "KAZ",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 412115,
+      "petroleumQbtu": 0.82,
+      "natgasBcf": 884
+    },
+    {
+      "countryId": "Uzbekistan",
+      "eiaCode": "UZB",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 135564,
+      "petroleumQbtu": 0.27,
+      "natgasBcf": 1824
+    },
+    {
+      "countryId": "Turkmenistan",
+      "eiaCode": "TKM",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 146281,
+      "petroleumQbtu": 0.28,
+      "natgasBcf": 1527
+    },
+    {
+      "countryId": "Kyrgyzstan",
+      "eiaCode": "KGZ",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 30019,
+      "petroleumQbtu": 0.06,
+      "natgasBcf": 20
+    },
+    {
+      "countryId": "Tajikistan",
+      "eiaCode": "TJK",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 32748,
+      "petroleumQbtu": 0.06,
+      "natgasBcf": 4
+    },
+    {
+      "countryId": "Mongolia",
+      "eiaCode": "MNG",
+      "latestYear": "2024",
+      "oilConsumptionBpd": 48220,
+      "petroleumQbtu": 0.1,
+      "natgasBcf": 0
+    }
+  ]
+}

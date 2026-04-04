@@ -3,7 +3,7 @@ import { Suspense } from 'react'
 import { SimulatorClient } from '@/components/simulator/simulator-client'
 
 export const metadata: Metadata = {
-  title: 'War Impact Simulator',
+  title: 'Regional Impact Overview',
   description:
     'See how conflicts affect consumer prices in 12+ countries across 10 categories.',
   alternates: { canonical: 'https://howwarimpactsyou.com/simulator' },

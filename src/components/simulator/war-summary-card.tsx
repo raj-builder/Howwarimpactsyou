@@ -1,11 +1,27 @@
 'use client'
 
 import { useMemo } from 'react'
+import Link from 'next/link'
 import { WARS } from '@/data/wars'
 import { findCountryEntry, computeBasket, getProvenance } from '@/lib/calculations'
 import { ShareToolbar } from '@/components/simulator/share-toolbar'
 import { getWarAnchors } from '@/data/pre-escalation-prices'
 import { BELLIGERENT_COUNTRIES } from '@/data/belligerent-countries'
+
+/** Short insight per belligerent explaining their consumer price vulnerability */
+const BELLIGERENT_INSIGHTS: Record<string, string> = {
+  'United States': 'Net energy exporter. Food self-sufficient. Fuel at pump still rises with global crude.',
+  'Iran': 'War zone. Refineries targeted, fuel imports cut. 70% of rice imported via blocked Gulf.',
+  'Israel': '100% oil importer (Med route, not Hormuz). Food from EU. Shekel depreciation amplifies.',
+  'Saudi Arabia': 'Fuel subsidized by decree. But 90% of food imported — bread, rice, meat all up.',
+  'UAE': 'Jebel Ali port shutdown. 90% food imported. Fuel subsidized. Logistics hub destroyed.',
+  'Kuwait': 'Cheapest fuel in world (subsidized). But 90% food imported via disrupted routes.',
+  'Qatar': 'LNG hub targeted. 90% food imported. Sovereign wealth absorbs some cost.',
+  'Bahrain': 'Smallest Gulf economy. Weakest fiscal buffer. Closest to Iran — highest physical risk.',
+  'Lebanon': 'Pre-existing economic crisis. 85% food imported. Currency already collapsed.',
+  'Russia': 'Oil exporter. Food self-sufficient. Sanctions limit but domestic market insulated.',
+  'Ukraine': 'Active war zone. Agricultural exporter but infrastructure damaged.',
+}
 import { useT } from '@/lib/use-t'
 import type { WarId, CategoryId } from '@/types'
 import type { LagPeriod, ProvenanceMetadata, BasketResult } from '@/types/scenario'
@@ -202,37 +218,7 @@ export function WarSummaryCard({
             </p>
           </div>
 
-          {/* Right: belligerent countries */}
-          {(() => {
-            const involved = BELLIGERENT_COUNTRIES.filter((b) => b.wars.includes(warId))
-            if (involved.length === 0) return null
-            return (
-              <div className="md:flex-1 md:border-l md:border-white/10 md:pl-8">
-                <p className="font-sans text-[0.72rem] text-white/40 uppercase tracking-wider mb-3">
-                  Directly involved
-                </p>
-                <div className="space-y-3">
-                  {involved.map((b) => {
-                    const dir = b.warImpact?.[warId] ?? 'neutral'
-                    return (
-                      <div key={b.name} className="flex items-center gap-3">
-                        <span className="text-2xl shrink-0">{b.flag}</span>
-                        <div className="flex-1 min-w-0">
-                          <div className="font-sans text-[0.92rem] text-white/90 font-semibold">{b.name}</div>
-                          <div className="font-sans text-[0.72rem] text-white/45">{b.role.split(',')[0]}</div>
-                        </div>
-                        <span className={`font-sans text-[0.78rem] font-bold shrink-0 ${
-                          dir === 'positive' ? 'text-green' : dir === 'negative' ? 'text-accent' : 'text-white/40'
-                        }`}>
-                          {dir === 'positive' ? '▲ Gains' : dir === 'negative' ? '▼ Costs' : '— Neutral'}
-                        </span>
-                      </div>
-                    )
-                  })}
-                </div>
-              </div>
-            )
-          })()}
+          {/* Belligerent countries moved to simulator-client as standalone rows */}
         </div>
       )}
 

@@ -1,3 +1,50 @@
+## [2026-04-04] — Flight Fuel Alert feature + weekly news digest
+
+### What changed
+- New `/flight-alerts` page showing per-country fuel security profiles with alert levels (CRITICAL/HIGH/MODERATE/LOW)
+- 14 country fuel security profiles: Australia, Indonesia, Pakistan, Bangladesh, Sri Lanka, Philippines, India, Thailand, Japan, South Korea, China, Taiwan, Singapore, New Zealand
+- Vulnerability scoring algorithm: 4-factor composite score (reserve days 35pts, import dependency 25pts, Hormuz exposure 25pts, refining capacity 15pts)
+- Depletion estimate formula: reserves adjusted by Hormuz-dependent import share
+- 10 flight route impact cards with pre/post prices, status badges (operating/suspended/rerouted/reduced), and high-risk zone warnings
+- 8 airline impact summaries (Qantas, Korean Air, Air NZ, Emirates, Air India, Cathay Pacific, Ryanair, Vietnam Airlines)
+- Weekly fuel digest: 7-day news (GDELT) + 7-day price sparkline (EIA), fetched server-side 2x/day with 12h ISR cache
+- Added Australia and New Zealand to the country list (new 'Asia Pacific' region)
+- 38 new unit tests for fuel calculation functions (98 total project tests)
+- 40+ new i18n keys in `flightAlerts.*` namespace
+- Navigation updated with Flight Fuel Alert link
+
+### Why
+Users need to understand how the Hormuz oil crisis affects their ability to fly. Countries like Australia (34-day reserves) and Indonesia (22-day reserves) face critical fuel shortages that directly impact airline operations, route availability, and ticket prices. The feature surfaces this beyond simulation with a curated 7-day news digest of fuel price moves and rationing headlines.
+
+### Data & calculation notes
+- Vulnerability score: composite 0-100 from 4 factors (reserves 35pts max, import dependency 25pts, Hormuz exposure 25pts, refining capacity 15pts)
+- Reserve score: linear interpolation — <30 days = 35pts (max), >180 days = 0pts
+- Alert thresholds: CRITICAL >= 70, HIGH >= 50, MODERATE >= 30, LOW < 30
+- Depletion formula: strategicReserveDays / (hormuzExposurePct/100 * importDependencyPct/100)
+- Example: Australia = 34 / (0.59 * 0.90) = ~64 days
+- All calculation functions in src/lib/fuel-calculations.ts with docstrings and 38 unit tests
+
+### Upgrade notes for the next engineer or AI session
+- New Region value 'Asia Pacific' added to `src/types/index.ts`
+- Australia and New Zealand added to `src/data/countries.ts`
+- New data files: `src/data/fuel-security.ts`, `src/data/flight-routes.ts`
+- New calculation module: `src/lib/fuel-calculations.ts`
+- New API route: `/api/fuel-digest` (requires optional `EIA_API_KEY` env var for price data)
+- `.env.example` created with `EIA_API_KEY` placeholder
+- Weekly digest works without EIA key (falls back gracefully)
+
+### Credits & third-party use
+- EIA International Energy Statistics — oil consumption, production (Public domain, US Gov)
+- EIA Open Data API — Brent crude + jet fuel spot prices (Public domain, free key)
+- IEA Energy Security — import dependency, reserve requirements (CC BY 4.0)
+- Zero Carbon Analytics — Hormuz vulnerability scores (CC BY-NC)
+- JOGMEC — Japan strategic reserve data (Japanese government, public)
+- IATA — jet fuel pricing, surcharge data (attribution required)
+- GDELT Project DOC 2.0 API — news articles (free, commercial OK, no key)
+- Airline press releases — route status, fare changes (fair use / factual reporting)
+
+---
+
 ## [2026-03-30] — Phase C: 55 countries, FX updates, live prices, model optimization
 
 ### What changed

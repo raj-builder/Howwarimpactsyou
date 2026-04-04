@@ -66,7 +66,7 @@ export default function LearnPage() {
         {/* Back to simulator CTA */}
         <div className="text-center mt-14">
           <Link
-            href="/simulator"
+            href="/country-simulator"
             className="inline-block bg-accent text-white font-sans text-[0.9rem] font-semibold px-8 py-3.5 rounded-lg no-underline tracking-wide hover:bg-[#b03e27] transition-colors"
           >
             Open Simulator &rarr;

@@ -7,7 +7,7 @@ import './globals.css'
 
 export const metadata: Metadata = {
   title: {
-    default: 'howwarimpactsyou.com — Macro-to-Consumer Price Impact Simulator',
+    default: 'howwarimpactsyou.com — How War Impacts You',
     template: '%s | howwarimpactsyou.com',
   },
   description:

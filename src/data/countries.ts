@@ -60,11 +60,25 @@ export const COUNTRIES: Country[] = [
   { id: 'Poland', name: 'Poland', flag: '🇵🇱', coverage: 'partial', region: 'Europe' },
   { id: 'Greece', name: 'Greece', flag: '🇬🇷', coverage: 'partial', region: 'Europe' },
 
+  // Middle East — belligerent / directly involved
+  { id: 'Iran', name: 'Iran', flag: '🇮🇷', coverage: 'partial', region: 'Middle East & North Africa' },
+  { id: 'Israel', name: 'Israel', flag: '🇮🇱', coverage: 'partial', region: 'Middle East & North Africa' },
+  { id: 'Saudi Arabia', name: 'Saudi Arabia', flag: '🇸🇦', coverage: 'partial', region: 'Middle East & North Africa' },
+  { id: 'UAE', name: 'UAE', flag: '🇦🇪', coverage: 'partial', region: 'Middle East & North Africa' },
+  { id: 'Kuwait', name: 'Kuwait', flag: '🇰🇼', coverage: 'partial', region: 'Middle East & North Africa' },
+  { id: 'Qatar', name: 'Qatar', flag: '🇶🇦', coverage: 'partial', region: 'Middle East & North Africa' },
+  { id: 'Bahrain', name: 'Bahrain', flag: '🇧🇭', coverage: 'partial', region: 'Middle East & North Africa' },
+
   // Americas
+  { id: 'United States', name: 'United States', flag: '🇺🇸', coverage: 'partial', region: 'Americas' },
   { id: 'Mexico', name: 'Mexico', flag: '🇲🇽', coverage: 'partial', region: 'Americas' },
   { id: 'Colombia', name: 'Colombia', flag: '🇨🇴', coverage: 'partial', region: 'Americas' },
   { id: 'Peru', name: 'Peru', flag: '🇵🇪', coverage: 'partial', region: 'Americas' },
   { id: 'Chile', name: 'Chile', flag: '🇨🇱', coverage: 'partial', region: 'Americas' },
+
+  // Asia Pacific
+  { id: 'Australia', name: 'Australia', flag: '🇦🇺', coverage: 'partial', region: 'Asia Pacific' },
+  { id: 'New Zealand', name: 'New Zealand', flag: '🇳🇿', coverage: 'partial', region: 'Asia Pacific' },
 
   // Experimental
   { id: 'Argentina', name: 'Argentina', flag: '🇦🇷', coverage: 'experimental', region: 'Americas' },

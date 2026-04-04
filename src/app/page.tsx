@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import { getMessages } from '@/lib/use-t'
 
 export const metadata: Metadata = {
-  title: 'howwarimpactsyou.com — Macro-to-Consumer Price Impact Simulator',
+  title: 'howwarimpactsyou.com — How War Impacts You',
   description:
     'See how wars, oil shocks, and currency moves affect the price of bread, fuel, and everyday goods in 12+ countries. Free, transparent, open-methodology simulator.',
   alternates: { canonical: 'https://howwarimpactsyou.com' },
@@ -74,13 +74,13 @@ export default function HomePage() {
           </p>
           <div className="flex gap-4 flex-wrap">
             <Link
-              href="/simulator"
+              href="/country-simulator"
               className="bg-accent text-white font-sans text-[0.9rem] font-semibold px-7 py-3 rounded-lg no-underline tracking-wide hover:bg-[#b03e27] transition-colors"
             >
               {m.nav.openSimulator} &rarr;
             </Link>
             <Link
-              href="/methodology"
+              href="/how-it-works"
               className="bg-transparent text-white/80 font-sans text-[0.9rem] px-7 py-3 rounded-lg border border-white/25 no-underline hover:border-white/50 hover:text-white transition-colors"
             >
               {m.methodology.title}
@@ -185,6 +185,47 @@ export default function HomePage() {
               </span>
             </Link>
           ))}
+        </div>
+      </section>
+
+      {/* Hormuz impact — top 5 most impacted countries */}
+      <section className="container-page py-10">
+        <p className="font-sans text-[0.72rem] font-bold tracking-[0.13em] uppercase text-accent mb-2">
+          Strait of Hormuz 2026
+        </p>
+        <h2 className="text-[clamp(1.4rem,2.5vw,1.9rem)] font-normal tracking-tight mb-2 text-ink font-serif">
+          Most impacted countries by the oil crisis
+        </h2>
+        <p className="font-sans text-[0.82rem] text-ink-muted mb-6 max-w-[580px]">
+          Household basket impact ceiling at 100% pass-through. Click any country to explore the full breakdown.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 mb-4">
+          {[
+            { flag: '🇱🇧', name: 'Lebanon', pct: 28.8, href: '/country-simulator?war=hormuz-2026&country=Lebanon' },
+            { flag: '🇪🇬', name: 'Egypt', pct: 22.1, href: '/country-simulator?war=hormuz-2026&country=Egypt' },
+            { flag: '🇵🇭', name: 'Philippines', pct: 18.9, href: '/country-simulator?war=hormuz-2026&country=Philippines' },
+            { flag: '🇵🇰', name: 'Pakistan', pct: 17.4, href: '/country-simulator?war=hormuz-2026&country=Pakistan' },
+            { flag: '🇮🇳', name: 'India', pct: 14.2, href: '/country-simulator?war=hormuz-2026&country=India' },
+          ].map((c) => (
+            <Link
+              key={c.name}
+              href={c.href}
+              className="bg-bg-card border border-border rounded-[10px] p-4 no-underline hover:border-accent/30 hover:shadow-md transition-all text-center group"
+            >
+              <span className="text-2xl block mb-2">{c.flag}</span>
+              <span className="font-sans text-[0.85rem] font-semibold text-ink block group-hover:text-accent transition-colors">{c.name}</span>
+              <span className="font-sans text-[1.3rem] font-bold text-accent block mt-1">+{c.pct}%</span>
+              <span className="font-sans text-[0.65rem] text-ink-muted">{m.common.priceCeiling}</span>
+            </Link>
+          ))}
+        </div>
+        <div className="text-center">
+          <Link
+            href="/simulator?war=hormuz-2026"
+            className="font-sans text-[0.82rem] text-accent font-semibold no-underline hover:underline"
+          >
+            See all 57 countries &rarr;
+          </Link>
         </div>
       </section>
 

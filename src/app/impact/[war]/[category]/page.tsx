@@ -296,7 +296,7 @@ export default async function ScenarioPage({
         {/* CTA: Explore in simulator */}
         <section className="text-center mb-14">
           <Link
-            href={`/simulator?war=${war}&category=${category}`}
+            href={`/country-simulator?war=${war}&category=${category}`}
             className="inline-block bg-accent text-white font-sans text-[0.9rem] font-semibold px-8 py-3.5 rounded-lg no-underline tracking-wide hover:bg-[#b03e27] transition-colors"
           >
             Explore in Simulator &rarr;

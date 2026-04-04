@@ -1,8 +1,25 @@
 import { NextResponse } from 'next/server'
+import { promises as fs } from 'fs'
+import path from 'path'
 
 const SERP_API_KEY = process.env.SERP_API_KEY || ''
 const SERP_BASE = 'https://serpapi.com/search.json'
 const WB_API_BASE = 'https://api.worldbank.org/v2/en/indicator'
+
+/**
+ * Cache TTL in milliseconds.
+ * 48 hours = 172_800_000ms. This limits SerpAPI to ~1 call per 2 days.
+ * With 18 days until Apr 22 that's ~9 calls max (well under the 30 budget).
+ * On weekends the cache stays warm from Friday's fetch.
+ */
+const CACHE_TTL_MS = 48 * 60 * 60 * 1000
+
+/**
+ * File-based cache path. Uses /tmp for serverless compatibility.
+ * On Vercel, /tmp persists within a single function invocation warm period.
+ * Locally, it persists across dev server restarts.
+ */
+const CACHE_FILE = path.join('/tmp', 'prices-cache.json')
 
 const FALLBACK = {
   brent: { price: 107.81, pct: null, label: 'Crude Oil', unit: 'USD/bbl', exchange: 'NYMEX', asOf: '27 Mar 2026' },
@@ -72,7 +89,68 @@ async function fetchWorldBank(indicator: string) {
   return { price: parseFloat(rows[0].value), prev: parseFloat(rows[1].value), period: rows[0].date }
 }
 
+/* ── Cache helpers ────────────────────────────────────────────── */
+
+interface CachedResponse {
+  data: Record<string, unknown>
+  cachedAt: number
+}
+
+async function readCache(): Promise<CachedResponse | null> {
+  try {
+    const raw = await fs.readFile(CACHE_FILE, 'utf-8')
+    const parsed: CachedResponse = JSON.parse(raw)
+    return parsed
+  } catch {
+    return null
+  }
+}
+
+async function writeCache(data: Record<string, unknown>): Promise<void> {
+  try {
+    const payload: CachedResponse = { data, cachedAt: Date.now() }
+    await fs.writeFile(CACHE_FILE, JSON.stringify(payload), 'utf-8')
+    console.log(`[prices] Cache written at ${new Date().toISOString()}`)
+  } catch (e) {
+    console.warn('[prices] Failed to write cache:', (e as Error).message)
+  }
+}
+
+function isCacheFresh(cached: CachedResponse): boolean {
+  const age = Date.now() - cached.cachedAt
+  return age < CACHE_TTL_MS
+}
+
+/* ── Main handler ─────────────────────────────────────────────── */
+
 export async function GET() {
+  // Check file cache first — serve cached data if fresh
+  const cached = await readCache()
+  if (cached && isCacheFresh(cached)) {
+    const ageHrs = Math.round((Date.now() - cached.cachedAt) / 3_600_000)
+    console.log(`[prices] Serving from cache (${ageHrs}h old, TTL ${CACHE_TTL_MS / 3_600_000}h)`)
+    return NextResponse.json(
+      {
+        ...cached.data,
+        meta: {
+          ...(cached.data.meta as Record<string, unknown>),
+          served_from: 'cache',
+          cache_age_hrs: ageHrs,
+          next_refresh_hrs: Math.max(0, Math.round((CACHE_TTL_MS - (Date.now() - cached.cachedAt)) / 3_600_000)),
+        },
+      },
+      {
+        headers: {
+          'Cache-Control': 's-maxage=86400, stale-while-revalidate=7200',
+          'Access-Control-Allow-Origin': '*',
+        },
+      }
+    )
+  }
+
+  // Cache miss or stale — fetch fresh data
+  console.log(`[prices] Cache miss — fetching fresh data from SerpAPI + WorldBank`)
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const commodities: Record<string, any> = {}
   const fetchedAt = new Date().toISOString()
@@ -163,26 +241,29 @@ export async function GET() {
   }
 
   if (errors.length > 0) {
-    console.warn('Price fetch errors:', errors.join(' | '))
+    console.warn('[prices] Fetch errors:', errors.join(' | '))
   }
 
-  return NextResponse.json(
-    {
-      fetched_at: fetchedAt,
-      serp_api_ok: serpOk,
-      commodities,
-      meta: {
-        source: serpOk ? 'SerpAPI / Google Finance' : 'Hardcoded fallback (approx. London close)',
-        urea_source: ureaPrice ? 'World Bank' : 'Fallback',
-        cache_ttl_hrs: 24,
-        errors: errors.length > 0 ? errors : undefined,
-      },
+  const responseData = {
+    fetched_at: fetchedAt,
+    serp_api_ok: serpOk,
+    commodities,
+    meta: {
+      source: serpOk ? 'SerpAPI / Google Finance' : 'Hardcoded fallback (approx. London close)',
+      urea_source: ureaPrice ? 'World Bank' : 'Fallback',
+      cache_ttl_hrs: CACHE_TTL_MS / 3_600_000,
+      served_from: 'fresh',
+      errors: errors.length > 0 ? errors : undefined,
     },
-    {
-      headers: {
-        'Cache-Control': 's-maxage=86400, stale-while-revalidate=7200',
-        'Access-Control-Allow-Origin': '*',
-      },
-    }
-  )
+  }
+
+  // Write to cache (don't await — fire and forget)
+  writeCache(responseData)
+
+  return NextResponse.json(responseData, {
+    headers: {
+      'Cache-Control': 's-maxage=86400, stale-while-revalidate=7200',
+      'Access-Control-Allow-Origin': '*',
+    },
+  })
 }

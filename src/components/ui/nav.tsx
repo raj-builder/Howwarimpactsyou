@@ -9,9 +9,8 @@ const NAV_KEYS: { href: string; key: string }[] = [
   { href: '/', key: 'nav.home' },
   { href: '/simulator', key: 'nav.simulator' },
   { href: '/country-simulator', key: 'nav.countrySimulator' },
-  { href: '/methodology', key: 'nav.methodology' },
-  { href: '/data-sources', key: 'nav.dataSources' },
-  { href: '/learn', key: 'nav.learn' },
+  { href: '/how-it-works', key: 'nav.howItWorks' },
+  { href: '/feedback', key: 'nav.feedback' },
 ]
 
 const SECONDARY_KEYS: { href: string; key: string }[] = [
@@ -72,7 +71,7 @@ export function Nav() {
 
           <div className="flex items-center gap-3">
             <Link
-              href="/simulator"
+              href="/country-simulator"
               className="bg-accent text-white font-sans text-[0.78rem] font-semibold px-4 py-2 rounded-md no-underline tracking-wide hover:bg-[#b03e27] transition-colors shrink-0 hidden sm:inline-flex"
             >
               {t('nav.openSimulator')} &rarr;
@@ -152,7 +151,7 @@ export function Nav() {
 
           {/* CTA */}
           <Link
-            href="/simulator"
+            href="/country-simulator"
             className="block w-full text-center bg-accent text-white font-sans text-[0.85rem] font-semibold px-4 py-3 rounded-lg no-underline hover:bg-[#b03e27] transition-colors"
           >
             {t('nav.openSimulator')} &rarr;

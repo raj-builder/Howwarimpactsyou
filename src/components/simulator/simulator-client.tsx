@@ -6,7 +6,8 @@ import { useSearchParams } from 'next/navigation'
 import { WARS } from '@/data/wars'
 import { COUNTRY_MAP } from '@/data/countries'
 import { COUNTRY_REASONS } from '@/data/reasons'
-import { roundValue, getProvenance } from '@/lib/calculations'
+import { BELLIGERENT_COUNTRIES } from '@/data/belligerent-countries'
+import { roundValue, getProvenance, findCountryEntry } from '@/lib/calculations'
 import { SoftGate } from '@/components/simulator/soft-gate'
 import { WarEscalationCard } from '@/components/simulator/war-escalation-card'
 import { WarSummaryCard } from '@/components/simulator/war-summary-card'
@@ -14,7 +15,30 @@ import { PresetCards } from '@/components/simulator/preset-cards'
 import { PRE_ESCALATION_PRICES } from '@/data/pre-escalation-prices'
 import { usePricesFreshness } from '@/lib/use-prices-freshness'
 import { useT } from '@/lib/use-t'
-import type { WarId, RankingEntry, CoverageStatus, Region } from '@/types'
+import type { WarId, RankingEntry, CoverageStatus, Region, CategoryId } from '@/types'
+
+/** Categories to show as separate impact cards on the simulator */
+const CATEGORY_HIGHLIGHTS: { id: CategoryId; label: string; icon: string }[] = [
+  { id: 'bread', label: 'Cereal & Bread', icon: '🍞' },
+  { id: 'fuel', label: 'Household Fuel', icon: '⛽' },
+  { id: 'oil', label: 'Cooking Oil', icon: '🫒' },
+  { id: 'dairy', label: 'Dairy', icon: '🥛' },
+]
+
+/** Short insight per belligerent explaining their consumer price vulnerability */
+const BELLIGERENT_INSIGHT_MAP: Record<string, string> = {
+  'United States': 'Net energy exporter. Food self-sufficient. Fuel at pump still rises with global crude.',
+  'Iran': 'War zone. Refineries targeted, fuel imports cut. 70% of rice imported via blocked Gulf.',
+  'Israel': '100% oil importer (Med route, not Hormuz). Food from EU. Shekel depreciation amplifies.',
+  'Saudi Arabia': 'Fuel subsidized by decree. But 90% of food imported — bread, rice, meat all up.',
+  'UAE': 'Jebel Ali port shutdown. 90% food imported. Fuel subsidized. Logistics hub destroyed.',
+  'Kuwait': 'Cheapest fuel in world (subsidized). But 90% food imported via disrupted routes.',
+  'Qatar': 'LNG hub targeted. 90% food imported. Sovereign wealth absorbs some cost.',
+  'Bahrain': 'Smallest Gulf economy. Weakest fiscal buffer. Closest to Iran — highest physical risk.',
+  'Lebanon': 'Pre-existing economic crisis. 85% food imported. Currency already collapsed.',
+  'Russia': 'Oil exporter. Food self-sufficient. Sanctions limit but domestic market insulated.',
+  'Ukraine': 'Active war zone. Agricultural exporter but infrastructure damaged.',
+}
 
 /** Escalation priority order (highest-tension first) */
 const WAR_ESCALATION_ORDER: WarId[] = [
@@ -146,15 +170,91 @@ export function SimulatorClient() {
         serpApiFetchedAt={freshness.fetchedAt}
       />
 
-      {/* Global Top 5 */}
+      {/* Directly involved countries — standalone rows below war card */}
+      {(() => {
+        const involved = BELLIGERENT_COUNTRIES.filter((b) => b.wars.includes(warId))
+        if (involved.length === 0) return null
+        const withImpact = involved.map((b) => {
+          const entry = findCountryEntry(warId, 'basket', b.name)
+          return { ...b, basketPct: entry?.p ?? 0 }
+        }).sort((a, b) => b.basketPct - a.basketPct)
+
+        return (
+          <div className="mb-10 mt-6">
+            <div className="flex items-center gap-3 mb-4">
+              <h2 className="text-[1.1rem] font-serif font-normal tracking-tight text-ink">
+                Directly involved — {war.name}
+              </h2>
+              {war.live && (
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-accent/10 text-[0.65rem] font-bold text-accent tracking-wide">
+                  <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" aria-hidden="true" />
+                  LIVE
+                </span>
+              )}
+            </div>
+            <div className="space-y-2 stagger-fade-in">
+              {withImpact.map((b) => {
+                const insight = BELLIGERENT_INSIGHT_MAP[b.name] ?? b.role.split(',')[0]
+                return (
+                  <Link
+                    key={b.name}
+                    href={`/country-simulator?war=${warId}&country=${encodeURIComponent(b.name)}&pt=100&lag=immediate`}
+                    className="flex items-center gap-4 border border-border bg-bg-card rounded-lg px-5 py-4 no-underline hover:border-accent-warm hover:shadow-sm transition-all group"
+                  >
+                    <span className="text-xl shrink-0">{b.flag}</span>
+                    <div className="flex-1 min-w-0">
+                      <div className="font-sans text-[0.88rem] font-semibold text-ink group-hover:text-accent transition-colors">{b.name}</div>
+                      <div className="font-sans text-[0.7rem] text-ink-muted leading-snug mt-0.5">{insight}</div>
+                    </div>
+                    <span className={`font-sans text-[1rem] font-bold shrink-0 ${
+                      b.basketPct > 20 ? 'text-accent' : b.basketPct > 10 ? 'text-accent-warm' : 'text-ink-muted'
+                    }`}>
+                      {b.basketPct > 0 ? `+${b.basketPct}%` : '—'}
+                    </span>
+                    <span className="text-ink-muted group-hover:text-accent transition-colors shrink-0" aria-hidden="true">&rarr;</span>
+                  </Link>
+                )
+              })}
+            </div>
+          </div>
+        )
+      })()}
+
+      {/* Category-specific impact views */}
       <div className="mb-10">
         <h2 className="text-[1.1rem] font-serif font-normal tracking-tight text-ink mb-4">
-          Most impacted countries
+          Most impacted countries by category
         </h2>
-        <div className="space-y-2 stagger-fade-in">
-          {globalTop5.map((entry, i) => (
-            <CountryRow key={entry.c} entry={entry} rank={i + 1} warId={warId} reasons={countryReason} maxPct={allEntries[0]?.p ?? 55} />
-          ))}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {CATEGORY_HIGHLIGHTS.map((cat) => {
+            const catRanking = war.rankings[cat.id]
+            if (!catRanking) return null
+            const top3 = catRanking.top5.slice(0, 3)
+            return (
+              <div key={cat.id} className="bg-bg-card border border-border rounded-[10px] p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-lg" aria-hidden="true">{cat.icon}</span>
+                  <h3 className="font-sans text-[0.88rem] font-bold text-ink">{cat.label}</h3>
+                </div>
+                <div className="space-y-1.5">
+                  {top3.map((entry, i) => (
+                    <Link
+                      key={entry.c}
+                      href={`/country-simulator?war=${warId}&country=${entry.c}&category=${cat.id}`}
+                      className="no-underline flex items-center justify-between px-2 py-1.5 rounded-md hover:bg-bg-alt transition-colors"
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className="font-sans text-[0.68rem] font-bold text-ink-muted w-4">{i + 1}</span>
+                        <span className="text-sm">{entry.f}</span>
+                        <span className="font-sans text-[0.8rem] text-ink">{entry.c}</span>
+                      </div>
+                      <span className="font-sans text-[0.85rem] font-bold text-accent">+{roundValue(entry.p, 'display')}%</span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )
+          })}
         </div>
       </div>
 

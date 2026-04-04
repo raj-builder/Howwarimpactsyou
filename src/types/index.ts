@@ -55,7 +55,7 @@ export interface CurrencyEntry {
 
 export type CoverageStatus = 'full' | 'partial' | 'experimental' | 'unavailable'
 
-export type Region = 'Middle East & North Africa' | 'South Asia' | 'East Asia' | 'Southeast Asia' | 'Sub-Saharan Africa' | 'Europe' | 'Americas'
+export type Region = 'Middle East & North Africa' | 'South Asia' | 'East Asia' | 'Southeast Asia' | 'Sub-Saharan Africa' | 'Europe' | 'Americas' | 'Asia Pacific'
 
 export interface Country {
   id: string

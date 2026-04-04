@@ -20,7 +20,7 @@ export async function generateMetadata({
   const warData = WARS[warId]
   const countryData = COUNTRIES.find((c) => c.id === country)
 
-  let title = 'Individual Country Simulator'
+  let title = 'Country Impact Simulator'
   let description = 'Deep-dive into how conflict shocks affect a single country across all consumer categories.'
 
   if (country && warData) {

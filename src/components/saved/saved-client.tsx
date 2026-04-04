@@ -93,7 +93,7 @@ export function SavedClient() {
               {t('saved.noSavedDesc')}
             </p>
             <Link
-              href="/simulator"
+              href="/country-simulator"
               className="inline-block bg-accent text-white font-sans text-[0.8rem] font-semibold px-5 py-2.5 rounded-md no-underline tracking-wide hover:bg-[#b03e27] transition-colors"
             >
               {t('saved.openSimulator')}
@@ -114,7 +114,7 @@ export function SavedClient() {
               const lagLabel = LAG_LABELS[s.lag as LagPeriod] ?? s.lag
 
               // Build simulator link with full scenario params
-              const simulatorHref = `/simulator?war=${encodeURIComponent(s.war)}&category=${encodeURIComponent(s.category)}&country=${encodeURIComponent(s.country)}&pt=${s.passthrough}&lag=${s.lag}`
+              const simulatorHref = `/country-simulator?war=${encodeURIComponent(s.war)}&category=${encodeURIComponent(s.category)}&country=${encodeURIComponent(s.country)}&pt=${s.passthrough}&lag=${s.lag}`
 
               return (
                 <article
