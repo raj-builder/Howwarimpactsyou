@@ -77,7 +77,7 @@ export default function AboutPage() {
                 Every assumption is documented. The model formula, exposure
                 coefficients, lag profiles, and FX adjustments are all published
                 on the{' '}
-                <Link href="/methodology" className="text-accent no-underline hover:underline">
+                <Link href="/how-it-works" className="text-accent no-underline hover:underline">
                   methodology page
                 </Link>
                 . If we change an assumption, it appears in the{' '}
@@ -113,7 +113,7 @@ export default function AboutPage() {
                 World Bank, IMF, FAO, and EIA. Validation data comes from
                 national CPI offices and UN Comtrade. No proprietary or
                 paywalled data is used. Full details on the{' '}
-                <Link href="/data-sources" className="text-accent no-underline hover:underline">
+                <Link href="/how-it-works" className="text-accent no-underline hover:underline">
                   data sources page
                 </Link>
                 .

@@ -1,3 +1,24 @@
+## [2026-04-05] — Footer cleanup, version bump to v2.0
+
+### What changed
+- Footer links updated: Methodology → How It Works, Data Sources → Give Feedback
+- Version tag updated from "v1.0 Beta" to "v2.0"
+- About page links updated to point to /how-it-works instead of /methodology and /data-sources
+
+### Why
+Footer had stale links to pre-merge pages. Beta tag no longer appropriate after 65 countries, 6 wars, EIA data integration, and belligerent rankings.
+
+### Data & calculation notes
+None.
+
+### Upgrade notes for the next engineer or AI session
+None.
+
+### Credits & third-party use
+None.
+
+---
+
 ## [2026-04-05] — UI restructure, belligerent rankings, feedback, SerpAPI cache
 
 ### What changed
