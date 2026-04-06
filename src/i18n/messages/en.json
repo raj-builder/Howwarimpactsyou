@@ -415,7 +415,7 @@
     "destinationRisk": "Destination fuel risk",
     "surchargeRange": "{low}% to {high}% above base fare",
     "verifiedExplainer": "Based on actual airline and route data from verified sources.",
-    "indicativeExplainer": "Estimated from country-level fuel vulnerability profiles. Actual impact may vary.",
+    "indicativeExplainer": "Estimated from country-level fuel vulnerability profiles. Origin weighted 50-70%, layover 30% (if selected), destination 20-30%. Actual impact may vary.",
     "limitedExplainer": "Insufficient data for one or both countries. Showing best available estimate.",
     "summaryBarLabel": "Country fuel risk overview",
     "summaryCount": "{count} {level}",

@@ -240,14 +240,23 @@ export function rankByVulnerability(results: FuelSecurityResult[]): FuelSecurity
 /* ── Route Risk Assessment ──────────────────────────────────── */
 
 /**
- * Weight given to the origin country's score when computing route risk.
- * Origin is weighted higher because aircraft typically fuel at departure.
- * Remaining weight (1 - 0.70 = 0.30) goes to the destination.
+ * Weights for route risk calculation.
+ *
+ * Without layover: origin 70%, destination 30%.
+ * With layover: origin 50%, layover 30%, destination 20%.
+ *
+ * Origin is weighted highest because aircraft fuel at departure.
+ * Layover is a secondary fueling point (refuel stop or connecting flight).
+ * Destination matters for return trip fuel availability.
  *
  * Source: Industry convention — airlines fuel at origin where possible;
- * destination fuel availability matters for return leg and diversions.
+ * layover airports are common refueling points on long-haul routes;
+ * destination fuel matters for return leg and diversions.
  */
 const ROUTE_RISK_ORIGIN_WEIGHT = 0.70
+const ROUTE_RISK_ORIGIN_WEIGHT_WITH_LAYOVER = 0.50
+const ROUTE_RISK_LAYOVER_WEIGHT = 0.30
+const ROUTE_RISK_DEST_WEIGHT_WITH_LAYOVER = 0.20
 
 /**
  * Surcharge range boundaries by risk tier.
@@ -288,44 +297,56 @@ export function estimateSurchargeRange(routeRiskScore: number): { lowPct: number
 }
 
 /**
- * Compute fuel risk for a route from origin country to destination country.
+ * Compute fuel risk for a route from origin country to destination country,
+ * optionally via a layover country.
  *
- * Formula:
- *   - If both profiles available:
- *       score = originScore × ORIGIN_WEIGHT + destScore × (1 - ORIGIN_WEIGHT)
- *       confidence = 'indicative'
- *   - If only origin available:
- *       score = originScore
- *       confidence = 'limited'
- *   - If only destination available:
- *       score = destScore
- *       confidence = 'limited'
- *   - If neither available:
- *       score = 0, confidence = 'limited'
+ * Formula (no layover):
+ *   score = originScore × 0.70 + destScore × 0.30
+ *
+ * Formula (with layover):
+ *   score = originScore × 0.50 + layoverScore × 0.30 + destScore × 0.20
+ *
+ * If only some profiles are available, uses what's available with
+ * reduced confidence.
  *
  * The confidence is upgraded to 'verified' by the caller if an exact
  * route match is found in the pre-researched data.
  *
  * @param originResult - FuelSecurityResult for origin country (or null)
  * @param destResult - FuelSecurityResult for destination country (or null)
+ * @param layoverResult - FuelSecurityResult for layover country (or null, optional)
  * @returns RouteRiskResult with score, alert level, confidence, and surcharge range
  */
 export function computeRouteRisk(
   originResult: FuelSecurityResult | null,
   destResult: FuelSecurityResult | null,
+  layoverResult?: FuelSecurityResult | null,
 ): RouteRiskResult {
   let score: number
   let confidence: RouteRiskResult['confidence']
   let originScore: number | undefined
   let destinationScore: number | undefined
+  let layoverScore: number | undefined
+
+  const hasLayover = layoverResult != null
 
   if (originResult && destResult) {
     originScore = originResult.vulnerabilityScore
     destinationScore = destResult.vulnerabilityScore
-    score = Math.round(
-      (originScore * ROUTE_RISK_ORIGIN_WEIGHT +
-        destinationScore * (1 - ROUTE_RISK_ORIGIN_WEIGHT)) * 10
-    ) / 10
+
+    if (hasLayover) {
+      layoverScore = layoverResult.vulnerabilityScore
+      score = Math.round(
+        (originScore * ROUTE_RISK_ORIGIN_WEIGHT_WITH_LAYOVER +
+          layoverScore * ROUTE_RISK_LAYOVER_WEIGHT +
+          destinationScore * ROUTE_RISK_DEST_WEIGHT_WITH_LAYOVER) * 10
+      ) / 10
+    } else {
+      score = Math.round(
+        (originScore * ROUTE_RISK_ORIGIN_WEIGHT +
+          destinationScore * (1 - ROUTE_RISK_ORIGIN_WEIGHT)) * 10
+      ) / 10
+    }
     confidence = 'indicative'
   } else if (originResult) {
     originScore = originResult.vulnerabilityScore

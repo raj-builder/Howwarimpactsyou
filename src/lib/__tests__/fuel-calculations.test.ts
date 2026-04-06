@@ -414,6 +414,33 @@ describe('computeRouteRisk', () => {
     const result = computeRouteRisk(highRiskResult, highRiskResult)
     expect(result.alertLevel).toBe('critical')
   })
+
+  it('factors layover into combined score (50/30/20 weighting)', () => {
+    const midResult: FuelSecurityResult = {
+      countryId: 'Mid', alertLevel: 'moderate', vulnerabilityScore: 50,
+      estimatedDepletionDays: 100, factors: [],
+    }
+    const result = computeRouteRisk(highRiskResult, lowRiskResult, midResult)
+    // 80 * 0.50 + 50 * 0.30 + 20 * 0.20 = 40 + 15 + 4 = 59
+    expect(result.score).toBe(59)
+    expect(result.confidence).toBe('indicative')
+  })
+
+  it('layover changes combined score vs no layover', () => {
+    const midResult: FuelSecurityResult = {
+      countryId: 'Mid', alertLevel: 'moderate', vulnerabilityScore: 50,
+      estimatedDepletionDays: 100, factors: [],
+    }
+    const withoutLayover = computeRouteRisk(highRiskResult, lowRiskResult)
+    const withLayover = computeRouteRisk(highRiskResult, lowRiskResult, midResult)
+    expect(withLayover.score).not.toBe(withoutLayover.score)
+  })
+
+  it('null layover behaves same as no layover argument', () => {
+    const withNull = computeRouteRisk(highRiskResult, lowRiskResult, null)
+    const withoutArg = computeRouteRisk(highRiskResult, lowRiskResult)
+    expect(withNull.score).toBe(withoutArg.score)
+  })
 })
 
 /* ── QA Stress Tests — Real Country Profiles ───────────────────── */

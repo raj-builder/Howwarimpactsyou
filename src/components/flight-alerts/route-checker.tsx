@@ -104,38 +104,44 @@ export function RouteChecker({ allResults, warId }: RouteCheckerProps) {
     return resultsMap[countryId] ?? computeFuelSecurity(profile)
   }
 
-  /* ── Outbound risk ─────────────────────────────────────────── */
-  const outboundRisk: RouteRiskResult | null = useMemo(() => {
-    if (!originId && !destId) return null
-    const risk = computeRouteRisk(getResultForCountry(originId), getResultForCountry(destId))
-    if (matchedRoute && monthsAhead === 0 && scenario === 'war') {
-      return { ...risk, confidence: 'verified' as const, matchedRoute }
-    }
-    return risk
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [originId, destId, resultsMap, matchedRoute, monthsAhead, scenario, normalcyPct])
-
+  /* ── Layover results (used in both outbound + return) ────── */
   const layoverResult: FuelSecurityResult | null = useMemo(() => {
     if (!layoverId) return null
     return getResultForCountry(layoverId)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [layoverId, monthsAhead, scenario, normalcyPct, resultsMap])
 
-  /* ── Return risk (dest→origin, +7 days depletion for trip stay) ── */
-  const returnRisk: RouteRiskResult | null = useMemo(() => {
-    if (!originId || !destId) return null
-    return computeRouteRisk(
-      getResultForCountry(destId, TRIP_DURATION_DAYS),
-      getResultForCountry(originId, TRIP_DURATION_DAYS)
-    )
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [originId, destId, resultsMap, monthsAhead, scenario, normalcyPct])
-
   const returnLayoverResult: FuelSecurityResult | null = useMemo(() => {
     if (!layoverId) return null
     return getResultForCountry(layoverId, TRIP_DURATION_DAYS)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [layoverId, monthsAhead, scenario, normalcyPct, resultsMap])
+
+  /* ── Outbound risk (layover factored into combined score) ── */
+  const outboundRisk: RouteRiskResult | null = useMemo(() => {
+    if (!originId && !destId) return null
+    const risk = computeRouteRisk(
+      getResultForCountry(originId),
+      getResultForCountry(destId),
+      layoverResult
+    )
+    if (matchedRoute && monthsAhead === 0 && scenario === 'war' && !layoverId) {
+      return { ...risk, confidence: 'verified' as const, matchedRoute }
+    }
+    return risk
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [originId, destId, layoverId, layoverResult, resultsMap, matchedRoute, monthsAhead, scenario, normalcyPct])
+
+  /* ── Return risk (dest→origin via layover, +7 days depletion) ── */
+  const returnRisk: RouteRiskResult | null = useMemo(() => {
+    if (!originId || !destId) return null
+    return computeRouteRisk(
+      getResultForCountry(destId, TRIP_DURATION_DAYS),
+      getResultForCountry(originId, TRIP_DURATION_DAYS),
+      returnLayoverResult
+    )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [originId, destId, layoverId, returnLayoverResult, resultsMap, monthsAhead, scenario, normalcyPct])
 
   /* ── Stranding risk ────────────────────────────────────────── */
   const strandingRisk = useMemo(() => {
