@@ -1,22 +1,83 @@
 # howwarimpactsyou.com
 
-## Description
-Macro-to-consumer price impact simulator showing how wars, oil shocks, and currency moves affect everyday goods in 12+ countries.
+> Macro-to-consumer price impact simulator and flight fuel risk checker. Models how wars, oil shocks, and currency moves affect everyday goods across 68 countries. Includes a flight fuel alert tool showing how the Strait of Hormuz crisis affects aviation fuel, flight routes, and airline operations.
 
-## Data Available
-- 5 conflict scenarios: Russia-Ukraine, Iran-Israel-US, Gaza/Red Sea, COVID-19, Iraq/Gulf
+## Key facts
+- 6 conflict scenarios: Hormuz 2026, Russia-Ukraine, Iran-Israel-US, Gaza/Red Sea, COVID-19, Iraq/Gulf
 - 10 consumer categories: bread, dairy, eggs, rice, cooking oil, vegetables, meat, detergent, fuel, household basket
-- 10 core countries with full coverage
-- Impact model v1.0 (scenario ceiling at 100% pass-through)
+- 68 countries with impact rankings
+- 26 country fuel vulnerability profiles (EIA, IEA sourced)
+- 20 airline impact summaries
+- 10 verified flight routes with pre/post prices
+- Route risk checker with origin, destination, layover, time horizon (0-6 months), ceasefire scenario
+- 128 unit tests, all calculations deterministic and documented
+- v3.0 (April 2026)
 
-## API Endpoints
-- GET /api/data/wars - All war impact data (JSON)
-- GET /api/data/rankings - Flattened impact rankings (JSON)
-- GET /api/data/countries - Country list with coverage (JSON)
-- GET /api/prices - Live commodity prices (JSON)
+## Pages
 
-## Text Views
-- GET /impact/{war}/{category}/text - Plain text scenario summary
+- [Home](https://howwarimpactsyou.com/): Overview with most-impacted countries and entry points
+- [Regional Impact Simulator](https://howwarimpactsyou.com/simulator): War-by-war price impact dashboard
+- [Country Impact Simulator](https://howwarimpactsyou.com/country-simulator): Country-specific impact detail with category toggles
+- [Flight Fuel Alert](https://howwarimpactsyou.com/flight-alerts): Route risk checker, country fuel cards, airline impacts, 30-day news digest
+- [How It Works](https://howwarimpactsyou.com/how-it-works): Methodology, formula, data sources, validation, learning articles
+- [About](https://howwarimpactsyou.com/about): Mission, editorial standards, author, project timeline
+- [Changelog](https://howwarimpactsyou.com/changelog): Full version history from v1.0 to v3.0
+- [Press Kit](https://howwarimpactsyou.com/press): Key statistics, citation guidelines, media contact
+- [Feedback](https://howwarimpactsyou.com/feedback): Submit corrections, data, or methodology feedback
+
+## Scenario landing pages (60 total)
+- [/impact/{war}/{category}](https://howwarimpactsyou.com/impact/hormuz-2026/fuel): One page per war-category combination
+- Example: /impact/hormuz-2026/bread, /impact/ukraine-russia/fuel, /impact/covid/eggs
+- Each page shows: top 5 and bottom 5 impacted countries, macro shocks, caveats
+
+## Learning articles (5)
+- [What is pass-through?](https://howwarimpactsyou.com/learn/what-is-pass-through)
+- [How wars affect food prices](https://howwarimpactsyou.com/learn/how-wars-affect-food-prices)
+- [Commodity price shocks explained](https://howwarimpactsyou.com/learn/commodity-price-shocks)
+- [Currency depreciation and import costs](https://howwarimpactsyou.com/learn/currency-depreciation-imports)
+- [Oil price transmission to consumers](https://howwarimpactsyou.com/learn/oil-price-transmission)
+
+## API endpoints (JSON, CC BY 4.0)
+- [GET /api/data/wars](https://howwarimpactsyou.com/api/data/wars): All war impact data
+- [GET /api/data/rankings](https://howwarimpactsyou.com/api/data/rankings): Flattened impact rankings
+- [GET /api/data/countries](https://howwarimpactsyou.com/api/data/countries): 68 countries with coverage status
+- [GET /api/prices](https://howwarimpactsyou.com/api/prices): Live commodity prices (6 commodities)
+- [GET /api/fuel-digest](https://howwarimpactsyou.com/api/fuel-digest): 30-day fuel news + EIA prices
+
+## Text views (machine-readable markdown)
+- [GET /impact/{war}/{category}/text](https://howwarimpactsyou.com/impact/hormuz-2026/fuel/text): Plain text scenario summary
+
+## Data sources
+- U.S. Energy Information Administration (EIA) — oil consumption, Brent + jet fuel prices (public domain)
+- World Bank — fertilizer prices, Pink Sheet commodity data
+- IMF — exchange rates, country economic indicators
+- FAO — food price indices
+- IEA — import dependency, country energy reviews
+- JOGMEC — strategic reserve data (Japan)
+- BP Statistical Review — refining capacity
+- Zero Carbon Analytics — Hormuz exposure indices
+- GDELT Project — news aggregation (public domain)
+- IATA / airline press offices — flight route data
+- SerpAPI / Google Finance — live commodity prices
+
+## Impact model
+EstimatedImpactCeiling = PassThrough x Sum(FactorChange x ExposureCoefficient x FXImportAdjustment x LagAdjustment)
+- Pass-through: 100% (ceiling), 75%, 50%, 25%
+- Lag: Immediate (1.0), 3 months (0.95), 6 months (0.88), 12 months (0.75)
+- This is a scenario ceiling, not a forecast
+
+## Fuel vulnerability scoring
+VulnerabilityScore (0-100) = ReservePoints (35) + ImportPoints (25) + HormuzPoints (25) + RefiningPoints (15)
+- Route risk: origin 50% + layover 30% + destination 20% (or 70/30 without layover)
+- Return trip assumes 7-day stay with additional reserve depletion
+- Ceasefire scenario reduces Hormuz exposure by normalcy percentage (0-100%)
+
+## How to cite
+howwarimpactsyou.com (2026). Macro-to-Consumer Price Impact Simulator, v3.0. https://howwarimpactsyou.com
 
 ## License
-Data: CC BY 4.0
+Data: CC BY 4.0. Code: open source at https://github.com/raj-builder/Howwarimpactsyou
+
+## Contact
+Feedback form: https://howwarimpactsyou.com/feedback
+GitHub Issues: https://github.com/raj-builder/Howwarimpactsyou/issues

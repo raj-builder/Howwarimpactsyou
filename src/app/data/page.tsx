@@ -64,10 +64,35 @@ const DATASETS = [
   },
 ]
 
+/* Dataset schema — invisible, for Google Dataset Search + AI search engines */
+const datasetJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Dataset',
+  name: 'War Impact on Consumer Prices Dataset',
+  description: 'Scenario-based price impact ceilings for 10 consumer categories across 68 countries under 6 conflict scenarios. Includes commodity shocks, FX depreciation, and country-level rankings.',
+  url: 'https://howwarimpactsyou.com/data',
+  license: 'https://creativecommons.org/licenses/by/4.0/',
+  datePublished: '2026-03-25',
+  dateModified: '2026-04-06',
+  creator: { '@type': 'Person', name: 'Raj Karan', url: 'https://www.linkedin.com/in/raj-k-5b005535/' },
+  publisher: { '@type': 'Organization', name: 'howwarimpactsyou.com', url: 'https://howwarimpactsyou.com' },
+  keywords: ['war impact', 'consumer prices', 'oil shock', 'Hormuz', 'commodity prices', 'food prices', 'fuel prices', 'economic impact'],
+  temporalCoverage: '2020/2026',
+  spatialCoverage: { '@type': 'Place', name: 'Global (68 countries)' },
+  distribution: [
+    { '@type': 'DataDownload', encodingFormat: 'application/json', contentUrl: 'https://howwarimpactsyou.com/api/data/wars' },
+    { '@type': 'DataDownload', encodingFormat: 'application/json', contentUrl: 'https://howwarimpactsyou.com/api/data/rankings' },
+    { '@type': 'DataDownload', encodingFormat: 'application/json', contentUrl: 'https://howwarimpactsyou.com/api/data/countries' },
+  ],
+}
+
 export default function DataPage() {
   const m = getMessages()
   return (
     <>
+      {/* Dataset structured data — invisible */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(datasetJsonLd) }} />
+
       {/* Hero */}
       <section className="bg-gradient-to-br from-[#1a1a1a] via-[#2d2420] to-[#3a2216] text-white py-16 px-8 md:py-20">
         <div className="max-w-[820px] mx-auto">

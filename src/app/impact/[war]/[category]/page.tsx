@@ -72,27 +72,57 @@ export default async function ScenarioPage({
   // Related: same category, different wars (pick 4)
   const relatedSameCategory = WAR_LIST.filter((w) => w.id !== war).slice(0, 4)
 
-  // JSON-LD structured data
+  // JSON-LD: Article + FAQPage (invisible to users, consumed by AI search engines)
+  const top5Text = ranking.top5.map((r) => `${r.f} ${r.c} (+${r.p}%)`).join(', ')
   const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: `How ${warData.name} Affects ${catData.label} Prices`,
-    description: `${catData.label} prices could rise up to +${top.p}% in ${top.c} due to ${warData.name}.`,
-    url: `https://howwarimpactsyou.com/impact/${war}/${category}`,
-    publisher: {
-      '@type': 'Organization',
-      name: 'howwarimpactsyou.com',
-      url: 'https://howwarimpactsyou.com',
-    },
-    mainEntityOfPage: {
-      '@type': 'WebPage',
-      '@id': `https://howwarimpactsyou.com/impact/${war}/${category}`,
-    },
+    '@graph': [
+      {
+        '@type': 'Article',
+        headline: `How ${warData.name} Affects ${catData.label} Prices`,
+        description: `${catData.label} prices could rise up to +${top.p}% in ${top.c} due to ${warData.name}.`,
+        url: `https://howwarimpactsyou.com/impact/${war}/${category}`,
+        datePublished: '2026-03-25',
+        dateModified: '2026-04-06',
+        publisher: { '@type': 'Organization', name: 'howwarimpactsyou.com', url: 'https://howwarimpactsyou.com' },
+        mainEntityOfPage: { '@type': 'WebPage', '@id': `https://howwarimpactsyou.com/impact/${war}/${category}` },
+        author: { '@type': 'Person', name: 'Raj Karan', url: 'https://www.linkedin.com/in/raj-k-5b005535/' },
+      },
+      {
+        '@type': 'FAQPage',
+        mainEntity: [
+          {
+            '@type': 'Question',
+            name: `How does ${warData.name} affect ${catData.label.toLowerCase()} prices?`,
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: `Under the ${warData.name} scenario, ${catData.label.toLowerCase()} prices could rise up to +${top.p}% in ${top.c}. The top 5 most affected countries are: ${top5Text}. This estimate assumes 100% pass-through (scenario ceiling). Actual impact depends on subsidies, supply substitution, and government intervention.`,
+            },
+          },
+          {
+            '@type': 'Question',
+            name: `Which countries are most affected by ${warData.name} for ${catData.label.toLowerCase()}?`,
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: `The most affected countries for ${catData.label.toLowerCase()} under ${warData.name} are: ${top5Text}. Rankings are based on exposure coefficients, import dependency, and currency depreciation.`,
+            },
+          },
+        ],
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://howwarimpactsyou.com' },
+          { '@type': 'ListItem', position: 2, name: warData.name, item: `https://howwarimpactsyou.com/impact/${war}/bread` },
+          { '@type': 'ListItem', position: 3, name: catData.label, item: `https://howwarimpactsyou.com/impact/${war}/${category}` },
+        ],
+      },
+    ],
   }
 
   return (
     <>
-      {/* JSON-LD */}
+      {/* Structured data — invisible, for search engines only */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

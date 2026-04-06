@@ -60,22 +60,30 @@ export default async function ArticlePage({
   // Other articles for "keep reading"
   const otherArticles = ARTICLES.filter((a) => a.slug !== slug).slice(0, 3)
 
-  // JSON-LD
+  // JSON-LD with dates, author, breadcrumbs (invisible to users)
   const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: article.title,
-    description: article.description,
-    url: `https://howwarimpactsyou.com/learn/${slug}`,
-    publisher: {
-      '@type': 'Organization',
-      name: 'howwarimpactsyou.com',
-      url: 'https://howwarimpactsyou.com',
-    },
-    mainEntityOfPage: {
-      '@type': 'WebPage',
-      '@id': `https://howwarimpactsyou.com/learn/${slug}`,
-    },
+    '@graph': [
+      {
+        '@type': 'Article',
+        headline: article.title,
+        description: article.description,
+        url: `https://howwarimpactsyou.com/learn/${slug}`,
+        datePublished: '2026-03-25',
+        dateModified: '2026-04-06',
+        author: { '@type': 'Person', name: 'Raj Karan', url: 'https://www.linkedin.com/in/raj-k-5b005535/' },
+        publisher: { '@type': 'Organization', name: 'howwarimpactsyou.com', url: 'https://howwarimpactsyou.com' },
+        mainEntityOfPage: { '@type': 'WebPage', '@id': `https://howwarimpactsyou.com/learn/${slug}` },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://howwarimpactsyou.com' },
+          { '@type': 'ListItem', position: 2, name: 'Learn', item: 'https://howwarimpactsyou.com/learn' },
+          { '@type': 'ListItem', position: 3, name: article.title, item: `https://howwarimpactsyou.com/learn/${slug}` },
+        ],
+      },
+    ],
   }
 
   return (
