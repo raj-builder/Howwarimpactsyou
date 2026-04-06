@@ -1,44 +1,50 @@
 # howwarimpactsyou.com
 
-**Macro-to-Consumer Price Impact Simulator**
+**Macro-to-Consumer Price Impact Simulator + Flight Fuel Risk Checker**
 
 Live at: [howwarimpactsyou.com](https://howwarimpactsyou.com)
 
-Translates upstream commodity and currency shocks (oil, war, grain prices, FX) into estimated downstream consumer price impacts — transparently, with every assumption visible.
+Translates upstream commodity and currency shocks (oil, war, grain prices, FX) into estimated downstream consumer price impacts — transparently, with every assumption visible. Now includes a Flight Fuel Alert tool that models how the Strait of Hormuz crisis affects aviation fuel, flight routes, and airline operations across 26 countries.
 
 ---
 
-## What Changed in v2.4 (2026-03-29)
+## What Changed in v3.0 (2026-04-06) — Flight Fuel Alert
 
-- **Simulator decluttered** — single-column dashboard with horizontal war strip, side-by-side rankings, and integrated belligerent countries section. Removed 2-column sidebar with 7 control sections.
-- **Country Simulator** — basket page renamed and enriched to `/country-simulator`. Now includes single-category detail panel (ImpactDisplay, StatCards, factor breakdown, purchasing power) alongside the basket toggle view.
-- **Countries integrated** — standalone `/countries` page absorbed into simulator; `/countries` redirects
-- **Navigation simplified** — "Basket" → "Country Simulator"; "Countries" tab removed
-- **Rankings navigate** — clicking a country in the simulator rankings goes to `/country-simulator` for deep-dive
-- **Visual polish** — stagger reveal animations, generous spacing, serif section titles
+### New feature: `/flight-alerts`
 
-## What Changed in v2.3 (2026-03-28)
+A complete flight fuel risk assessment tool built from scratch:
 
-- **Default conflict: Iran–Israel–US** — simulator and basket now default to the Strait of Hormuz scenario
-- **"So What" summary card** — right panel leads with a personal impact insight
-- **Methodology & Validation merged** — single page at `/methodology`
-- **Homepage updated** — example cards now feature Iran–Israel–US conflict scenarios
+- **Route Risk Checker** — select origin, destination, and optional layover country. See combined fuel risk scores with 50/30/20 weighting (origin/layover/destination), or 70/30 without layover.
+- **Time horizon** — project risk forward 0-6 months as reserves deplete under ongoing disruption.
+- **Ceasefire scenario** — toggle between ongoing crisis and ceasefire with normalcy slider (0-100%).
+- **Return trip risk** — assumes 7-day trip; return scores are different because fuel is loaded at the destination and reserves have depleted during the stay.
+- **Stranding risk** — assesses whether destination country reserves can support return fueling.
+- **26 country fuel profiles** — vulnerability scoring from 4 factors: reserve days (35 pts), import dependency (25 pts), Hormuz exposure (25 pts), refining capacity (15 pts).
+- **20 airline impact summaries** — from disrupted (Emirates, Air NZ) to unaffected (Delta, Lufthansa).
+- **10 verified flight routes** — with pre/post prices, status, and source URLs.
+- **30-day news digest** — GDELT news aggregation + EIA fuel prices (12h ISR cache).
+- **128 unit tests** — covering all calculation functions, real country profiles, edge cases.
 
----
+### Data sources (new)
 
-## What Changed in v2.0
+| Source | Data | Licence |
+|--------|------|---------|
+| U.S. Energy Information Administration (EIA) | Oil consumption (164 countries), Brent + jet fuel prices | Public domain (US Gov) |
+| International Energy Agency (IEA) | Import dependency, country energy reviews | Cited per country |
+| JOGMEC | Japanese strategic reserve data | Public reports |
+| BP Statistical Review | Refining capacity by country | Annual publication |
+| Zero Carbon Analytics | Hormuz exposure indices | Research reports |
+| GDELT Project | 30-day fuel crisis news aggregation | Public domain |
+| IATA / airline press offices | Flight route data, surcharge announcements | Press releases |
+| SafeFly (safefly.aero) | Aviation impact summaries | Cited per entry |
 
-This release is a full architectural migration from a single vanilla HTML file to a Next.js 16 App Router application. The original site was a 2,860-line `index.html` with inline CSS and JavaScript. That approach was fast to ship but couldn't support indexable routes, server-side rendering, OG images, or any of the 20 feature requests that had accumulated.
+### Other v3.0 changes
 
-### Why migrate at all
-
-The original single-file design meant:
-- **One URL for everything.** Search engines saw one page. Users couldn't bookmark or share a specific scenario. Every war, country, and category lived behind client-side `showPage()` toggles with no URL representation.
-- **No server rendering.** The entire page was JS-dependent. Crawlers that don't execute JavaScript saw nothing.
-- **No build step means no optimization.** No tree-shaking, no code splitting, no image optimization, no static generation.
-- **Scaling was impossible.** Adding scenario landing pages, a learning hub, a compare mode, or an API meant rewriting the architecture anyway.
-
-The migration preserves every data point, every design token, and every color from the original while enabling everything that was blocked.
+- **65 → 68 countries** — added Canada, Ireland, Norway to country database
+- **Hormuz 2026 scenario** — default war with 8 belligerent country rankings
+- **Navigation** — Flight Fuel Alert added as primary nav link
+- **EIA API integration** — oil consumption data for 164 countries pulled via `api.eia.gov/v2/international`
+- **SerpAPI server-side cache** — 48h TTL file cache, limits to ~9 calls per billing cycle
 
 ### Design choices
 
@@ -122,26 +128,39 @@ src/
 ├── components/
 │   ├── ui/                       # Nav, footer, freshness bar, badges
 │   ├── simulator/                # Simulator client, presets, gate, share, save
-│   ├── basket/                   # Basket client
+│   ├── country-simulator/        # Country simulator client
+│   ├── flight-alerts/            # Flight fuel alert components
+│   │   ├── flight-alerts-client.tsx  # Main page orchestrator
+│   │   ├── route-checker.tsx     # Route risk checker (origin/dest/layover/time/scenario)
+│   │   ├── fuel-alert-hero.tsx   # Punchy hero with stats + CTA
+│   │   ├── country-fuel-card.tsx # Country vulnerability card
+│   │   ├── weekly-fuel-digest.tsx # 30-day news + price digest
+│   │   ├── alert-badge.tsx       # Critical/High/Moderate/Low badge
+│   │   └── vulnerability-bar.tsx # 0-100 score progress bar
 │   ├── compare/                  # Compare client
 │   └── saved/                    # Saved scenarios client
-├── data/                         # Typed data modules (extracted from legacy HTML)
-│   ├── wars.ts                   # 5 wars × 10 categories × 10 countries
+├── data/                         # Typed data modules
+│   ├── wars.ts                   # 6 wars × 10 categories × 65 countries
 │   ├── currencies.ts             # FX depreciation per war × country
 │   ├── reasons.ts                # Impact explanations per war × country
 │   ├── categories.ts             # 10 consumer categories
-│   ├── countries.ts              # 20 countries with coverage status
-│   └── fallback-prices.ts       # Commodity price fallbacks
+│   ├── countries.ts              # 68 countries with coverage status + flags
+│   ├── fallback-prices.ts        # Commodity price fallbacks
+│   ├── fuel-security.ts          # 26 country fuel profiles (EIA, IEA sourced)
+│   └── flight-routes.ts          # 10 routes + 20 airlines (hormuz-2026)
 ├── types/
 │   ├── index.ts                  # War, Country, Category, Commodity types
-│   └── scenario.ts               # ScenarioState, ScenarioResult, BasketResult, LagPeriod
+│   ├── scenario.ts               # ScenarioState, ScenarioResult, BasketResult, LagPeriod
+│   └── fuel-security.ts          # FuelSecurityResult, RouteRiskResult, FlightRoute, etc.
 ├── lib/                          # Hooks and utilities
-│   ├── calculations.ts           # Centralized calculation engine (single source of truth)
-│   ├── use-simulator-state.ts    # URL ↔ state sync hook (typed LagPeriod, full serialization)
+│   ├── calculations.ts           # Price impact calculation engine
+│   ├── fuel-calculations.ts      # Fuel vulnerability scoring (9 pure functions)
+│   ├── feed-fetchers.ts          # GDELT news + EIA price fetchers
+│   ├── use-simulator-state.ts    # URL ↔ state sync hook
 │   ├── saved-scenarios.ts        # localStorage save/load (with migration)
 │   ├── analytics.ts              # Event tracking wrapper
 │   └── __tests__/
-│       └── calculations.test.ts  # 37 unit tests (Vitest)
+│       └── fuel-calculations.test.ts  # 128 unit tests (Vitest)
 ├── content/articles.ts           # 5 learning hub articles
 └── i18n/                         # Localization foundation
     ├── config.ts
@@ -157,11 +176,11 @@ public/
 
 ### Build output
 
-81 pages total:
-- 16 static pages (home, simulator, basket, methodology, etc.)
-- 50 SSG scenario pages (5 wars × 10 categories)
+98 pages total:
+- 17 static pages (home, simulator, country-simulator, flight-alerts, how-it-works, feedback, etc.)
+- 60 SSG scenario pages (6 wars × 10 categories)
 - 5 SSG article pages
-- 9 dynamic routes (API endpoints, OG images, embeds, text endpoints)
+- 15 dynamic routes (API endpoints, OG images, embeds, text endpoints)
 - sitemap.xml + robots.txt
 
 ---
@@ -187,16 +206,17 @@ All impact data lives in `src/data/` as TypeScript modules:
 
 | Module | Contents | Source |
 |--------|----------|--------|
-| `wars.ts` | 5 wars × 10 categories × 10 countries (rankings + shocks) | Scenario model coefficients |
+| `wars.ts` | 6 wars × 10 categories × 65 countries (rankings + shocks) | Scenario model coefficients |
 | `currencies.ts` | FX depreciation per war × country | IMF IFS, central bank records |
 | `reasons.ts` | Plain-English impact explanations | Trade statistics, UN Comtrade |
-| `countries.ts` | 20 countries with coverage status | Model coverage assessment |
+| `countries.ts` | 68 countries with coverage status | Model coverage assessment |
 | `categories.ts` | 10 consumer categories with metadata | CPI basket composition |
 
 ### 5 Conflict Scenarios
 
 | ID | Name | Period | Key Shocks |
 |----|------|--------|------------|
+| `hormuz-2026` | **Strait of Hormuz Crisis** | Feb 2026 – Present | **Brent +54%**, Shipping +150%, Urea +49% |
 | `ukraine-russia` | Russia–Ukraine War | Feb 2022 – Present | Wheat +38%, Gas +220%, Fertilizer +65% |
 | `iran-israel-us` | Iran–Israel–US Conflict | Apr 2024 – Present | Brent +18%, Shipping +45% |
 | `gaza-2023` | Gaza War / Red Sea Crisis | Oct 2023 – Present | Shipping +340%, Brent +12% |
@@ -212,6 +232,8 @@ All impact data lives in `src/data/` as TypeScript modules:
 | `/api/data/rankings` | GET | Flattened impact rankings |
 | `/api/data/countries` | GET | Country list with coverage status |
 | `/impact/{war}/{category}/text` | GET | Plain text scenario summary (markdown) |
+| `/api/fuel-digest` | GET | 30-day fuel news (GDELT) + prices (EIA), 12h ISR cache |
+| `/api/feedback` | POST | User feedback submission → Vercel KV |
 
 ---
 
@@ -271,6 +293,7 @@ npm start
 | `KV_REST_API_URL` | Vercel KV URL (email signups) |
 | `KV_REST_API_TOKEN` | Vercel KV token |
 | `ADMIN_SECRET` | Password for /api/signups endpoint |
+| `EIA_API_KEY` | EIA Open Data API key (free, for fuel prices + consumption) |
 
 ---
 
