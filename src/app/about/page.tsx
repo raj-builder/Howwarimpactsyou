@@ -132,7 +132,38 @@ export default function AboutPage() {
               <div className="relative">
                 <div className="absolute -left-[25px] top-1 w-3 h-3 rounded-full bg-accent border-2 border-bg-card" />
                 <div className="font-sans text-[0.72rem] font-bold text-accent uppercase tracking-wide mb-1">
-                  Mar 2025
+                  Apr 2026
+                </div>
+                <div className="font-sans text-[0.88rem] font-semibold text-ink mb-0.5">
+                  v3.0 — Flight Fuel Alert
+                </div>
+                <p className="font-sans text-[0.84rem] text-ink-soft leading-relaxed">
+                  New Flight Fuel Alert tool at /flight-alerts. Route risk checker
+                  with origin, destination, layover, time horizon (0-6 months),
+                  ceasefire scenario with normalcy slider. 26 country fuel profiles,
+                  20 airlines, 10 verified routes, 128 unit tests. Powered by EIA,
+                  IEA, JOGMEC, and GDELT data.
+                </p>
+              </div>
+              <div className="relative">
+                <div className="absolute -left-[25px] top-1 w-3 h-3 rounded-full bg-accent border-2 border-bg-card" />
+                <div className="font-sans text-[0.72rem] font-bold text-accent uppercase tracking-wide mb-1">
+                  Mar–Apr 2026
+                </div>
+                <div className="font-sans text-[0.88rem] font-semibold text-ink mb-0.5">
+                  v2.0–v2.7 — Major expansion
+                </div>
+                <p className="font-sans text-[0.84rem] text-ink-soft leading-relaxed">
+                  Expanded from 10 to 68 countries. Added Strait of Hormuz 2026
+                  scenario (Brent +54%). Belligerent country rankings for 8 nations.
+                  EIA data integration for 164 countries. UI restructure, mobile nav,
+                  accessibility audit, feedback page, SerpAPI caching.
+                </p>
+              </div>
+              <div className="relative">
+                <div className="absolute -left-[25px] top-1 w-3 h-3 rounded-full bg-accent/50 border-2 border-bg-card" />
+                <div className="font-sans text-[0.72rem] font-bold text-accent uppercase tracking-wide mb-1">
+                  Mar 2026
                 </div>
                 <div className="font-sans text-[0.88rem] font-semibold text-ink mb-0.5">
                   v1.0 Launch
@@ -153,8 +184,8 @@ export default function AboutPage() {
                 </div>
                 <p className="font-sans text-[0.84rem] text-ink-soft leading-relaxed">
                   Commodity prices and exchange rates are refreshed regularly
-                  from World Bank, IMF, and EIA feeds. Validation data is
-                  updated as national CPI agencies publish new figures.
+                  from World Bank, IMF, EIA, and GDELT feeds. Fuel vulnerability
+                  profiles updated as IEA and national agencies publish new data.
                 </p>
               </div>
             </div>

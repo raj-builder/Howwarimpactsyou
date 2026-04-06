@@ -9,10 +9,10 @@ export const metadata: Metadata = {
 }
 
 const STATS = [
-  { value: '5', label: 'War & shock scenarios' },
+  { value: '6', label: 'War & shock scenarios' },
   { value: '10', label: 'Consumer categories' },
-  { value: '12+', label: 'Countries covered' },
-  { value: 'v1.0', label: 'Model version' },
+  { value: '68', label: 'Countries covered' },
+  { value: 'v3.0', label: 'Model version' },
 ]
 
 export default function PressPage() {

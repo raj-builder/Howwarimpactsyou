@@ -21,7 +21,7 @@
     "feedback": "Give Feedback"
   },
   "footer": {
-    "version": "v2.0",
+    "version": "v3.0",
     "disclaimer": "This tool estimates a scenario ceiling under stated assumptions. It is not a price forecast, financial advice, or official statistic. All figures are model outputs, not observed prices. Use at your own discretion.",
     "attribution": "Macro data: World Bank, IMF, FAO, EIA. Validation: National CPI offices, UN Comtrade. Prices: SerpAPI / Google Finance & World Bank"
   },
