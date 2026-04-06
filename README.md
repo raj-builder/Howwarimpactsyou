@@ -311,7 +311,69 @@ npm start
 
 ## Changelog
 
-### 2025-03-28 — v2.2 (Pre-escalation anchors, user refinements, i18n, surface fixes)
+### 2026-04-06 — v3.0 (Flight Fuel Alert)
+
+Full flight fuel risk assessment feature — see "What Changed in v3.0" above for details.
+
+- `/flight-alerts` page with route risk checker, 26 country profiles, 20 airlines, 10 routes
+- Route checker: origin/destination/layover, 0-6 month time horizon, ceasefire + normalcy slider, return trip with 7-day stay assumption, stranding risk
+- Combined risk formula: origin 50% + layover 30% + destination 20% (or 70/30 without layover)
+- 128 unit tests (was 37), including 16 QA stress tests for real country profiles
+- EIA API integration for oil consumption data (164 countries)
+- SerpAPI server-side file cache (48h TTL)
+- GDELT 30-day news digest with EIA fuel prices
+
+### 2026-04-05 — v2.7 (Belligerent rankings, UI restructure)
+
+- Deep-researched consumer price impact rankings for 8 belligerent countries (USA, Iran, Israel, Saudi Arabia, UAE, Kuwait, Qatar, Bahrain) across all 10 categories
+- Replaced "Gains/Costs" labels with actual basket impact % + insight text
+- Renamed Simulator → Regional Impact, Country Simulator → Country Impact
+- Merged Methodology + Data Sources + Learn into `/how-it-works`
+- New `/feedback` page with form → Vercel KV
+- Simulator shows 4 category-specific impact cards
+- Homepage "Most impacted by Hormuz" top-5 section
+- Footer cleanup, version bump to v2.0 → v2.7
+- FX dates updated to Apr 2026
+- 65 countries total (was 57)
+
+### 2026-04-04 — v2.6 (Flight Fuel Alert prototype + EIA data)
+
+- Built prototype `/flight-alerts` page (local only, not deployed)
+- 14-country fuel vulnerability scoring (4-factor: reserves 35pts, import dependency 25pts, Hormuz exposure 25pts, refining capacity 15pts)
+- 10 flight route impact cards with source article URLs
+- 8 airline impact summaries
+- Weekly news digest via GDELT + EIA APIs (12h cache)
+- SerpAPI server-side file cache with 48h TTL
+- EIA bulk data pull for 164 countries — oil consumption from EIA instead of manual estimates
+- Added Australia + New Zealand to countries list
+- 38 new unit tests (98 total at the time)
+
+### 2026-03-30 — v2.5 (55 countries, Hormuz scenario, OG fix, regional rankings)
+
+- Expanded countries from 24 to 55 (all with Hormuz basket rankings)
+- Added `hormuz-2026` war scenario: Brent $70→$107.81 (+54%), shipping +150%, urea +49%
+- OG image fixed: moved from file-convention to `/api/og` API route for proper searchParams
+- Rankings redesigned: "Most Impacted (top 5)" + "Impact by Region" (7 collapsible groups)
+- Wikipedia source URLs added to all 6 war cards
+- Learn articles rewritten with citations from IMF, World Bank, ECB, FAO, EIA, Dallas Fed
+- Updated FX rates and fallback commodity prices to Mar 2026
+
+### 2026-03-29 — v2.4 (Mobile nav, a11y, homepage, UI polish)
+
+- Full UI audit (P0-P3) applied across all pages
+- Mobile hamburger drawer navigation
+- Toggle accessibility (role=switch, 44x24px touch targets)
+- Homepage hero card hierarchy redesigned
+- Collapsible sidebar sections, timeline visual, footer semantic nav
+
+### 2026-03-28 — v2.3 (Simulator declutter, Country Simulator)
+
+- Simplified simulator from 2-column 19-section to single-column dashboard
+- Country Simulator at `/country-simulator` with detail panel
+- Default conflict changed to Iran-Israel-US
+- "So What" summary card, methodology merged
+
+### 2026-03-27 — v2.2 (Pre-escalation anchors, user refinements, i18n, surface fixes)
 
 - **Pre-escalation price anchors:** Researched Before/After commodity prices for all 5 wars (Brent, NatGas, Wheat, Copper, Gold, consumer goods). New WarEscalationCard replaces old war selector buttons
 - **User data refinement panel:** 3-tab panel (Commodity Prices, Category Impacts, FX Rates) with localStorage persistence, "Add New Country" flow, export/clear. User overrides flow through `computeScenario`/`computeBasket` with "User data" badge
@@ -326,7 +388,7 @@ npm start
 - **Fallback prices:** Updated with post-escalation reference values and provenance notes
 - **Gitignore:** MEMORY.md, CLAUDE.md, COS-Report files excluded from public repo
 
-### 2025-03-26 — v2.1 (Scenario Builder Refactoring)
+### 2026-03-26 — v2.1 (Scenario Builder Refactoring)
 
 Centralized all calculation logic, fixed numerical inconsistencies, and made every result auditable and reproducible. Addresses 14 scenario builder tickets (SB-001 through SB-014):
 
@@ -348,7 +410,7 @@ Centralized all calculation logic, fixed numerical inconsistencies, and made eve
 - **Unit tests:** 37 Vitest tests covering calculations, rounding, lag, basket reconciliation, identity round-trip, validation guards
 - **Homepage hrefs completed:** Example cards now include lag and passthrough params
 
-### 2025-03-25 — v2.0 (Next.js Migration)
+### 2026-03-25 — v2.0 (Next.js Migration)
 
 Full architectural migration from vanilla HTML to Next.js 16 App Router. Implements all 20 feature tickets (FR-001 through FR-020):
 
@@ -369,7 +431,7 @@ Full architectural migration from vanilla HTML to Next.js 16 App Router. Impleme
 - Added i18n foundation (en/ar/tl)
 - Added analytics event tracking framework
 
-### 2025-03-24 — v1.0 Launch
+### 2026-03-24 — v1.0 Launch
 - Initial prototype with 5 wars, 10 categories, 10 core countries
 - SerpAPI integration for live commodity prices
 - World Bank integration for Urea
