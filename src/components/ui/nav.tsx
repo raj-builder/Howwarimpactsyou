@@ -9,6 +9,7 @@ const NAV_KEYS: { href: string; key: string }[] = [
   { href: '/', key: 'nav.home' },
   { href: '/simulator', key: 'nav.simulator' },
   { href: '/country-simulator', key: 'nav.countrySimulator' },
+  { href: '/flight-alerts', key: 'nav.flightAlerts' },
   { href: '/how-it-works', key: 'nav.howItWorks' },
   { href: '/feedback', key: 'nav.feedback' },
 ]

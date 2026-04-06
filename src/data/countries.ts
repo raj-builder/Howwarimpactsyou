@@ -59,6 +59,8 @@ export const COUNTRIES: Country[] = [
   { id: 'Spain', name: 'Spain', flag: '🇪🇸', coverage: 'partial', region: 'Europe' },
   { id: 'Poland', name: 'Poland', flag: '🇵🇱', coverage: 'partial', region: 'Europe' },
   { id: 'Greece', name: 'Greece', flag: '🇬🇷', coverage: 'partial', region: 'Europe' },
+  { id: 'Ireland', name: 'Ireland', flag: '🇮🇪', coverage: 'partial', region: 'Europe' },
+  { id: 'Norway', name: 'Norway', flag: '🇳🇴', coverage: 'partial', region: 'Europe' },
 
   // Middle East — belligerent / directly involved
   { id: 'Iran', name: 'Iran', flag: '🇮🇷', coverage: 'partial', region: 'Middle East & North Africa' },
@@ -75,6 +77,7 @@ export const COUNTRIES: Country[] = [
   { id: 'Colombia', name: 'Colombia', flag: '🇨🇴', coverage: 'partial', region: 'Americas' },
   { id: 'Peru', name: 'Peru', flag: '🇵🇪', coverage: 'partial', region: 'Americas' },
   { id: 'Chile', name: 'Chile', flag: '🇨🇱', coverage: 'partial', region: 'Americas' },
+  { id: 'Canada', name: 'Canada', flag: '🇨🇦', coverage: 'partial', region: 'Americas' },
 
   // Asia Pacific
   { id: 'Australia', name: 'Australia', flag: '🇦🇺', coverage: 'partial', region: 'Asia Pacific' },

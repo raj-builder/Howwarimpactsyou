@@ -1,3 +1,79 @@
+## [2026-04-06] — Flight Fuel Alert: full feature launch
+
+### What changed (round 3)
+- Route checker: layover country now included in return trip risk calculations
+- 7-day trip assumption: return trip scores differ from outbound (reserves deplete during stay)
+- Ceasefire scenario: normalcy slider (0%, 25%, 50%, 75%, 100%) replaces fixed 30% factor
+- Stranding risk now names the specific country (e.g. "Stranding risk at India")
+- Time horizon expanded: Now, 1-6 months with reserve depletion per month
+- Airlines expanded to 20 global carriers (was 8): added Singapore Airlines, JAL, Thai Airways, Garuda, PAL, Lufthansa, Air France, BA, Delta, United, American, LATAM
+- Low-risk carriers show "No direct disruption" with LOW badge
+- Hero avg depletion now only counts critical+high countries (was all, caused 3184d nonsense)
+- Hero subtitle rewritten: preplanned-trips-impacted messaging
+- Fuel surcharge removed from route checker (moved to country simulator)
+- Weekly digest moved to page bottom, extended to 30-day news window
+- Added Canada, Ireland, Norway to countries.ts (missing flags fixed)
+- Country cards show "Minimal Hormuz dependency" for non-exposed countries (was blank)
+- 13 new QA stress tests for real country profiles (125 total tests, all passing)
+
+### Why
+User QA identified: missing flags, nonsensical hero stat, no layover in return trip, fixed ceasefire %, stranding risk unclear, airline list too small, calculation gaps.
+
+### Data & calculation notes
+- Ceasefire normalcy: Hormuz exposure × (1 - normalcyPct/100). At 50% normalcy, a country with 60% Hormuz exposure becomes 30%. Historical precedent: 1990 Gulf War ceasefire → 3 months to price normalization (IEA).
+- Trip duration: 7 days assumed. Return trip = monthsAhead + 7 days of additional reserve depletion.
+- Airlines: 12 new entries with impact text and source URLs. 5 "no impact" carriers (Lufthansa, Air France, Delta, United, American, LATAM) use safefly.aero as source.
+
+### Upgrade notes for the next engineer or AI session
+- GDELT API returning 429 Too Many Requests during builds. Fallback message handles it. May need to reduce query frequency or add retry logic.
+- 26 country fuel profiles now (was 14 → 19 → 26). 20 airlines (was 8).
+- Normalcy slider is UI-only — not persisted in URL params yet.
+
+### Credits & third-party use
+- Airline impact data: SafeFly (safefly.aero), Euronews Travel, individual airline press offices
+- All airline entries cite specific source URLs
+
+---
+
+## [2026-04-06] — Flight Fuel Alert: UX redesign, route checker, nav launch
+
+### What changed
+- Redesigned `/flight-alerts` page UX addressing all 5 feedback issues from Apr 5 session
+- New punchy hero: "Is your flight at risk?" with dominant disrupted-routes stat + CTA scroll to route checker
+- New Route Risk Checker: origin + destination country dropdowns → combined fuel risk score, surcharge estimate, verified/indicative/limited confidence levels. Finds exact pre-researched route matches when available.
+- Weekly fuel digest promoted to position 3 (was buried below fold)
+- New summary bar showing alert-level counts (e.g. "5 CRITICAL · 4 HIGH · 3 MODERATE · 2 LOW")
+- Removed low-value country filter dropdown (route checker replaces it)
+- Fixed hardcoded "LIVE" badge → uses `t('flightAlerts.liveBadge')` translation key
+- Added 5 destination-only country fuel profiles: UAE, United Kingdom, Ireland, Egypt, Vietnam
+- Added `computeRouteRisk()` and `estimateSurchargeRange()` pure functions with full docstrings
+- Added `RouteRiskResult` type with confidence levels
+- Added 14 new tests for route risk functions (112 total tests, all passing)
+- Added ~20 new i18n translation keys (`flightAlerts.routeChecker.*`, `flightAlerts.summaryBar.*`, etc.)
+- Restored `/flight-alerts` nav link (now 6th primary link: after Country Impact, before How It Works)
+
+### Why
+User feedback identified 5 UX problems: (1) country filter useless, (2) cards limited to 14 countries with no global view, (3) hero too research-like, (4) no route-level tool, (5) news feed hidden. Route checker addresses "is MY flight affected?" — the core user question. Promoting the digest and adding the summary bar solves visibility. The hero redesign makes the page feel actionable rather than academic.
+
+### Data & calculation notes
+- `computeRouteRisk()`: Weights origin country 70%, destination 30% (aircraft fuel at departure). Score = originScore × 0.70 + destScore × 0.30. Range 0-100.
+- `estimateSurchargeRange()`: Maps score to 4 tiers — Critical (≥70): 60-150%, High (50-69): 35-80%, Moderate (30-49): 15-45%, Low (<30): 5-20%. Derived from observed surcharges across 10 pre-researched routes (38-167% actual range).
+- 5 new country profiles: UAE (net exporter, Hormuz-adjacent), UK (38% import dep, 5% Hormuz), Ireland (100% imports, 3% Hormuz), Egypt (30% imports), Vietnam (60% imports).
+
+### Upgrade notes for the next engineer or AI session
+- No new environment variables
+- No database migrations
+- 19 countries now have fuel profiles (was 14) — 14 origin-focused + 5 destination-only
+- Flight alerts page is now in production nav — users will see it
+- Next priorities: expand route database beyond 10 routes, add more countries, accessibility audit
+
+### Credits & third-party use
+- UAE fuel data: EIA (public domain), IEA country profile, ADNOC estimates
+- UK fuel data: EIA (public domain), IEA 2024 review, UK DESNZ oil stock obligations
+- Ireland fuel data: EIA (public domain), NORA (National Oil Reserves Agency), IEA 2024 review
+- Egypt fuel data: EIA (public domain), IEA energy profile
+- Vietnam fuel data: EIA (public domain), IEA energy profile
+
 ## [2026-04-05] — Footer cleanup, version bump to v2.0
 
 ### What changed
