@@ -122,7 +122,70 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Crediting and timeline */}
+        {/* Built by */}
+        <section className="mb-14">
+          <h2 className="font-sans text-[0.72rem] font-bold tracking-[0.13em] uppercase text-accent mb-3">
+            Built by
+          </h2>
+          <div className="bg-bg-card border border-border rounded-[10px] p-6 md:p-8 shadow-card max-w-[780px]">
+            <div className="flex items-start gap-4 mb-5">
+              <div>
+                <h3 className="font-serif text-[1.2rem] font-normal text-ink mb-0.5 leading-tight">
+                  Raj Karan
+                </h3>
+                <p className="font-sans text-[0.78rem] text-ink-muted">
+                  Product @ io.net &middot; ex-Binance &middot; ex-Uber
+                </p>
+                <a
+                  href="https://www.linkedin.com/in/raj-k-5b005535/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block font-sans text-[0.75rem] text-accent no-underline hover:underline mt-1"
+                >
+                  LinkedIn &rarr;
+                </a>
+              </div>
+            </div>
+            <div className="space-y-4 font-sans text-[0.88rem] text-ink-soft leading-relaxed">
+              <p>
+                This project started with a simple question: <em>&ldquo;If the Strait of
+                Hormuz remains closed, what happens to my electricity bill in India?&rdquo;</em>
+              </p>
+              <p>
+                The hard part was not the site. It was building a model that could connect
+                the chain: oil shock &rarr; shipping &rarr; currency pressure &rarr;
+                import exposure &rarr; consumer impact &mdash; without pretending to know
+                more than it does. That&rsquo;s where the real work went.
+              </p>
+              <p>
+                The distance from idea to product just got a lot shorter. A few years ago
+                this becomes a doc, multiple planning discussions, and a long build cycle.
+                Now you can turn a live question into a live product while the idea still
+                has energy. That changes the job.
+              </p>
+              <p>
+                All of this is intended from a learning standpoint with full credits and
+                shout-outs to the data providers &mdash; EIA, IEA, World Bank, IMF, FAO,
+                GDELT, JOGMEC, IATA, and every national statistics agency whose data
+                powers this tool. Not for any commercial use.
+              </p>
+              <p className="text-[0.82rem] text-ink-muted">
+                The code is{' '}
+                <a
+                  href="https://github.com/raj-builder/Howwarimpactsyou"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-accent no-underline hover:underline"
+                >
+                  open source on GitHub
+                </a>
+                .
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Project timeline */}
         <section>
           <h2 className="font-sans text-[0.72rem] font-bold tracking-[0.13em] uppercase text-accent mb-3">
             Project timeline
