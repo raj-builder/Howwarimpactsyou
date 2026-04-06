@@ -60,6 +60,7 @@ export const COUNTRIES: Country[] = [
   { id: 'Poland', name: 'Poland', flag: '🇵🇱', coverage: 'partial', region: 'Europe' },
   { id: 'Greece', name: 'Greece', flag: '🇬🇷', coverage: 'partial', region: 'Europe' },
   { id: 'Ireland', name: 'Ireland', flag: '🇮🇪', coverage: 'partial', region: 'Europe' },
+  { id: 'Netherlands', name: 'Netherlands', flag: '🇳🇱', coverage: 'partial', region: 'Europe' },
   { id: 'Norway', name: 'Norway', flag: '🇳🇴', coverage: 'partial', region: 'Europe' },
 
   // Middle East — belligerent / directly involved

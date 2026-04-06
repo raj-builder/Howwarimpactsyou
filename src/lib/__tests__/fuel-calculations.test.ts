@@ -482,6 +482,33 @@ describe('QA: real country profile calculations', () => {
     refiningCapacityPct: 15,
   })
 
+  // Türkiye: 75d reserves, 93% imports, 27% Hormuz, 55% refining
+  const turkiye = makeProfile({
+    countryId: 'Türkiye',
+    strategicReserveDays: 75,
+    importDependencyPct: 93,
+    hormuzExposurePct: 27,
+    refiningCapacityPct: 55,
+  })
+
+  // Netherlands: 90d reserves, 95% imports, 5% Hormuz, 200% refining
+  const netherlands = makeProfile({
+    countryId: 'Netherlands',
+    strategicReserveDays: 90,
+    importDependencyPct: 95,
+    hormuzExposurePct: 5,
+    refiningCapacityPct: 200,
+  })
+
+  // Malaysia: 22d reserves, 15% imports, 30% Hormuz, 65% refining
+  const malaysia = makeProfile({
+    countryId: 'Malaysia',
+    strategicReserveDays: 22,
+    importDependencyPct: 15,
+    hormuzExposurePct: 30,
+    refiningCapacityPct: 65,
+  })
+
   it('Australia is CRITICAL (low reserves + high imports)', () => {
     const result = computeFuelSecurity(australia)
     expect(result.alertLevel).toBe('critical')
@@ -508,8 +535,37 @@ describe('QA: real country profile calculations', () => {
     expect(result.estimatedDepletionDays).toBeLessThan(20) // ~17.5d
   })
 
+  it('Türkiye is HIGH (high imports but moderate Hormuz + decent reserves)', () => {
+    const result = computeFuelSecurity(turkiye)
+    expect(result.alertLevel).toBe('high')
+    expect(result.vulnerabilityScore).toBeGreaterThanOrEqual(50)
+    expect(result.vulnerabilityScore).toBeLessThan(70)
+  })
+
+  it('Netherlands is MODERATE (massive refining offsets high imports)', () => {
+    const result = computeFuelSecurity(netherlands)
+    expect(result.alertLevel).toBe('moderate')
+    expect(result.vulnerabilityScore).toBeGreaterThanOrEqual(30)
+    expect(result.vulnerabilityScore).toBeLessThan(50)
+  })
+
+  it('Malaysia is HIGH (very low reserves despite low import dependency)', () => {
+    const result = computeFuelSecurity(malaysia)
+    expect(result.alertLevel).toBe('high')
+    expect(result.vulnerabilityScore).toBeGreaterThanOrEqual(50)
+    expect(result.vulnerabilityScore).toBeLessThan(70)
+  })
+
+  it('route risk: Türkiye→Netherlands weighted score is correct', () => {
+    const trResult = computeFuelSecurity(turkiye)
+    const nlResult = computeFuelSecurity(netherlands)
+    const risk = computeRouteRisk(trResult, nlResult)
+    const expected = Math.round((trResult.vulnerabilityScore * 0.7 + nlResult.vulnerabilityScore * 0.3) * 10) / 10
+    expect(risk.score).toBe(expected)
+  })
+
   it('vulnerability score always sums to factor points', () => {
-    for (const profile of [australia, usa, canada, bangladesh]) {
+    for (const profile of [australia, usa, canada, bangladesh, turkiye, netherlands, malaysia]) {
       const result = computeFuelSecurity(profile)
       const factorSum = result.factors.reduce((s, f) => s + f.points, 0)
       expect(factorSum).toBeCloseTo(result.vulnerabilityScore, 0)
@@ -517,7 +573,7 @@ describe('QA: real country profile calculations', () => {
   })
 
   it('vulnerability score is always 0-100', () => {
-    for (const profile of [australia, usa, canada, bangladesh]) {
+    for (const profile of [australia, usa, canada, bangladesh, turkiye, netherlands, malaysia]) {
       const result = computeFuelSecurity(profile)
       expect(result.vulnerabilityScore).toBeGreaterThanOrEqual(0)
       expect(result.vulnerabilityScore).toBeLessThanOrEqual(100)

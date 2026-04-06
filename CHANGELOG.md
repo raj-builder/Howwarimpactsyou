@@ -1,3 +1,37 @@
+## [2026-04-06] — Add fuel profiles for Türkiye, Netherlands, Malaysia
+
+### What changed
+- Added fuel security profile for Türkiye (Istanbul hub): 1.15M bpd, 93% import dependent, 27% Hormuz, 75d reserves, 55% refining → HIGH alert
+- Added fuel security profile for Netherlands (Amsterdam/Schiphol hub): 785K bpd, 95% import dependent, 5% Hormuz, 90d reserves, 200% refining → MODERATE alert
+- Added fuel security profile for Malaysia (Kuala Lumpur hub): 747K bpd, 15% import dependent, 30% Hormuz, 22d reserves, 65% refining → HIGH alert
+- Added Netherlands to countries.ts (was missing entirely)
+- All 3 countries now appear in route checker dropdown (origin, destination, and layover) and fuel cards
+- Total fuel profiles: 29 (was 26)
+- Added 4 new QA tests (132 total)
+
+### Why
+Top 8 global air hub cities (London, Dubai, Istanbul, Amsterdam, Singapore, Paris, Tokyo, Kuala Lumpur) must all have fuel profiles for the route checker. 5 of 8 already had profiles; this adds the remaining 3.
+
+### Data & calculation notes
+- Oil consumption from EIA: Türkiye 1,151,518 bpd (TUR 2025), Netherlands 784,863 bpd (NLD 2025), Malaysia 747,112 bpd (MYS 2024)
+- Import dependency from IEA country reviews 2024
+- Hormuz exposure from IEA Strait of Hormuz report / Zero Carbon Analytics
+- Strategic reserves: Türkiye 75d (TPIC/IEA member), Netherlands 90d (COVA/IEA member), Malaysia 22d (no formal SPR — not an IEA member)
+- Refining: Türkiye 55% (TUPRAS), Netherlands 200% (Shell Pernis + Rotterdam hub), Malaysia 65% (Petronas RAPID + Hengyuan)
+- Expected scores: Türkiye ~61 (HIGH), Netherlands ~46 (MODERATE), Malaysia ~52 (HIGH)
+
+### Upgrade notes for the next engineer or AI session
+- 29 fuel profiles now (was 26). Netherlands 200% refining is correct (Shell Pernis is Europe's largest refinery).
+- Malaysia 22d reserves is correct — Malaysia is not an IEA member and has no formal SPR.
+
+### Credits & third-party use
+- EIA International Energy Statistics (public domain, U.S. Government). Already documented.
+- IEA country reviews (Türkiye, Netherlands, Malaysia). Fair use for factual data.
+- TUPRAS annual report 2024, Petronas annual report 2024, COVA stockholding data.
+- No new API dependencies.
+
+---
+
 ## [2026-04-06] — Flight Fuel Alert: full feature launch
 
 ### What changed (round 3)

@@ -302,6 +302,36 @@ export const FUEL_SECURITY_PROFILES: CountryFuelProfile[] = [
     ],
     dataAsOf: '2026-04-06',
   },
+  {
+    countryId: 'Türkiye',
+    oilConsumptionBpd: 1_151_518, // EIA TUR 2025
+    importDependencyPct: 93, // Nearly all crude imported; ~70K bpd domestic
+    hormuzExposurePct: 27, // Iraq/Iran crude via Hormuz
+    strategicReserveDays: 75, // TPIC mandatory stockholding (IEA 2024)
+    jetFuelReserveDays: null,
+    refiningCapacityPct: 55, // TUPRAS ~655K bpd vs 1.15M bpd consumption
+    sources: [
+      'U.S. Energy Information Administration (2025)',
+      'IEA — Türkiye 2024 country review',
+      'TUPRAS — annual capacity report',
+    ],
+    dataAsOf: '2026-04-06',
+  },
+  {
+    countryId: 'Malaysia',
+    oilConsumptionBpd: 747_112, // EIA MYS 2024
+    importDependencyPct: 15, // Net importer since 2014, but significant Petronas production
+    hormuzExposurePct: 30, // ~30% of imports from ME transit Hormuz
+    strategicReserveDays: 22, // No formal SPR; commercial stocks only (~22d)
+    jetFuelReserveDays: null,
+    refiningCapacityPct: 65, // Petronas RAPID + Hengyuan ~480K bpd
+    sources: [
+      'U.S. Energy Information Administration (2024)',
+      'IEA — Malaysia energy profile',
+      'Petronas — annual report 2024',
+    ],
+    dataAsOf: '2026-04-06',
+  },
   /* ── Least-impacted profiles ───────────────────────────────── */
   /* These countries have minimal Hormuz exposure due to geography,
      domestic production, or diversified supply chains. Included so
@@ -360,6 +390,21 @@ export const FUEL_SECURITY_PROFILES: CountryFuelProfile[] = [
     sources: [
       'U.S. Energy Information Administration (2024)',
       'IEA — France 2024 review',
+    ],
+    dataAsOf: '2026-04-06',
+  },
+  {
+    countryId: 'Netherlands',
+    oilConsumptionBpd: 784_863, // EIA NLD 2025
+    importDependencyPct: 95, // Virtually no domestic production (Schoonebeek tiny)
+    hormuzExposurePct: 5, // North Sea / Atlantic / West Africa supply
+    strategicReserveDays: 90, // COVA mandatory stocks (IEA 90-day obligation)
+    jetFuelReserveDays: null,
+    refiningCapacityPct: 200, // Shell Pernis (largest in Europe) + Rotterdam hub
+    sources: [
+      'U.S. Energy Information Administration (2025)',
+      'IEA — Netherlands 2024 review',
+      'COVA — Central Organisation for Oil Stockpiling',
     ],
     dataAsOf: '2026-04-06',
   },
